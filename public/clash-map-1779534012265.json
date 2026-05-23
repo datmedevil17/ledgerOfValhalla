@@ -1,0 +1,4641 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "1779442635027-0.854182506124535",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -45.5,
+        0,
+        -40.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442640777-0.6557494711340706",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -31.5,
+        0,
+        -40.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442647544-0.7108071519978292",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -18.5,
+        0,
+        -41.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442665344-0.7105270790731316",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -5.5,
+        0,
+        -40.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442671327-0.015435707912457186",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        7.5,
+        0,
+        -41.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442683260-0.8627854621191386",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        19.5,
+        0,
+        -41.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442691877-0.04270197208632287",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        32.5,
+        0,
+        -41.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442705610-0.5552309644294599",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        45.5,
+        0,
+        -40.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442714611-0.039742673915170945",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        -27.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442723694-0.017286244256666028",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        44.5,
+        0,
+        -19.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442724910-0.0953819528255131",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        -20.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442726044-0.42755586292209413",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        51.5,
+        0,
+        -17.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442727460-0.253076539832664",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        47.5,
+        0,
+        -16.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442728977-0.6012810159586872",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        43.5,
+        0,
+        -14.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442730027-0.4005770284716562",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        46.5,
+        0,
+        -11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442731326-0.8397067737280024",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        50.5,
+        0,
+        -11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442732794-0.7407507300230792",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        -15.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442734910-0.5090272907727907",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        44.5,
+        0,
+        -7.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442736644-0.39513570149773614",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        -8.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442737910-0.762712934548188",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        52.5,
+        0,
+        -7.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442739377-0.33275207898081827",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        -11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442741860-0.6503102838186577",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        44.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442743477-0.23147162324585524",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        -4.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442745277-0.7584816309094823",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        52.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442748694-0.7687416359040907",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442750127-0.5177086174106761",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        44.5,
+        0,
+        0.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442752660-0.7525351602363447",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        47.5,
+        0,
+        3.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442754244-0.40258661429495246",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        44.5,
+        0,
+        6.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442755710-0.7977486909657227",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        7.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442757461-0.3531822853843406",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        51.5,
+        0,
+        3.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442758744-0.29423506550637335",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        51.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442759910-0.36759436489161057",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        0.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442761377-0.5061086288319052",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        -2.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442765011-0.5072271248046687",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        4.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442771877-0.6590041163233337",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        52.5,
+        0,
+        7.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442774111-0.5718917104084844",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        49.5,
+        0,
+        10.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442776560-0.6036383157250358",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        45.5,
+        0,
+        11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442780410-0.7615907884957038",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        44.5,
+        0,
+        15.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442782478-0.643013134101563",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        47.5,
+        0,
+        14.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442785295-0.9398709354020105",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        47.5,
+        0,
+        18.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442786411-0.6073290601249935",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        51.5,
+        0,
+        15.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442787494-0.9860465147959543",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        51.5,
+        0,
+        12.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442792161-0.753103636677297",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        45.5,
+        0,
+        21.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442793594-0.07049746170534255",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        48.5,
+        0,
+        22.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442794893-0.13812817586769177",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        50.5,
+        0,
+        19.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442816694-0.6671363267196309",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -52.5,
+        0,
+        -27.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442831460-0.8218999095987305",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -52.5,
+        0,
+        -13.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442851345-0.5923498782922116",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -55.5,
+        0,
+        -1.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442860177-0.7811527630188071",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -47.5,
+        0,
+        2.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442861943-0.139245269324491",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -49.5,
+        0,
+        7.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442863059-0.752522031079171",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -46.5,
+        0,
+        8.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442864260-0.21279168554626526",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -49.5,
+        0,
+        11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442882593-0.39684127719004947",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -52.5,
+        0,
+        8.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442885144-0.8398873882791629",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -52.5,
+        0,
+        11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442887727-0.7591523064783519",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -46.5,
+        0,
+        14.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442890693-0.12638199859072718",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -49.5,
+        0,
+        15.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442900993-0.8573105113792301",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -56.5,
+        0,
+        6.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442903860-0.34920323352352844",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -55.5,
+        0,
+        10.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442906427-0.8251779182533755",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -53.5,
+        0,
+        15.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442915727-0.7977840212388613",
+      "catalogId": "pine-group",
+      "path": "/models/Resource_PineTree_Group.gltf",
+      "name": "Pine Group",
+      "category": "Trees",
+      "position": [
+        -51.5,
+        0,
+        23.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 2,
+      "gridH": 2
+    },
+    {
+      "id": "1779442922776-0.8845661735581795",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -46.5,
+        0,
+        31.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442924410-0.5785515051977181",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -49.5,
+        0,
+        29.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442925227-0.6238798096465501",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -52.5,
+        0,
+        30.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442927343-0.4556994834081949",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -54.5,
+        0,
+        33.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442929010-0.054597362781673264",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -50.5,
+        0,
+        33.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442931827-0.8111318806774968",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -46.5,
+        0,
+        34.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442947577-0.33592999903336285",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        45.5,
+        0,
+        24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442949644-0.36570498524184436",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        45.5,
+        0,
+        27.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442952293-0.6843620246156888",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        43.5,
+        0,
+        31.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442953242-0.7711226810796641",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        46.5,
+        0,
+        33.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442954860-0.6731776907849022",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        47.5,
+        0,
+        30.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442956560-0.020694448690731226",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        51.5,
+        0,
+        32.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442958943-0.46700801393113245",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        50.5,
+        0,
+        28.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442960760-0.06870562558148585",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        50.5,
+        0,
+        25.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442962360-0.10090058282452585",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        52.5,
+        0,
+        21.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442963560-0.6951799031671805",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        23.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442965977-0.962778426833171",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        52.5,
+        0,
+        27.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442968127-0.5041082513376406",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        52.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442973627-0.5209288369799452",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        40.5,
+        0,
+        -24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442975310-0.5272011563835297",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        41.5,
+        0,
+        -10.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442977177-0.7188239701515714",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        40.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442980794-0.08773969773370893",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        41.5,
+        0,
+        18.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442982277-0.9123502286112892",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        42.5,
+        0,
+        26.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442985176-0.9100271471083471",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -18.5,
+        0,
+        -34.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442987427-0.0013504745379404604",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -38.5,
+        0,
+        -32.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442988793-0.4543273737280914",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -30.5,
+        0,
+        -33.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442991393-0.42461943024243753",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -43.5,
+        0,
+        -31.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779442999344-0.9776335919174935",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        20.5,
+        0,
+        -34.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443140743-0.19842043649777408",
+      "catalogId": "mountain-group-b",
+      "path": "/models/Mountain_Group_2.gltf",
+      "name": "Mountain Group B",
+      "category": "Mountains",
+      "position": [
+        51.5,
+        0,
+        -57.5
+      ],
+      "rotation": 0,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443144310-0.8245365583093194",
+      "catalogId": "mountain-group-b",
+      "path": "/models/Mountain_Group_2.gltf",
+      "name": "Mountain Group B",
+      "category": "Mountains",
+      "position": [
+        69.5,
+        0,
+        -40.5
+      ],
+      "rotation": 0,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443169227-0.423919377464983",
+      "catalogId": "mountain-group-a",
+      "path": "/models/Mountain_Group_1.gltf",
+      "name": "Mountain Group A",
+      "category": "Mountains",
+      "position": [
+        -73.5,
+        0,
+        -44.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443176476-0.8497939775228027",
+      "catalogId": "mountain-group-a",
+      "path": "/models/Mountain_Group_1.gltf",
+      "name": "Mountain Group A",
+      "category": "Mountains",
+      "position": [
+        -38.5,
+        0,
+        -68.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443187410-0.7849809859312734",
+      "catalogId": "mountain-group-b",
+      "path": "/models/Mountain_Group_2.gltf",
+      "name": "Mountain Group B",
+      "category": "Mountains",
+      "position": [
+        -72.5,
+        0,
+        -69.5
+      ],
+      "rotation": 0,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443208011-0.9653973572006782",
+      "catalogId": "mountain-group-b",
+      "path": "/models/Mountain_Group_2.gltf",
+      "name": "Mountain Group B",
+      "category": "Mountains",
+      "position": [
+        -7.5,
+        0,
+        -61.5
+      ],
+      "rotation": 0,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443274312-0.0786079177737189",
+      "catalogId": "mountain-group-a",
+      "path": "/models/Mountain_Group_1.gltf",
+      "name": "Mountain Group A",
+      "category": "Mountains",
+      "position": [
+        29.5,
+        0,
+        -70.5
+      ],
+      "rotation": 0,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443281696-0.5886253828399778",
+      "catalogId": "mountain-group-a",
+      "path": "/models/Mountain_Group_1.gltf",
+      "name": "Mountain Group A",
+      "category": "Mountains",
+      "position": [
+        -3.5,
+        0,
+        -78.5
+      ],
+      "rotation": 0,
+      "scale": 5.5,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443310246-0.8269858888118771",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        -73.5,
+        0,
+        -23.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443312462-0.16297830690810622",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        -63.5,
+        0,
+        -19.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443316762-0.09425742971334405",
+      "catalogId": "mountain-single",
+      "path": "/models/Mountain_Single.gltf",
+      "name": "Mountain",
+      "category": "Mountains",
+      "position": [
+        -73.5,
+        0,
+        -15.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 3,
+      "gridH": 3
+    },
+    {
+      "id": "1779443319479-0.2540728093032105",
+      "catalogId": "mountain-single",
+      "path": "/models/Mountain_Single.gltf",
+      "name": "Mountain",
+      "category": "Mountains",
+      "position": [
+        -85.5,
+        0,
+        -21.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 3,
+      "gridH": 3
+    },
+    {
+      "id": "1779443354113-0.47389679350184055",
+      "catalogId": "mountain-group-b",
+      "path": "/models/Mountain_Group_2.gltf",
+      "name": "Mountain Group B",
+      "category": "Mountains",
+      "position": [
+        72.5,
+        0,
+        -71.5
+      ],
+      "rotation": 0,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443379912-0.4614137717930147",
+      "catalogId": "mountain-group-a",
+      "path": "/models/Mountain_Group_1.gltf",
+      "name": "Mountain Group A",
+      "category": "Mountains",
+      "position": [
+        69.5,
+        0,
+        -6.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 7,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443384879-0.8494470560773923",
+      "catalogId": "mountain-group-a",
+      "path": "/models/Mountain_Group_1.gltf",
+      "name": "Mountain Group A",
+      "category": "Mountains",
+      "position": [
+        -74.5,
+        0,
+        5.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 7,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443408546-0.9499975609667286",
+      "catalogId": "mountain-single",
+      "path": "/models/Mountain_Single.gltf",
+      "name": "Mountain",
+      "category": "Mountains",
+      "position": [
+        -80.5,
+        0,
+        20.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 3,
+      "gridH": 3
+    },
+    {
+      "id": "1779443412913-0.11513156137494951",
+      "catalogId": "mountain-single",
+      "path": "/models/Mountain_Single.gltf",
+      "name": "Mountain",
+      "category": "Mountains",
+      "position": [
+        -89.5,
+        0,
+        29.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 3,
+      "gridH": 3
+    },
+    {
+      "id": "1779443421663-0.7948868816510918",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        -75.5,
+        0,
+        30.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443423245-0.8603805735519942",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        -65.5,
+        0,
+        25.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443430784-0.022774407236833882",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        -68.5,
+        0,
+        32.5
+      ],
+      "rotation": 0,
+      "scale": 4.5,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443432695-0.6830001594000699",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        -61.5,
+        0,
+        32.5
+      ],
+      "rotation": 0,
+      "scale": 4.5,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443472612-0.3451067534755571",
+      "catalogId": "mountain-group-b",
+      "path": "/models/Mountain_Group_2.gltf",
+      "name": "Mountain Group B",
+      "category": "Mountains",
+      "position": [
+        69.5,
+        0,
+        27.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 9,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443480812-0.39124473706768614",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        73.5,
+        0,
+        14.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443484778-0.6244676462091535",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        82.5,
+        0,
+        -24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443486029-0.5237044898983874",
+      "catalogId": "mountain-large",
+      "path": "/models/MountainLarge_Single.gltf",
+      "name": "Mountain Large",
+      "category": "Mountains",
+      "position": [
+        88.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 4,
+      "gridH": 4
+    },
+    {
+      "id": "1779443505678-0.014448884691775077",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        7.5,
+        0,
+        -50.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443506879-0.40975005876499304",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        12.5,
+        0,
+        -50.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443508445-0.19620927282275213",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        17.5,
+        0,
+        -54.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443509730-0.046202407413622915",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        11.5,
+        0,
+        -53.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443511279-0.9419088819687548",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        19.5,
+        0,
+        -51.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443512196-0.09995724731415723",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        23.5,
+        0,
+        -50.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443513145-0.18294108273332343",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        24.5,
+        0,
+        -56.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443514495-0.4113178518527464",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        28.5,
+        0,
+        -52.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443515396-0.11393271995925336",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        31.5,
+        0,
+        -49.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443516728-0.3135014263398852",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        3.5,
+        0,
+        -65.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443517412-0.38351577995757213",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        3.5,
+        0,
+        -71.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443518445-0.27536468981447704",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        6.5,
+        0,
+        -77.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443520513-0.788658163513082",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        27.5,
+        0,
+        -63.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443522578-0.5482734665486017",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -23.5,
+        0,
+        -64.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443524112-0.2990521685971145",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -20.5,
+        0,
+        -62.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443524912-0.589796077178459",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -15.5,
+        0,
+        -66.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443526212-0.8405862906721001",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -18.5,
+        0,
+        -67.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443527728-0.9046862790978571",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -21.5,
+        0,
+        -71.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443529162-0.14659461142998897",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -19.5,
+        0,
+        -76.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443530595-0.6685666733763616",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -23.5,
+        0,
+        -76.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443533462-0.34087354495945477",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -14.5,
+        0,
+        -49.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443534662-0.46048705410071",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -11.5,
+        0,
+        -52.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443537012-0.9651584332012952",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -9.5,
+        0,
+        -48.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443538562-0.742814580808383",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -24.5,
+        0,
+        -49.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443541195-0.0374334572198316",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -50.5,
+        0,
+        -48.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443547895-0.9629137411469474",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -55.5,
+        0,
+        -12.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443567429-0.16528164641126608",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -59.5,
+        0,
+        -9.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443568479-0.1460840355515589",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -63.5,
+        0,
+        -10.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443569762-0.8426412875135699",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -67.5,
+        0,
+        -11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443571662-0.3198743938794911",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -60.5,
+        0,
+        -13.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443580961-0.20916062239634625",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        57.5,
+        0,
+        -8.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443582445-0.22252231370150932",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        59.5,
+        0,
+        -22.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443583595-0.9839651548304598",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        63.5,
+        0,
+        -29.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443584495-0.8781871266730704",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        64.5,
+        0,
+        -24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443585495-0.8418598487861152",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        67.5,
+        0,
+        -30.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443586746-0.5084686639451388",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        69.5,
+        0,
+        -25.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443590478-0.7964579445356996",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -58.5,
+        0,
+        29.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443591729-0.6530154906963852",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -58.5,
+        0,
+        24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443593229-0.044616049814370284",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -61.5,
+        0,
+        20.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443596128-0.6848961616902429",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -58.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443620678-0.06938095818522205",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        57.5,
+        0,
+        8.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443621678-0.20891584477715075",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        59.5,
+        0,
+        12.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443623045-0.827745289290187",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        63.5,
+        0,
+        8.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443623962-0.8490970529920786",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        66.5,
+        0,
+        12.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443626578-0.5869879234541024",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        57.5,
+        0,
+        30.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779443628028-0.46119749892007944",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        54.5,
+        0,
+        34.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779444714238-0.1849940957256987",
+      "catalogId": "town-center",
+      "path": "/models/TownCenter_SecondAge_Level3.gltf",
+      "name": "Town Center",
+      "category": "Town",
+      "position": [
+        3.5,
+        0,
+        3.5
+      ],
+      "rotation": 0,
+      "scale": 5,
+      "gridW": 4,
+      "gridH": 4,
+      "defId": "town-center",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779444739438-0.8489504481997987",
+      "catalogId": "tower-house",
+      "path": "/models/TowerHouse_SecondAge.gltf",
+      "name": "Tower House",
+      "category": "Military",
+      "position": [
+        3.5,
+        0,
+        12.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "tower-house",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779444763971-0.5142439084890987",
+      "catalogId": "watch-tower",
+      "path": "/models/WatchTower_SecondAge_Level3.gltf",
+      "name": "Watch Tower",
+      "category": "Military",
+      "position": [
+        3.5,
+        0,
+        -4.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "watch-tower",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779445989739-0.1409522125358047",
+      "catalogId": "storage",
+      "path": "/models/Storage_SecondAge_Level1.gltf",
+      "name": "Storage",
+      "category": "Town",
+      "position": [
+        -3.5,
+        0,
+        12.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "storage",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779445998655-0.028356706376039598",
+      "catalogId": "storage",
+      "path": "/models/Storage_SecondAge_Level1.gltf",
+      "name": "Storage",
+      "category": "Town",
+      "position": [
+        10.5,
+        0,
+        12.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "storage",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446057271-0.055305667709169226",
+      "catalogId": "market",
+      "path": "/models/Market_SecondAge_Level3.gltf",
+      "name": "Market",
+      "category": "Town",
+      "position": [
+        -39.5,
+        0,
+        27.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "market",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446063105-0.9129942590133082",
+      "catalogId": "market",
+      "path": "/models/Market_SecondAge_Level3.gltf",
+      "name": "Market",
+      "category": "Town",
+      "position": [
+        35.5,
+        0,
+        26.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "market",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446093088-0.7050712182074735",
+      "catalogId": "barracks",
+      "path": "/models/Barracks_SecondAge_Level2.gltf",
+      "name": "Barracks",
+      "category": "Military",
+      "position": [
+        11.5,
+        0,
+        5.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "barracks",
+      "age": "SecondAge",
+      "level": 2
+    },
+    {
+      "id": "1779446118023-0.8662133242465142",
+      "catalogId": "barracks",
+      "path": "/models/Barracks_SecondAge_Level3.gltf",
+      "name": "Barracks",
+      "category": "Military",
+      "position": [
+        11.5,
+        0,
+        -6.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "barracks",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446150905-0.8617128726092816",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        11.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446154722-0.4709870826067196",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        6.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446156573-0.796036460867361",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        1.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446158805-0.11562074699468694",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -3.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446162223-0.6915391569338896",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -8.5,
+        0,
+        17.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446168322-0.3767012848786022",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -11.5,
+        0,
+        15.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446171822-0.5314887557815945",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -11.5,
+        0,
+        10.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446173372-0.8676942351150113",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -11.5,
+        0,
+        5.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446177039-0.033135381450332235",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -11.5,
+        0,
+        0.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446179522-0.677966736707143",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -11.5,
+        0,
+        -4.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446183972-0.6674553163647838",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -8.5,
+        0,
+        -6.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446185872-0.16972405563331883",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -3.5,
+        0,
+        -6.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446190039-0.5158535991836305",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -1.5,
+        0,
+        -9.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446193489-0.1007459073436281",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        1.5,
+        0,
+        -11.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446195371-0.4850226763639278",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        6.5,
+        0,
+        -11.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446197656-0.5274805819165123",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        11.5,
+        0,
+        -11.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446199339-0.298538786363824",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        16.5,
+        0,
+        -11.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446202472-0.7104496587254218",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        18.5,
+        0,
+        -8.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446203789-0.7798770060490483",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        18.5,
+        0,
+        -3.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446205539-0.7490203407098246",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        18.5,
+        0,
+        1.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446206855-0.731389007527435",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        18.5,
+        0,
+        6.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446208272-0.7310343251206736",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        18.5,
+        0,
+        11.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446209955-0.8745845681401744",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        18.5,
+        0,
+        16.5
+      ],
+      "rotation": 4.71238898038469,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446226239-0.6309052443956182",
+      "catalogId": "wall-door",
+      "path": "/models/WallTowers_Door_SecondAge.gltf",
+      "name": "Gate",
+      "category": "Walls",
+      "position": [
+        15.5,
+        0,
+        18.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 2,
+      "gridH": 1,
+      "defId": "wall-door",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446245556-0.6150459175272103",
+      "catalogId": "archery",
+      "path": "/models/Archery_SecondAge_Level3.gltf",
+      "name": "Archery",
+      "category": "Military",
+      "position": [
+        -5.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "archery",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446270589-0.1626259798332328",
+      "catalogId": "archery",
+      "path": "/models/Archery_SecondAge_Level3.gltf",
+      "name": "Archery",
+      "category": "Military",
+      "position": [
+        -7.5,
+        0,
+        6.5
+      ],
+      "rotation": 3.141592653589793,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "archery",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446302672-0.5348999458364238",
+      "catalogId": "port-s1",
+      "path": "/models/Port_SecondAge_Level1.gltf",
+      "name": "Port",
+      "category": "Structures",
+      "position": [
+        -29.5,
+        0,
+        34.5
+      ],
+      "rotation": 0,
+      "scale": 5,
+      "gridW": 4,
+      "gridH": 3
+    },
+    {
+      "id": "1779446304605-0.900553757597511",
+      "catalogId": "port-s1",
+      "path": "/models/Port_SecondAge_Level1.gltf",
+      "name": "Port",
+      "category": "Structures",
+      "position": [
+        -18.5,
+        0,
+        34.5
+      ],
+      "rotation": 0,
+      "scale": 5,
+      "gridW": 4,
+      "gridH": 3
+    },
+    {
+      "id": "1779446319922-0.9571033411858808",
+      "catalogId": "port",
+      "path": "/models/Port_SecondAge_Level3.gltf",
+      "name": "Port",
+      "category": "Special",
+      "position": [
+        23.5,
+        0,
+        33.5
+      ],
+      "rotation": 0,
+      "scale": 5,
+      "gridW": 4,
+      "gridH": 3,
+      "defId": "port",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446327189-0.0467944263246598",
+      "catalogId": "dock",
+      "path": "/models/Dock_FirstAge.gltf",
+      "name": "Dock",
+      "category": "Special",
+      "position": [
+        -10.5,
+        0,
+        36.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 2,
+      "defId": "dock",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446329005-0.8941806841034743",
+      "catalogId": "dock",
+      "path": "/models/Dock_FirstAge.gltf",
+      "name": "Dock",
+      "category": "Special",
+      "position": [
+        -10.5,
+        0,
+        41.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 2,
+      "defId": "dock",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446331205-0.6175073122781688",
+      "catalogId": "dock",
+      "path": "/models/Dock_FirstAge.gltf",
+      "name": "Dock",
+      "category": "Special",
+      "position": [
+        31.5,
+        0,
+        36.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 2,
+      "defId": "dock",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446333373-0.4783016892600348",
+      "catalogId": "dock",
+      "path": "/models/Dock_FirstAge.gltf",
+      "name": "Dock",
+      "category": "Special",
+      "position": [
+        31.5,
+        0,
+        41.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 2,
+      "defId": "dock",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446440089-0.19667573878959266",
+      "catalogId": "temple",
+      "path": "/models/Temple_SecondAge_Level3.gltf",
+      "name": "Temple",
+      "category": "Special",
+      "position": [
+        30.5,
+        0,
+        -25.5
+      ],
+      "rotation": 0,
+      "scale": 5,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "temple",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446457455-0.5405690141918733",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        25.5,
+        0,
+        -18.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446459089-0.23073903186937006",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        30.5,
+        0,
+        -18.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446460155-0.09050875046370865",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        34.5,
+        0,
+        -18.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446462256-0.13172781450387716",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        39.5,
+        0,
+        -18.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446465072-0.005127085100082307",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        24.5,
+        0,
+        -32.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446467055-0.48680022073946916",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        29.5,
+        0,
+        -32.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446480421-0.26915152000056974",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        34.5,
+        0,
+        -32.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446483955-0.314790031665117",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        39.5,
+        0,
+        -32.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446500288-0.869389597949874",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        41.5,
+        0,
+        -21.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446501889-0.8701632194560067",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        41.5,
+        0,
+        -29.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446512038-0.6772463107669987",
+      "catalogId": "house-1",
+      "path": "/models/Houses_SecondAge_1_Level1.gltf",
+      "name": "House I",
+      "category": "Town",
+      "position": [
+        38.5,
+        0,
+        -28.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "house-1",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446515422-0.22455105568992095",
+      "catalogId": "house-1",
+      "path": "/models/Houses_SecondAge_1_Level1.gltf",
+      "name": "House I",
+      "category": "Town",
+      "position": [
+        38.5,
+        0,
+        -21.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "house-1",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446529556-0.7181962982178245",
+      "catalogId": "wall-tower",
+      "path": "/models/WallTowers_SecondAge.gltf",
+      "name": "Wall Tower",
+      "category": "Walls",
+      "position": [
+        22.5,
+        0,
+        -21.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall-tower",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446553938-0.15642385063775233",
+      "catalogId": "wall-tower",
+      "path": "/models/WallTowers_SecondAge.gltf",
+      "name": "Wall Tower",
+      "category": "Walls",
+      "position": [
+        22.5,
+        0,
+        -29.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall-tower",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446608955-0.9963584763302277",
+      "catalogId": "windmill",
+      "path": "/models/Windmill_SecondAge.gltf",
+      "name": "Windmill",
+      "category": "Town",
+      "position": [
+        -4.5,
+        0,
+        -9.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "windmill",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446621605-0.6048146774324866",
+      "catalogId": "farm",
+      "path": "/models/Farm_SecondAge_Level3.gltf",
+      "name": "Farm",
+      "category": "Town",
+      "position": [
+        10.5,
+        0,
+        -30.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "farm",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446636022-0.9059877788065519",
+      "catalogId": "farm",
+      "path": "/models/Farm_SecondAge_Level1.gltf",
+      "name": "Farm",
+      "category": "Town",
+      "position": [
+        -8.5,
+        0,
+        -29.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "farm",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446639305-0.5263861034538418",
+      "catalogId": "farm",
+      "path": "/models/Farm_SecondAge_Level2.gltf",
+      "name": "Farm",
+      "category": "Town",
+      "position": [
+        -23.5,
+        0,
+        -29.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "farm",
+      "age": "SecondAge",
+      "level": 2
+    },
+    {
+      "id": "1779446652912-0.9249045407729661",
+      "catalogId": "storage",
+      "path": "/models/Storage_SecondAge_Level3.gltf",
+      "name": "Storage",
+      "category": "Town",
+      "position": [
+        0.5,
+        0,
+        -31.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "storage",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446667238-0.14079318845017985",
+      "catalogId": "storage",
+      "path": "/models/Storage_SecondAge_Level3.gltf",
+      "name": "Storage",
+      "category": "Town",
+      "position": [
+        -32.5,
+        0,
+        -28.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "storage",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446693655-0.08498898783917663",
+      "catalogId": "wonder",
+      "path": "/models/Wonder_SecondAge_Level3.gltf",
+      "name": "Wonder",
+      "category": "Town",
+      "position": [
+        -19.5,
+        0,
+        3.5
+      ],
+      "rotation": 0,
+      "scale": 5,
+      "gridW": 5,
+      "gridH": 5,
+      "defId": "wonder",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446708605-0.661645240167882",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -13.5,
+        0,
+        10.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446709938-0.18854379834109525",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -18.5,
+        0,
+        10.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446711872-0.5493356605176654",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -23.5,
+        0,
+        10.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446735371-0.6458714147001763",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -13.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446736722-0.7909829661832317",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -18.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446738221-0.9184436761763869",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -23.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446743071-0.5910930563978198",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -25.5,
+        0,
+        -1.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446745139-0.9315561895242116",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -25.5,
+        0,
+        3.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446747772-0.5824562204395649",
+      "catalogId": "wall",
+      "path": "/models/Wall_SecondAge.gltf",
+      "name": "Wall",
+      "category": "Walls",
+      "position": [
+        -25.5,
+        0,
+        8.5
+      ],
+      "rotation": 1.5707963267948966,
+      "scale": 3,
+      "gridW": 1,
+      "gridH": 1,
+      "defId": "wall",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446764671-0.21844373522215277",
+      "catalogId": "house-3",
+      "path": "/models/Houses_SecondAge_3_Level3.gltf",
+      "name": "House III",
+      "category": "Town",
+      "position": [
+        -41.5,
+        0,
+        19.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "house-3",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446780905-0.2389797980527837",
+      "catalogId": "house-2",
+      "path": "/models/Houses_SecondAge_2_Level3.gltf",
+      "name": "House II",
+      "category": "Town",
+      "position": [
+        -32.5,
+        0,
+        18.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "house-2",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446795922-0.47412052441882724",
+      "catalogId": "archery",
+      "path": "/models/Archery_SecondAge_Level1.gltf",
+      "name": "Archery",
+      "category": "Military",
+      "position": [
+        -23.5,
+        0,
+        19.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "archery",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446799905-0.2801967730231749",
+      "catalogId": "archery",
+      "path": "/models/Archery_SecondAge_Level1.gltf",
+      "name": "Archery",
+      "category": "Military",
+      "position": [
+        -40.5,
+        0,
+        9.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "archery",
+      "age": "SecondAge",
+      "level": 1
+    },
+    {
+      "id": "1779446826271-0.04735259426999916",
+      "catalogId": "barracks",
+      "path": "/models/Barracks_SecondAge_Level2.gltf",
+      "name": "Barracks",
+      "category": "Military",
+      "position": [
+        -42.5,
+        0,
+        -3.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "barracks",
+      "age": "SecondAge",
+      "level": 2
+    },
+    {
+      "id": "1779446827371-0.8222296695251324",
+      "catalogId": "barracks",
+      "path": "/models/Barracks_SecondAge_Level2.gltf",
+      "name": "Barracks",
+      "category": "Military",
+      "position": [
+        -42.5,
+        0,
+        -13.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "barracks",
+      "age": "SecondAge",
+      "level": 2
+    },
+    {
+      "id": "1779446835605-0.5172748313100318",
+      "catalogId": "watch-tower",
+      "path": "/models/WatchTower_SecondAge_Level3.gltf",
+      "name": "Watch Tower",
+      "category": "Military",
+      "position": [
+        -35.5,
+        0,
+        -9.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "watch-tower",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446837539-0.4534061818105277",
+      "catalogId": "watch-tower",
+      "path": "/models/WatchTower_SecondAge_Level3.gltf",
+      "name": "Watch Tower",
+      "category": "Military",
+      "position": [
+        -35.5,
+        0,
+        0.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 2,
+      "gridH": 2,
+      "defId": "watch-tower",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446872521-0.7361641455907121",
+      "catalogId": "farm",
+      "path": "/models/Farm_SecondAge_Level2.gltf",
+      "name": "Farm",
+      "category": "Town",
+      "position": [
+        35.5,
+        0,
+        -10.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "farm",
+      "age": "SecondAge",
+      "level": 2
+    },
+    {
+      "id": "1779446876789-0.17484715579495158",
+      "catalogId": "farm",
+      "path": "/models/Farm_SecondAge_Level3.gltf",
+      "name": "Farm",
+      "category": "Town",
+      "position": [
+        34.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "farm",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446895571-0.11144018529143784",
+      "catalogId": "barracks",
+      "path": "/models/Barracks_SecondAge_Level3.gltf",
+      "name": "Barracks",
+      "category": "Military",
+      "position": [
+        33.5,
+        0,
+        10.5
+      ],
+      "rotation": 0,
+      "scale": 4,
+      "gridW": 3,
+      "gridH": 3,
+      "defId": "barracks",
+      "age": "SecondAge",
+      "level": 3
+    },
+    {
+      "id": "1779446927238-0.47280856034774277",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -24.5,
+        0,
+        22.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446928071-0.7479256393249323",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -32.5,
+        0,
+        24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446928921-0.6949125489772796",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -34.5,
+        0,
+        7.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446929521-0.5144616163205217",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -40.5,
+        0,
+        11.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446930421-0.8960550106810401",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -39.5,
+        0,
+        -0.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446932621-0.354847238199841",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -17.5,
+        0,
+        -29.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446933438-0.46181375779459777",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -17.5,
+        0,
+        -24.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446934721-0.7336296958083711",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -5.5,
+        0,
+        -23.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446935588-0.19692234768974348",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -12.5,
+        0,
+        -16.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446937255-0.4310096623343631",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        18.5,
+        0,
+        -29.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446938154-0.055832640199562356",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        24.5,
+        0,
+        -5.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446938821-0.32836652462549554",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        14.5,
+        0,
+        -17.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446939738-0.41096806300880917",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        1.5,
+        0,
+        -17.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446940621-0.24898541213221648",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        5.5,
+        0,
+        30.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446941021-0.1180017056261391",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -2.5,
+        0,
+        22.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446941904-0.05612030522301714",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        -15.5,
+        0,
+        22.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446942821-0.5896560968610853",
+      "catalogId": "pine-tree",
+      "path": "/models/Resource_PineTree.gltf",
+      "name": "Pine Tree",
+      "category": "Trees",
+      "position": [
+        24.5,
+        0,
+        20.5
+      ],
+      "rotation": 0,
+      "scale": 8,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446946755-0.17848414810319613",
+      "catalogId": "rock-a",
+      "path": "/models/Resource_Rock_1.gltf",
+      "name": "Rock A",
+      "category": "Rocks",
+      "position": [
+        1.5,
+        0,
+        28.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446948604-0.5956092403867163",
+      "catalogId": "rock-a",
+      "path": "/models/Resource_Rock_1.gltf",
+      "name": "Rock A",
+      "category": "Rocks",
+      "position": [
+        -26.5,
+        0,
+        -17.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446949555-0.2097242755946681",
+      "catalogId": "rock-a",
+      "path": "/models/Resource_Rock_1.gltf",
+      "name": "Rock A",
+      "category": "Rocks",
+      "position": [
+        -40.5,
+        0,
+        -25.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446951538-0.7247903875255016",
+      "catalogId": "rock-a",
+      "path": "/models/Resource_Rock_1.gltf",
+      "name": "Rock A",
+      "category": "Rocks",
+      "position": [
+        23.5,
+        0,
+        -12.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446952855-0.8496099375402135",
+      "catalogId": "rock-a",
+      "path": "/models/Resource_Rock_1.gltf",
+      "name": "Rock A",
+      "category": "Rocks",
+      "position": [
+        36.5,
+        0,
+        16.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446957088-0.4564837890809924",
+      "catalogId": "rock-b",
+      "path": "/models/Resource_Rock_2.gltf",
+      "name": "Rock B",
+      "category": "Rocks",
+      "position": [
+        -8.5,
+        0,
+        23.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446958588-0.061592264573581024",
+      "catalogId": "rock-b",
+      "path": "/models/Resource_Rock_2.gltf",
+      "name": "Rock B",
+      "category": "Rocks",
+      "position": [
+        -14.5,
+        0,
+        13.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446959805-0.5322917295532718",
+      "catalogId": "rock-b",
+      "path": "/models/Resource_Rock_2.gltf",
+      "name": "Rock B",
+      "category": "Rocks",
+      "position": [
+        22.5,
+        0,
+        4.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446962871-0.16352259683382542",
+      "catalogId": "rock-c",
+      "path": "/models/Resource_Rock_3.gltf",
+      "name": "Rock C",
+      "category": "Rocks",
+      "position": [
+        -13.5,
+        0,
+        -7.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446963804-0.17180460836584588",
+      "catalogId": "rock-c",
+      "path": "/models/Resource_Rock_3.gltf",
+      "name": "Rock C",
+      "category": "Rocks",
+      "position": [
+        -24.5,
+        0,
+        -8.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446964854-0.7306788066533572",
+      "catalogId": "rock-c",
+      "path": "/models/Resource_Rock_3.gltf",
+      "name": "Rock C",
+      "category": "Rocks",
+      "position": [
+        -2.5,
+        0,
+        -21.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446966772-0.7305936005492463",
+      "catalogId": "rock-c",
+      "path": "/models/Resource_Rock_3.gltf",
+      "name": "Rock C",
+      "category": "Rocks",
+      "position": [
+        16.5,
+        0,
+        -34.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    },
+    {
+      "id": "1779446969022-0.6172452999270263",
+      "catalogId": "rock-c",
+      "path": "/models/Resource_Rock_3.gltf",
+      "name": "Rock C",
+      "category": "Rocks",
+      "position": [
+        33.5,
+        0,
+        5.5
+      ],
+      "rotation": 0,
+      "scale": 7,
+      "gridW": 1,
+      "gridH": 1
+    }
+  ],
+  "lights": {
+    "ambient": {
+      "intensity": 0.15,
+      "color": "#fff6e0"
+    },
+    "sun": {
+      "intensity": 1.1,
+      "color": "#f0ebd0",
+      "azimuth": 219,
+      "elevation": 22
+    },
+    "fill": {
+      "intensity": 0.6,
+      "color": "#c0e0ff"
+    },
+    "hemisphere": {
+      "skyColor": "#87ceeb",
+      "groundColor": "#5a9e30",
+      "intensity": 0.4
+    },
+    "exposure": 1.15
+  }
+}
