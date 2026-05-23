@@ -15,6 +15,6 @@ export const DEFENSE_DEFS: Partial<Record<string, DefenseDef>> = {
   'tower-house': { attackRange: 6,  attackDamage: 28, attackCooldown: 1.8, isRanged: true,  projColor: '#aacc44' },
 }
 
-export const TEMPLE_REINFORCE_RADIUS  = 12   // units — attackers trigger reinforcements at this range
+export const TEMPLE_REINFORCE_RADIUS  = 20   // units — attackers trigger reinforcements at this range
 export const TEMPLE_REINFORCE_COUNT   = 4
 export const TEMPLE_REINFORCE_TYPES   = ['warrior', 'monk', 'warrior', 'monk'] as const

@@ -635,13 +635,16 @@ function DefenseSystem({ gsRef, onSpawnDefender }: {
 
       // ── Temple reinforcements ──────────────────────────────────────────────
       if (building.defId === 'temple' && !gs.templeReinforced.has(building.id)) {
-        const close = attackers.some(([, pos]) => dist2d(pos, bc) < TEMPLE_REINFORCE_RADIUS)
-        if (close) {
+        // Trigger when first attacked OR when any attacker enters the radius
+        const triggered =
+          gs.attackedBuildings.has(building.id) ||
+          attackers.some(([, pos]) => dist2d(pos as [number,number,number], bc) < TEMPLE_REINFORCE_RADIUS)
+        if (triggered) {
           gs.templeReinforced.add(building.id)
           for (let i = 0; i < TEMPLE_REINFORCE_COUNT; i++) {
             const angle = (i / TEMPLE_REINFORCE_COUNT) * Math.PI * 2
             onSpawnDefender(
-              [bc[0] + Math.cos(angle) * 2.5, 0, bc[2] + Math.sin(angle) * 2.5],
+              [bc[0] + Math.cos(angle) * 4.0, 0, bc[2] + Math.sin(angle) * 4.0],
               TEMPLE_REINFORCE_TYPES[i] as TroopId,
             )
           }
