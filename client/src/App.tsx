@@ -8,6 +8,7 @@ import * as THREE from 'three'
 import { CATALOG, defFor, healthOf, type Age, type Level } from './config'
 import { TROOP_DEFS, TROOP_IDS, TROOP_START_COUNT, BAT_SWARM_SIZE, type TroopId, type TroopDef } from './troops'
 import { DEFENSE_DEFS, TEMPLE_REINFORCE_RADIUS, TEMPLE_REINFORCE_COUNT, TEMPLE_REINFORCE_TYPES } from './defenses'
+import { FinalMapCanvas } from './FinalMap'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const GRID_W       = 90
@@ -25,13 +26,205 @@ interface LightConfig {
 }
 
 const DEFAULT_LIGHT: LightConfig = {
-  ambient:    { intensity: 0.70, color: '#fff6e0' },
-  sun:        { intensity: 1.60, color: '#fffbe8', azimuth: 210, elevation: 65 },
-  fill:       { intensity: 0.45, color: '#c0e0ff' },
-  hemisphere: { skyColor: '#87ceeb', groundColor: '#5a9e30', intensity: 0.50 },
-  exposure:   1.2,
+  ambient:    { intensity: 0.15, color: '#fff6e0' },
+  sun:        { intensity: 1.1,  color: '#f0ebd0', azimuth: 219, elevation: 22 },
+  fill:       { intensity: 0.6,  color: '#c0e0ff' },
+  hemisphere: { skyColor: '#87ceeb', groundColor: '#5a9e30', intensity: 0.4 },
+  exposure:   1.15,
 }
 
+
+const DEFAULT_ENV_ITEMS: PlacedItem[] = [
+  {"id":"1779442635027-0.854182506124535","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-45.5,0,-40.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442640777-0.6557494711340706","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-31.5,0,-40.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442647544-0.7108071519978292","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-18.5,0,-41.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442665344-0.7105270790731316","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-5.5,0,-40.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442671327-0.015435707912457186","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[7.5,0,-41.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442683260-0.8627854621191386","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[19.5,0,-41.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442691877-0.04270197208632287","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[32.5,0,-41.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442705610-0.5552309644294599","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[45.5,0,-40.5],"rotation":1.5707963267948966,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442714611-0.039742673915170945","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[48.5,0,-27.5],"rotation":1.5707963267948966,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442723694-0.017286244256666028","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[44.5,0,-19.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442724910-0.0953819528255131","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[48.5,0,-20.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442726044-0.42755586292209413","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[51.5,0,-17.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442727460-0.253076539832664","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[47.5,0,-16.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442728977-0.6012810159586872","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[43.5,0,-14.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442730027-0.4005770284716562","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[46.5,0,-11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442731326-0.8397067737280024","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[50.5,0,-11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442732794-0.7407507300230792","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,-15.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442734910-0.5090272907727907","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[44.5,0,-7.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442736644-0.39513570149773614","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[48.5,0,-8.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442737910-0.762712934548188","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[52.5,0,-7.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442739377-0.33275207898081827","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,-11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442741860-0.6503102838186577","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[44.5,0,-3.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442743477-0.23147162324585524","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[48.5,0,-4.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442745277-0.7584816309094823","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[52.5,0,-3.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442748694-0.7687416359040907","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[48.5,0,-0.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442750127-0.5177086174106761","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[44.5,0,0.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442752660-0.7525351602363447","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[47.5,0,3.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442754244-0.40258661429495246","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[44.5,0,6.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442755710-0.7977486909657227","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[48.5,0,7.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442757461-0.3531822853843406","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[51.5,0,3.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442758744-0.29423506550637335","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[51.5,0,-0.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442759910-0.36759436489161057","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,0.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442761377-0.5061086288319052","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,-2.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442765011-0.5072271248046687","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,4.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442771877-0.6590041163233337","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[52.5,0,7.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442774111-0.5718917104084844","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[49.5,0,10.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442776560-0.6036383157250358","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[45.5,0,11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442780410-0.7615907884957038","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[44.5,0,15.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442782478-0.643013134101563","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[47.5,0,14.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442785295-0.9398709354020105","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[47.5,0,18.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442786411-0.6073290601249935","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[51.5,0,15.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442787494-0.9860465147959543","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[51.5,0,12.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442792161-0.753103636677297","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[45.5,0,21.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442793594-0.07049746170534255","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[48.5,0,22.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442794893-0.13812817586769177","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[50.5,0,19.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442816694-0.6671363267196309","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-52.5,0,-27.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442831460-0.8218999095987305","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-52.5,0,-13.5],"rotation":1.5707963267948966,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442851345-0.5923498782922116","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-55.5,0,-1.5],"rotation":4.71238898038469,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442860177-0.7811527630188071","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-47.5,0,2.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442861943-0.139245269324491","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-49.5,0,7.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442863059-0.752522031079171","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-46.5,0,8.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442864260-0.21279168554626526","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-49.5,0,11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442882593-0.39684127719004947","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-52.5,0,8.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442885144-0.8398873882791629","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-52.5,0,11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442887727-0.7591523064783519","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-46.5,0,14.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442890693-0.12638199859072718","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-49.5,0,15.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442900993-0.8573105113792301","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-56.5,0,6.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442903860-0.34920323352352844","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-55.5,0,10.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442906427-0.8251779182533755","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-53.5,0,15.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442915727-0.7977840212388613","catalogId":"pine-group","path":"/models/Resource_PineTree_Group.gltf","name":"Pine Group","category":"Trees","position":[-51.5,0,23.5],"rotation":0,"scale":7,"gridW":2,"gridH":2},
+  {"id":"1779442922776-0.8845661735581795","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-46.5,0,31.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442924410-0.5785515051977181","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-49.5,0,29.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442925227-0.6238798096465501","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-52.5,0,30.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442927343-0.4556994834081949","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-54.5,0,33.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442929010-0.054597362781673264","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-50.5,0,33.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442931827-0.8111318806774968","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-46.5,0,34.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442947577-0.33592999903336285","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[45.5,0,24.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442949644-0.36570498524184436","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[45.5,0,27.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442952293-0.6843620246156888","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[43.5,0,31.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442953242-0.7711226810796641","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[46.5,0,33.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442954860-0.6731776907849022","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[47.5,0,30.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442956560-0.020694448690731226","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[51.5,0,32.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442958943-0.46700801393113245","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[50.5,0,28.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442960760-0.06870562558148585","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[50.5,0,25.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442962360-0.10090058282452585","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[52.5,0,21.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442963560-0.6951799031671805","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,23.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442965977-0.962778426833171","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[52.5,0,27.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442968127-0.5041082513376406","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[52.5,0,17.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442973627-0.5209288369799452","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[40.5,0,-24.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442975310-0.5272011563835297","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[41.5,0,-10.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442977177-0.7188239701515714","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[40.5,0,-0.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442980794-0.08773969773370893","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[41.5,0,18.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442982277-0.9123502286112892","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[42.5,0,26.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442985176-0.9100271471083471","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-18.5,0,-34.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442987427-0.0013504745379404604","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-38.5,0,-32.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442988793-0.4543273737280914","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-30.5,0,-33.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442991393-0.42461943024243753","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-43.5,0,-31.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779442999344-0.9776335919174935","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[20.5,0,-34.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443140743-0.19842043649777408","catalogId":"mountain-group-b","path":"/models/Mountain_Group_2.gltf","name":"Mountain Group B","category":"Mountains","position":[51.5,0,-57.5],"rotation":0,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443144310-0.8245365583093194","catalogId":"mountain-group-b","path":"/models/Mountain_Group_2.gltf","name":"Mountain Group B","category":"Mountains","position":[69.5,0,-40.5],"rotation":0,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443169227-0.423919377464983","catalogId":"mountain-group-a","path":"/models/Mountain_Group_1.gltf","name":"Mountain Group A","category":"Mountains","position":[-73.5,0,-44.5],"rotation":3.141592653589793,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443176476-0.8497939775228027","catalogId":"mountain-group-a","path":"/models/Mountain_Group_1.gltf","name":"Mountain Group A","category":"Mountains","position":[-38.5,0,-68.5],"rotation":1.5707963267948966,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443187410-0.7849809859312734","catalogId":"mountain-group-b","path":"/models/Mountain_Group_2.gltf","name":"Mountain Group B","category":"Mountains","position":[-72.5,0,-69.5],"rotation":0,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443208011-0.9653973572006782","catalogId":"mountain-group-b","path":"/models/Mountain_Group_2.gltf","name":"Mountain Group B","category":"Mountains","position":[-7.5,0,-61.5],"rotation":0,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443274312-0.0786079177737189","catalogId":"mountain-group-a","path":"/models/Mountain_Group_1.gltf","name":"Mountain Group A","category":"Mountains","position":[29.5,0,-70.5],"rotation":0,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443281696-0.5886253828399778","catalogId":"mountain-group-a","path":"/models/Mountain_Group_1.gltf","name":"Mountain Group A","category":"Mountains","position":[-3.5,0,-78.5],"rotation":0,"scale":5.5,"gridW":4,"gridH":4},
+  {"id":"1779443310246-0.8269858888118771","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[-73.5,0,-23.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443312462-0.16297830690810622","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[-63.5,0,-19.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443316762-0.09425742971334405","catalogId":"mountain-single","path":"/models/Mountain_Single.gltf","name":"Mountain","category":"Mountains","position":[-73.5,0,-15.5],"rotation":0,"scale":8,"gridW":3,"gridH":3},
+  {"id":"1779443319479-0.2540728093032105","catalogId":"mountain-single","path":"/models/Mountain_Single.gltf","name":"Mountain","category":"Mountains","position":[-85.5,0,-21.5],"rotation":0,"scale":8,"gridW":3,"gridH":3},
+  {"id":"1779443354113-0.47389679350184055","catalogId":"mountain-group-b","path":"/models/Mountain_Group_2.gltf","name":"Mountain Group B","category":"Mountains","position":[72.5,0,-71.5],"rotation":0,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443379912-0.4614137717930147","catalogId":"mountain-group-a","path":"/models/Mountain_Group_1.gltf","name":"Mountain Group A","category":"Mountains","position":[69.5,0,-6.5],"rotation":4.71238898038469,"scale":7,"gridW":4,"gridH":4},
+  {"id":"1779443384879-0.8494470560773923","catalogId":"mountain-group-a","path":"/models/Mountain_Group_1.gltf","name":"Mountain Group A","category":"Mountains","position":[-74.5,0,5.5],"rotation":4.71238898038469,"scale":7,"gridW":4,"gridH":4},
+  {"id":"1779443408546-0.9499975609667286","catalogId":"mountain-single","path":"/models/Mountain_Single.gltf","name":"Mountain","category":"Mountains","position":[-80.5,0,20.5],"rotation":0,"scale":8,"gridW":3,"gridH":3},
+  {"id":"1779443412913-0.11513156137494951","catalogId":"mountain-single","path":"/models/Mountain_Single.gltf","name":"Mountain","category":"Mountains","position":[-89.5,0,29.5],"rotation":0,"scale":8,"gridW":3,"gridH":3},
+  {"id":"1779443421663-0.7948868816510918","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[-75.5,0,30.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443423245-0.8603805735519942","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[-65.5,0,25.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443430784-0.022774407236833882","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[-68.5,0,32.5],"rotation":0,"scale":4.5,"gridW":4,"gridH":4},
+  {"id":"1779443432695-0.6830001594000699","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[-61.5,0,32.5],"rotation":0,"scale":4.5,"gridW":4,"gridH":4},
+  {"id":"1779443472612-0.3451067534755571","catalogId":"mountain-group-b","path":"/models/Mountain_Group_2.gltf","name":"Mountain Group B","category":"Mountains","position":[69.5,0,27.5],"rotation":3.141592653589793,"scale":9,"gridW":4,"gridH":4},
+  {"id":"1779443480812-0.39124473706768614","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[73.5,0,14.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443484778-0.6244676462091535","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[82.5,0,-24.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443486029-0.5237044898983874","catalogId":"mountain-large","path":"/models/MountainLarge_Single.gltf","name":"Mountain Large","category":"Mountains","position":[88.5,0,-3.5],"rotation":0,"scale":8,"gridW":4,"gridH":4},
+  {"id":"1779443505678-0.014448884691775077","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[7.5,0,-50.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443506879-0.40975005876499304","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[12.5,0,-50.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443508445-0.19620927282275213","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[17.5,0,-54.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443509730-0.046202407413622915","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[11.5,0,-53.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443511279-0.9419088819687548","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[19.5,0,-51.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443512196-0.09995724731415723","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[23.5,0,-50.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443513145-0.18294108273332343","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[24.5,0,-56.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443514495-0.4113178518527464","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[28.5,0,-52.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443515396-0.11393271995925336","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[31.5,0,-49.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443516728-0.3135014263398852","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[3.5,0,-65.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443517412-0.38351577995757213","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[3.5,0,-71.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443518445-0.27536468981447704","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[6.5,0,-77.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443520513-0.788658163513082","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[27.5,0,-63.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443522578-0.5482734665486017","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-23.5,0,-64.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443524112-0.2990521685971145","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-20.5,0,-62.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443524912-0.589796077178459","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-15.5,0,-66.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443526212-0.8405862906721001","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-18.5,0,-67.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443527728-0.9046862790978571","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-21.5,0,-71.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443529162-0.14659461142998897","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-19.5,0,-76.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443530595-0.6685666733763616","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-23.5,0,-76.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443533462-0.34087354495945477","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-14.5,0,-49.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443534662-0.46048705410071","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-11.5,0,-52.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443537012-0.9651584332012952","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-9.5,0,-48.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443538562-0.742814580808383","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-24.5,0,-49.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443541195-0.0374334572198316","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-50.5,0,-48.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443547895-0.9629137411469474","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-55.5,0,-12.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443567429-0.16528164641126608","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-59.5,0,-9.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443568479-0.1460840355515589","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-63.5,0,-10.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443569762-0.8426412875135699","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-67.5,0,-11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443571662-0.3198743938794911","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-60.5,0,-13.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443580961-0.20916062239634625","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[57.5,0,-8.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443582445-0.22252231370150932","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[59.5,0,-22.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443583595-0.9839651548304598","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[63.5,0,-29.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443584495-0.8781871266730704","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[64.5,0,-24.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443585495-0.8418598487861152","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[67.5,0,-30.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443586746-0.5084686639451388","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[69.5,0,-25.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443590478-0.7964579445356996","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-58.5,0,29.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443591729-0.6530154906963852","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-58.5,0,24.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443593229-0.044616049814370284","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-61.5,0,20.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443596128-0.6848961616902429","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-58.5,0,17.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443620678-0.06938095818522205","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[57.5,0,8.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443621678-0.20891584477715075","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[59.5,0,12.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443623045-0.827745289290187","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[63.5,0,8.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443623962-0.8490970529920786","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[66.5,0,12.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443626578-0.5869879234541024","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[57.5,0,30.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779443628028-0.46119749892007944","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[54.5,0,34.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446927238-0.47280856034774277","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-24.5,0,22.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446928071-0.7479256393249323","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-32.5,0,24.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446928921-0.6949125489772796","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-34.5,0,7.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446929521-0.5144616163205217","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-40.5,0,11.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446930421-0.8960550106810401","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-39.5,0,-0.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446932621-0.354847238199841","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-17.5,0,-29.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446933438-0.46181375779459777","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-17.5,0,-24.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446934721-0.7336296958083711","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-5.5,0,-23.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446935588-0.19692234768974348","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-12.5,0,-16.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446937255-0.4310096623343631","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[18.5,0,-29.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446938154-0.055832640199562356","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[24.5,0,-5.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446938821-0.32836652462549554","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[14.5,0,-17.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446939738-0.41096806300880917","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[1.5,0,-17.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446940621-0.24898541213221648","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[5.5,0,30.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446941021-0.1180017056261391","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-2.5,0,22.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446941904-0.05612030522301714","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[-15.5,0,22.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446942821-0.5896560968610853","catalogId":"pine-tree","path":"/models/Resource_PineTree.gltf","name":"Pine Tree","category":"Trees","position":[24.5,0,20.5],"rotation":0,"scale":8,"gridW":1,"gridH":1},
+  {"id":"1779446946755-0.17848414810319613","catalogId":"rock-a","path":"/models/Resource_Rock_1.gltf","name":"Rock A","category":"Rocks","position":[1.5,0,28.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446948604-0.5956092403867163","catalogId":"rock-a","path":"/models/Resource_Rock_1.gltf","name":"Rock A","category":"Rocks","position":[-26.5,0,-17.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446949555-0.2097242755946681","catalogId":"rock-a","path":"/models/Resource_Rock_1.gltf","name":"Rock A","category":"Rocks","position":[-40.5,0,-25.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446951538-0.7247903875255016","catalogId":"rock-a","path":"/models/Resource_Rock_1.gltf","name":"Rock A","category":"Rocks","position":[23.5,0,-12.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446952855-0.8496099375402135","catalogId":"rock-a","path":"/models/Resource_Rock_1.gltf","name":"Rock A","category":"Rocks","position":[36.5,0,16.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446957088-0.4564837890809924","catalogId":"rock-b","path":"/models/Resource_Rock_2.gltf","name":"Rock B","category":"Rocks","position":[-8.5,0,23.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446958588-0.061592264573581024","catalogId":"rock-b","path":"/models/Resource_Rock_2.gltf","name":"Rock B","category":"Rocks","position":[-14.5,0,13.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446959805-0.5322917295532718","catalogId":"rock-b","path":"/models/Resource_Rock_2.gltf","name":"Rock B","category":"Rocks","position":[22.5,0,4.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446962871-0.16352259683382542","catalogId":"rock-c","path":"/models/Resource_Rock_3.gltf","name":"Rock C","category":"Rocks","position":[-13.5,0,-7.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446963804-0.17180460836584588","catalogId":"rock-c","path":"/models/Resource_Rock_3.gltf","name":"Rock C","category":"Rocks","position":[-24.5,0,-8.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446964854-0.7306788066533572","catalogId":"rock-c","path":"/models/Resource_Rock_3.gltf","name":"Rock C","category":"Rocks","position":[-2.5,0,-21.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446966772-0.7305936005492463","catalogId":"rock-c","path":"/models/Resource_Rock_3.gltf","name":"Rock C","category":"Rocks","position":[16.5,0,-34.5],"rotation":0,"scale":7,"gridW":1,"gridH":1},
+  {"id":"1779446969022-0.6172452999270263","catalogId":"rock-c","path":"/models/Resource_Rock_3.gltf","name":"Rock C","category":"Rocks","position":[33.5,0,5.5],"rotation":0,"scale":7,"gridW":1,"gridH":1}
+]
 function sunPos(azimuth: number, elevation: number): [number, number, number] {
   const az = (azimuth * Math.PI) / 180
   const el = (elevation * Math.PI) / 180
@@ -52,19 +245,6 @@ interface CatalogEntry {
 }
 
 const ENV_ASSETS: CatalogEntry[] = [
-  // Mountains
-  { id: 'mountain-group-a', name: 'Mountain Group A', category: 'Mountains', defaultScale: 9,  path: '/models/Mountain_Group_1.gltf',            gridW: 4, gridH: 4 },
-  { id: 'mountain-group-b', name: 'Mountain Group B', category: 'Mountains', defaultScale: 9,  path: '/models/Mountain_Group_2.gltf',            gridW: 4, gridH: 4 },
-  { id: 'mountain-single',  name: 'Mountain',         category: 'Mountains', defaultScale: 8,  path: '/models/Mountain_Single.gltf',             gridW: 3, gridH: 3 },
-  { id: 'mountain-large',   name: 'Mountain Large',   category: 'Mountains', defaultScale: 8,  path: '/models/MountainLarge_Single.gltf',        gridW: 4, gridH: 4 },
-  // Trees
-  { id: 'pine-tree',        name: 'Pine Tree',        category: 'Trees',     defaultScale: 8,  path: '/models/Resource_PineTree.gltf',           gridW: 1, gridH: 1 },
-  { id: 'pine-group',       name: 'Pine Group',       category: 'Trees',     defaultScale: 7,  path: '/models/Resource_PineTree_Group.gltf',     gridW: 2, gridH: 2 },
-  { id: 'pine-group-cut',   name: 'Pine Group (Cut)', category: 'Trees',     defaultScale: 9,  path: '/models/Resource_PineTree_Group_Cut.gltf', gridW: 2, gridH: 2 },
-  { id: 'tree-group',       name: 'Tree Group',       category: 'Trees',     defaultScale: 7,  path: '/models/Resource_Tree_Group.gltf',         gridW: 2, gridH: 2 },
-  { id: 'tree-group-cut',   name: 'Tree Group (Cut)', category: 'Trees',     defaultScale: 9,  path: '/models/Resource_Tree_Group_Cut.gltf',     gridW: 2, gridH: 2 },
-  { id: 'tree-a',           name: 'Tree A',           category: 'Trees',     defaultScale: 10, path: '/models/Resource_Tree1.gltf',              gridW: 1, gridH: 1 },
-  { id: 'tree-b',           name: 'Tree B',           category: 'Trees',     defaultScale: 10, path: '/models/Resource_Tree2.gltf',              gridW: 1, gridH: 1 },
   // Rocks
   { id: 'rock-a',           name: 'Rock A',           category: 'Rocks',     defaultScale: 7,  path: '/models/Resource_Rock_1.gltf',             gridW: 1, gridH: 1 },
   { id: 'rock-b',           name: 'Rock B',           category: 'Rocks',     defaultScale: 7,  path: '/models/Resource_Rock_2.gltf',             gridW: 1, gridH: 1 },
@@ -73,19 +253,8 @@ const ENV_ASSETS: CatalogEntry[] = [
   { id: 'rock-group',       name: 'Rock Group',       category: 'Rocks',     defaultScale: 5,  path: '/models/Rock_Group.gltf',                  gridW: 2, gridH: 2 },
   // Resources
   { id: 'mine',             name: 'Mine',             category: 'Resources', defaultScale: 4,  path: '/models/Mine.gltf',                        gridW: 2, gridH: 2 },
-  { id: 'gold-1',           name: 'Gold Pile S',      category: 'Resources', defaultScale: 4,  path: '/models/Resource_Gold_1.gltf',             gridW: 1, gridH: 1 },
-  { id: 'gold-2',           name: 'Gold Pile M',      category: 'Resources', defaultScale: 4,  path: '/models/Resource_Gold_2.gltf',             gridW: 1, gridH: 1 },
-  { id: 'gold-3',           name: 'Gold Pile L',      category: 'Resources', defaultScale: 4,  path: '/models/Resource_Gold_3.gltf',             gridW: 2, gridH: 2 },
-  // Props
-  { id: 'barrel',           name: 'Barrel',           category: 'Props',     defaultScale: 3,  path: '/models/Barrel.gltf',                      gridW: 1, gridH: 1 },
-  { id: 'crate',            name: 'Crate',            category: 'Props',     defaultScale: 3,  path: '/models/Crate.gltf',                       gridW: 1, gridH: 1 },
-  { id: 'crate-stack-1',    name: 'Crate Stack',      category: 'Props',     defaultScale: 3,  path: '/models/Crate_Stack1.gltf',                gridW: 1, gridH: 1 },
-  { id: 'crate-stack-2',    name: 'Crate Stack 2',    category: 'Props',     defaultScale: 3,  path: '/models/Crate_Stack2.gltf',                gridW: 1, gridH: 1 },
-  { id: 'crate-big-stack',  name: 'Crate Stack Big',  category: 'Props',     defaultScale: 3,  path: '/models/Crate_Big_Stack2.gltf',            gridW: 1, gridH: 1 },
-  { id: 'logs',             name: 'Logs',             category: 'Props',     defaultScale: 3,  path: '/models/Logs.gltf',                        gridW: 1, gridH: 1 },
   // Structures
   { id: 'port-s1',          name: 'Port',             category: 'Structures',defaultScale: 5,  path: '/models/Port_SecondAge_Level1.gltf',       gridW: 4, gridH: 3 },
-  { id: 'wonder-walls',     name: 'Wonder Walls',     category: 'Structures',defaultScale: 5,  path: '/models/WonderWalls_SecondAge.gltf',       gridW: 3, gridH: 3 },
 ]
 
 const BUILDING_ENTRIES: CatalogEntry[] = CATALOG.map(b => ({
@@ -101,6 +270,9 @@ const BUILDING_ENTRIES: CatalogEntry[] = CATALOG.map(b => ({
 
 const FULL_CATALOG: CatalogEntry[] = [...BUILDING_ENTRIES, ...ENV_ASSETS]
 const CATALOG_MAP_FULL = Object.fromEntries(FULL_CATALOG.map(e => [e.id, e]))
+
+// Set of defId values that exist in the current catalog — used to guard healthOf calls
+const VALID_DEF_IDS = new Set(CATALOG.map(b => b.id))
 
 const ALL_CATEGORIES = ['Town', 'Military', 'Walls', 'Special', 'Mountains', 'Trees', 'Rocks', 'Resources', 'Props', 'Structures']
 
@@ -130,13 +302,22 @@ interface SaveSlot {
   lights?: LightConfig
 }
 
-const STORAGE_KEY = 'clash-map-v1'
+const STORAGE_KEY  = 'clash-map-v1'
+const BASEMAP_KEY  = 'clash-basemap'
 
 function readSaves(): SaveSlot[] {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') } catch { return [] }
 }
 function writeSaves(slots: SaveSlot[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(slots))
+}
+
+interface BasemapState { items: PlacedItem[]; lights: LightConfig }
+function readBasemap(): BasemapState | null {
+  try { return JSON.parse(localStorage.getItem(BASEMAP_KEY) ?? 'null') } catch { return null }
+}
+function writeBasemap(state: BasemapState) {
+  localStorage.setItem(BASEMAP_KEY, JSON.stringify(state))
 }
 
 // ── Troop runtime ─────────────────────────────────────────────────────────────
@@ -205,6 +386,35 @@ function isWallBlocking(
   return perpX * perpX + perpZ * perpZ < threshold * threshold
 }
 
+// Returns true if (x, z) is enclosed on all 4 sides by living walls
+function isInsideWalls(
+  x: number, z: number,
+  buildings: PlacedItem[],
+  buildingHp: Record<string, number>,
+): boolean {
+  const livingWalls = buildings.filter(b => b.category === 'Walls' && (buildingHp[b.id] ?? 0) > 0)
+  if (livingWalls.length === 0) return false
+
+  function wallAt(rx: number, rz: number): boolean {
+    return livingWalls.some(w =>
+      rx >= w.position[0] && rx < w.position[0] + w.gridW &&
+      rz >= w.position[2] && rz < w.position[2] + w.gridH
+    )
+  }
+
+  function rayBlocked(dx: number, dz: number): boolean {
+    let rx = Math.floor(x) + 0.5, rz = Math.floor(z) + 0.5
+    for (let step = 0; step < 150; step++) {
+      rx += dx; rz += dz
+      if (Math.abs(rx) > GRID_W / 2 + 5 || Math.abs(rz) > GRID_H / 2 + 5) return false
+      if (wallAt(rx, rz)) return true
+    }
+    return false
+  }
+
+  return rayBlocked(1, 0) && rayBlocked(-1, 0) && rayBlocked(0, 1) && rayBlocked(0, -1)
+}
+
 // ── Grid helpers ──────────────────────────────────────────────────────────────
 // No bounds clamping — placement is allowed across the full canvas
 function snapForItem(cx: number, cz: number, w: number, h: number): [number, number, number] {
@@ -225,14 +435,12 @@ function occupiedCells(pos: [number, number, number], w: number, h: number): str
 function buildOccupiedSet(items: PlacedItem[]): Set<string> {
   const set = new Set<string>()
   for (const b of items) {
-    if (!b.defId) continue
     occupiedCells(b.position, b.gridW, b.gridH).forEach(k => set.add(k))
   }
   return set
 }
 
 function hasCollision(pos: [number, number, number], entry: CatalogEntry, occupied: Set<string>): boolean {
-  if (!entry.defId) return false
   return occupiedCells(pos, entry.gridW, entry.gridH).some(k => occupied.has(k))
 }
 
@@ -319,20 +527,43 @@ function GroundPlane() {
 }
 
 // Large invisible plane — handles both build-mode placement and attack-mode spawning
-function PointerPlane({ active, onCursor, onPlace, spawnActive, onSpawn }: {
+function PointerPlane({ active, onCursor, onPlace, spawnActive, onSpawn, isPainting }: {
   active:      boolean
   onCursor:    (pos: [number, number] | null) => void
   onPlace:     (x: number, z: number) => void
   spawnActive: boolean
   onSpawn:     (x: number, z: number) => void
+  isPainting:  boolean
 }) {
-  const anyActive = active || spawnActive
+  const anyActive  = active || spawnActive
+  const isDragging = useRef(false)
+  const lastCell   = useRef('')
+
+  function paintCell(x: number, z: number) {
+    const key = `${Math.floor(x)},${Math.floor(z)}`
+    if (key === lastCell.current) return
+    lastCell.current = key
+    onPlace(x, z)
+  }
+
   return (
     <mesh
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0.001, 0]}
-      onClick={(e: ThreeEvent<MouseEvent>) => {
+      onPointerDown={(e: ThreeEvent<PointerEvent>) => {
         if (!anyActive) return
+        e.stopPropagation()
+        if (active && isPainting) {
+          isDragging.current = true
+          lastCell.current = ''
+          paintCell(e.point.x, e.point.z)
+        } else if (spawnActive) {
+          onSpawn(e.point.x, e.point.z)
+        }
+      }}
+      onPointerUp={() => { isDragging.current = false }}
+      onClick={(e: ThreeEvent<MouseEvent>) => {
+        if (!anyActive || isPainting) return
         e.stopPropagation()
         if (active) onPlace(e.point.x, e.point.z)
         else        onSpawn(e.point.x, e.point.z)
@@ -340,8 +571,12 @@ function PointerPlane({ active, onCursor, onPlace, spawnActive, onSpawn }: {
       onPointerMove={(e: ThreeEvent<PointerEvent>) => {
         if (!active) return
         onCursor([e.point.x, e.point.z])
+        if (isPainting && isDragging.current) paintCell(e.point.x, e.point.z)
       }}
-      onPointerLeave={() => { if (active) onCursor(null) }}
+      onPointerLeave={() => {
+        if (active) onCursor(null)
+        isDragging.current = false
+      }}
     >
       <planeGeometry args={[PLACE_RADIUS, PLACE_RADIUS]} />
       <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -644,7 +879,7 @@ function DefenseSystem({ gsRef, onSpawnDefender }: {
           for (let i = 0; i < TEMPLE_REINFORCE_COUNT; i++) {
             const angle = (i / TEMPLE_REINFORCE_COUNT) * Math.PI * 2
             onSpawnDefender(
-              [bc[0] + Math.cos(angle) * 4.0, 0, bc[2] + Math.sin(angle) * 4.0],
+              [bc[0] + Math.cos(angle) * 1.0, 0, bc[2] + Math.sin(angle) * 1.0],
               TEMPLE_REINFORCE_TYPES[i] as TroopId,
             )
           }
@@ -675,10 +910,11 @@ function DefenseSystem({ gsRef, onSpawnDefender }: {
         gs.projectiles.push({
           id: `${Date.now()}-${Math.random()}`,
           from: [bc[0], 4, bc[2]],
-          to:   [nearPos[0], 0.8, nearPos[2]],
+          to:   [nearPos[0], (nearPos[1] ?? 0) + 0.5, nearPos[2]],
           color: def.projColor,
           progress: 0,
           duration: Math.max(0.2, nearDist * 0.04),
+          visual: def.projVisual,
         })
       }
     }
@@ -730,6 +966,13 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
     const g  = groupRef.current
     if (!g || deadDone.current) return
 
+    const isFlying = def.isFlying === true
+    const isRanged = !!def.minRange && !isFlying   // ranged ground: ranger, cleric, wizard
+    const flyY = troop.type === 'dragon' ? 3.0 : troop.type === 'ghost' ? 2.5 : 2.0
+
+    // Smooth altitude maintenance for flying troops
+    if (isFlying) g.position.y += (flyY - g.position.y) * Math.min(1, delta * 8)
+
     const myHp = gs.troopHp[troop.uid] ?? def.maxHp
     if (myHp <= 0) {
       deadDone.current = true
@@ -738,10 +981,12 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
       return
     }
 
-    // ── Separation physics ─────────────────────────────────────────────────
+    // ── Separation physics — flying↔flying only, ground↔ground only ─────────
     let sx = 0, sz = 0
     for (const [uid, oPos] of Object.entries(gs.troopPositions)) {
       if (uid === troop.uid) continue
+      const otherDef = gs.troopTypes[uid] ? TROOP_DEFS[gs.troopTypes[uid]] : null
+      if (!otherDef || !!otherDef.isFlying !== isFlying) continue
       const ox = g.position.x - oPos[0], oz = g.position.z - oPos[2]
       const od = Math.hypot(ox, oz)
       if (od > 0 && od < SEP_RADIUS) {
@@ -784,30 +1029,36 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
           }
         }
       }
-      gs.troopPositions[troop.uid] = [g.position.x, 0, g.position.z]
+      gs.troopPositions[troop.uid] = [g.position.x, g.position.y, g.position.z]
       return
     }
 
-    // ── Attacker AI — go for nearest building; break blocking walls first ─
+    // ── Attacker AI ──────────────────────────────────────────────────────────
     const living = gs.buildings.filter(b => b.defId && (gs.buildingHp[b.id] ?? 0) > 0)
     if (living.length === 0) { play(def.anim.idle); return }
 
-    const myPos: [number,number,number] = [g.position.x, 0, g.position.z]
+    const myPos: [number,number,number] = [g.position.x, g.position.y, g.position.z]
 
     const innerBuildings = living.filter(b => b.category !== 'Walls')
     const aliveWalls     = living.filter(b => b.category === 'Walls')
 
-    // Pick nearest non-wall building (fall back to nearest wall if all inner buildings gone)
-    const primaryPool = innerBuildings.length > 0 ? innerBuildings : aliveWalls
-    let nearestBuilding = primaryPool[0], nearestBDist = Infinity
-    for (const b of primaryPool) {
+    // Target priority: flying/ranged → defenses first; melee → resources first
+    const defenseBuildings  = innerBuildings.filter(b => !!DEFENSE_DEFS[b.defId ?? ''])
+    const resourceBuildings = innerBuildings.filter(b => !DEFENSE_DEFS[b.defId ?? ''])
+    const preferredPool =
+      (isFlying || isRanged)
+        ? (defenseBuildings.length > 0 ? defenseBuildings : resourceBuildings.length > 0 ? resourceBuildings : aliveWalls)
+        : (resourceBuildings.length > 0 ? resourceBuildings : defenseBuildings.length > 0 ? defenseBuildings : aliveWalls)
+
+    let nearestBuilding = preferredPool[0], nearestBDist = Infinity
+    for (const b of preferredPool) {
       const d = dist2d(myPos, buildingCenter(b))
       if (d < nearestBDist) { nearestBuilding = b; nearestBDist = d }
     }
 
-    // Check if any wall blocks the straight-line path to that building
+    // Wall blocking — melee ground troops only; flying and ranged skip walls
     let target = nearestBuilding
-    if (aliveWalls.length > 0 && innerBuildings.length > 0) {
+    if (!isFlying && !isRanged && aliveWalls.length > 0 && innerBuildings.length > 0) {
       const tbc = buildingCenter(nearestBuilding)
       let blockWall: PlacedItem | null = null, blockDist = Infinity
       for (const w of aliveWalls) {
@@ -817,6 +1068,7 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
       }
       if (blockWall) target = blockWall
     }
+
     const bc = buildingCenter(target)
     const dx = bc[0] - g.position.x, dz = bc[2] - g.position.z
     const dst = Math.hypot(dx, dz)
@@ -828,19 +1080,22 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
       play(def.anim.run)
       attackTmr.current = def.attackCooldown * 0.4
     } else {
+      // Ranged: back away if too close to target
+      if (def.minRange && dst < def.minRange && dst > 0.1) {
+        const spd = (def.speed * delta) / Math.max(dst, 0.001)
+        g.position.x -= dx * spd; g.position.z -= dz * spd
+      }
       g.rotation.y = Math.atan2(dx, dz)
       play(def.anim.attack, false, def.attackCooldown)
       attackTmr.current -= delta
       if (attackTmr.current <= 0) {
         attackTmr.current = def.attackCooldown
 
-        // Mark building as attacked (shows HP bar)
         gs.attackedBuildings.add(target.id)
-
         gs.buildingHp[target.id] = Math.max(0, (gs.buildingHp[target.id] ?? 0) - def.attackDamage)
         if (gs.buildingHp[target.id] <= 0) gs.destroyedBuildings.add(target.id)
 
-        // Wizard AoE
+        // Wizard/Dragon AoE splash
         if (def.splashRadius) {
           for (const b of living) {
             if (b.id === target.id) continue
@@ -870,14 +1125,14 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
           }
         }
 
-        // Projectile for ranged attackers
+        // Projectile for ranged attackers — y from actual position
         if (def.projColor) {
           const visual = troop.type === 'ranger' ? 'arrow'
                        : troop.type === 'dragon' ? 'fireball'
                        : 'sphere'
           gs.projectiles.push({
             id: `${Date.now()}-${Math.random()}`,
-            from: [g.position.x, 1.2, g.position.z],
+            from: [g.position.x, g.position.y + 0.5, g.position.z],
             to:   [bc[0], 2, bc[2]],
             color: def.projColor,
             progress: 0,
@@ -888,7 +1143,26 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
       }
     }
 
-    gs.troopPositions[troop.uid] = [g.position.x, 0, g.position.z]
+    // Building collision — ground troops only, push away from non-target buildings.
+    // b.position has a +0.5 snap offset; true grid-aligned AABB starts at round(pos - 0.5).
+    if (!isFlying) {
+      const PUSH_R = 0.85
+      for (const b of gs.buildings) {
+        if (b.id === target.id || (gs.buildingHp[b.id] ?? 0) <= 0) continue
+        const bxMin = Math.round(b.position[0] - 0.5)
+        const bzMin = Math.round(b.position[2] - 0.5)
+        const closestX = Math.max(bxMin, Math.min(bxMin + b.gridW, g.position.x))
+        const closestZ = Math.max(bzMin, Math.min(bzMin + b.gridH, g.position.z))
+        const pdx = g.position.x - closestX, pdz = g.position.z - closestZ
+        const pd = Math.hypot(pdx, pdz)
+        if (pd < PUSH_R && pd > 0.001) {
+          g.position.x += (pdx / pd) * (PUSH_R - pd)
+          g.position.z += (pdz / pd) * (PUSH_R - pd)
+        }
+      }
+    }
+
+    gs.troopPositions[troop.uid] = [g.position.x, g.position.y, g.position.z]
   })
 
   return (
@@ -1003,7 +1277,7 @@ function CameraSetup() {
 // ── Preloads ──────────────────────────────────────────────────────────────────
 FULL_CATALOG.forEach(e => useGLTF.preload(e.path))
 CATALOG.forEach(b => {
-  ([1, 2, 3] as Level[]).forEach(lv => useGLTF.preload(b.pathFor('SecondAge', lv)))
+  ([1, 2, 3] as Level[]).filter(lv => lv <= (b.maxLevel ?? 3)).forEach(lv => useGLTF.preload(b.pathFor('SecondAge', lv)))
 })
 TROOP_IDS.forEach(id => useGLTF.preload(TROOP_DEFS[id].path))
 useGLTF.preload('/arrow.glb')
@@ -1019,16 +1293,14 @@ const btn: CSSProperties = {
 }
 
 // ── Market cards ──────────────────────────────────────────────────────────────
-const CARD_BASE = encodeURI('/3D Card Kit - Fantasy [Standard]/Renders/')
+const CARD_BASE = '/spells/Renders/'
 
 const MARKET_CARDS = [
   '0_CardBack','1_Fireball','2_TrenchcoatMushrooms','3_Monk','4_Market',
-  '5_Steal','6_King','7_StinkTrap','8_LightningWizard','9_Hypnosis',
-  '10_Beehive','11_Polinization','12_Mimic','13_SeaMonster','14_Coin',
-  '15_Cult','16_Belltowers','17_Rebirth','18_WaterDragon','19_OceanTreasure',
-  '20_Element_Fire','21_Element_Lightning','22_Element_Air','23_Element_Water',
-  '24_Element_Dark','25_Element_Earth','26_BloodRing','27_Book',
-  '28_RollDice','29_Block','30_Wizard',
+  '5_Steal','8_LightningWizard','14_Coin','15_Cult','16_Belltowers',
+  '17_Rebirth','18_WaterDragon','20_Element_Fire','21_Element_Lightning',
+  '22_Element_Air','23_Element_Water','24_Element_Dark','25_Element_Earth',
+  '26_BloodRing','29_Block','30_Wizard',
 ].map(f => ({
   src:  `${CARD_BASE}${f}.png`,
   name: f.replace(/^\d+_/, '').replace(/_/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2'),
@@ -1257,12 +1529,13 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
   onDelete:         () => void
   onClose:          () => void
 }) {
-  const isBuilding = !!item.defId
+  const isBuilding = !!item.defId && VALID_DEF_IDS.has(item.defId)
   const def = isBuilding ? defFor(item.defId!) : null
-  const canLevel  = isBuilding && def!.hasLevels && (item.level ?? 1) < 3
-  const currentHP = isBuilding ? healthOf(item.defId!, item.age!, item.level!) : null
-  const maxHP     = isBuilding ? healthOf(item.defId!, 'SecondAge', 3) || currentHP! : null
-  const nextLvHP  = canLevel   ? healthOf(item.defId!, item.age!, (item.level! + 1) as Level) : null
+  const maxLevel  = isBuilding ? (def!.maxLevel ?? 3) : 3
+  const canLevel  = isBuilding && def!.hasLevels && (item.level ?? 1) < maxLevel
+  const currentHP = isBuilding ? healthOf(item.defId!, item.age ?? 'SecondAge', item.level ?? 1) : null
+  const maxHP     = isBuilding ? healthOf(item.defId!, 'SecondAge', maxLevel as Level) || currentHP! : null
+  const nextLvHP  = canLevel   ? healthOf(item.defId!, item.age ?? 'SecondAge', (item.level! + 1) as Level) : null
 
   const rotDeg = Math.round(item.rotation * 180 / Math.PI)
 
@@ -1328,7 +1601,7 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
           <div>
             <div style={{ fontSize: 10, color: '#8a6030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 6 }}>Level</div>
             <div style={{ display: 'flex', gap: 5, marginBottom: 6 }}>
-              {([1, 2, 3] as Level[]).map(lv => {
+              {([1, 2, 3] as Level[]).filter(lv => lv <= maxLevel).map(lv => {
                 const isActive = item.level === lv, isPast = (item.level ?? 1) > lv
                 return (
                   <div key={lv} style={{
@@ -1338,7 +1611,7 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
                     color: isActive ? '#f0c040' : isPast ? '#7a5020' : '#3a2810',
                   }}>
                     <div style={{ fontWeight: 700 }}>{lv}</div>
-                    <div style={{ fontSize: 9, marginTop: 1 }}>{healthOf(item.defId!, item.age!, lv).toLocaleString()}</div>
+                    <div style={{ fontSize: 9, marginTop: 1 }}>{healthOf(item.defId!, item.age ?? 'SecondAge', lv).toLocaleString()}</div>
                   </div>
                 )
               })}
@@ -1389,15 +1662,22 @@ function AttackPanel({ inventory, spawned, selectedType, totalBuildings, destroy
     TROOP_IDS.map(id => [id, spawned.filter(t => t.type === id && !gsRef.current.deadTroops.has(t.uid)).length])
   ) as Record<TroopId, number>
 
-  const remaining = totalBuildings - destroyedCount
+  const remaining   = totalBuildings - destroyedCount
+  const pctDestroyed = totalBuildings > 0 ? destroyedCount / totalBuildings : 0
+  const stars = pctDestroyed >= 1.0 ? 3 : pctDestroyed >= 0.66 ? 2 : pctDestroyed >= 0.33 ? 1 : 0
 
   return (
     <>
       {/* Header */}
       <div style={{ padding: '12px 14px 10px', background: '#140000', borderBottom: '1px solid #8a1010', flexShrink: 0 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: '#ff6040', letterSpacing: 1.4 }}>⚔ ATTACK MODE</div>
-        <div style={{ fontSize: 11, color: '#804030', marginTop: 3 }}>
-          {remaining > 0 ? `${remaining} building${remaining > 1 ? 's' : ''} remaining` : '🏆 All destroyed!'}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 4, margin: '6px 0 2px' }}>
+          {[0, 1, 2].map(i => (
+            <span key={i} style={{ fontSize: 20, opacity: i < stars ? 1 : 0.18, filter: i < stars ? 'drop-shadow(0 0 4px gold)' : 'none', transition: 'opacity 0.4s' }}>⭐</span>
+          ))}
+        </div>
+        <div style={{ fontSize: 11, color: '#804030', marginTop: 2, textAlign: 'center' }}>
+          {remaining > 0 ? `${destroyedCount}/${totalBuildings} destroyed · ${Math.round(pctDestroyed * 100)}%` : '🏆 All destroyed!'}
         </div>
       </div>
 
@@ -1598,10 +1878,11 @@ function LightManager({ cfg, onChange }: { cfg: LightConfig; onChange: (c: Light
 }
 
 // ── Saves panel ──────────────────────────────────────────────────────────────
-function SavesPanel({ items, lights, onLoad }: {
-  items:   PlacedItem[]
-  lights:  LightConfig
-  onLoad:  (items: PlacedItem[], lights?: LightConfig) => void
+function SavesPanel({ items, lights, onLoad, onBasemapChange }: {
+  items:           PlacedItem[]
+  lights:          LightConfig
+  onLoad:          (items: PlacedItem[], lights?: LightConfig) => void
+  onBasemapChange: () => void
 }) {
   const [saves,    setSaves]    = useState<SaveSlot[]>(readSaves)
   const [saveName, setSaveName] = useState('')
@@ -1628,6 +1909,12 @@ function SavesPanel({ items, lights, onLoad }: {
   const handleDelete = (id: string) => {
     const next = saves.filter(s => s.id !== id)
     writeSaves(next); setSaves(next)
+  }
+
+  const handleSetBasemap = (bItems: PlacedItem[], bLights: LightConfig, label: string) => {
+    writeBasemap({ items: bItems, lights: bLights })
+    onBasemapChange()
+    showFlash(`Basemap set: "${label}"`)
   }
 
   const handleExport = () => {
@@ -1683,6 +1970,12 @@ function SavesPanel({ items, lights, onLoad }: {
             Save
           </button>
         </div>
+        <button
+          onClick={() => handleSetBasemap(items, lights, 'current map')}
+          style={{ ...btn, width: '100%', marginTop: 6, fontSize: 11, color: '#a0d8f0', borderColor: '#2060a0', background: '#060e18' }}
+        >
+          ⚑ Set current map as Basemap
+        </button>
 
         {flash && (
           <div style={{ marginTop: 6, fontSize: 11, color: '#70d070', textAlign: 'center' }}>{flash}</div>
@@ -1710,6 +2003,9 @@ function SavesPanel({ items, lights, onLoad }: {
             </div>
             <button onClick={() => handleLoad(slot)} style={{ ...btn, padding: '3px 8px', fontSize: 11, color: '#80d080', borderColor: '#2a6020', background: '#0a1a06' }}>
               Load
+            </button>
+            <button onClick={() => handleSetBasemap(slot.items, slot.lights ?? DEFAULT_LIGHT, slot.name)} style={{ ...btn, padding: '3px 8px', fontSize: 11, color: '#a0d8f0', borderColor: '#2060a0', background: '#060e18' }} title="Set as Basemap">
+              ⚑
             </button>
             <button onClick={() => handleDelete(slot.id)} style={{ ...btn, padding: '3px 8px', fontSize: 11, color: '#e87050', borderColor: '#6a2010', background: '#1a0600' }}>
               ✕
@@ -1741,10 +2037,11 @@ export default function App() {
   const [rotation,          setRotation]           = useState(0)
   const [placementScale,    setPlacementScale]     = useState(5)
   const [cursor,            setCursor]             = useState<[number, number] | null>(null)
-  const [items,             setItems]              = useState<PlacedItem[]>([])
+  const [items,             setItems]              = useState<PlacedItem[]>(() => readBasemap()?.items ?? DEFAULT_ENV_ITEMS)
   const [showSaves,         setShowSaves]          = useState(false)
   const [showMarket,        setShowMarket]         = useState(false)
-  const [lightConfig,       setLightConfig]        = useState<LightConfig>(DEFAULT_LIGHT)
+  const [showPreview,       setShowPreview]        = useState(false)
+  const [lightConfig,       setLightConfig]        = useState<LightConfig>(() => readBasemap()?.lights ?? DEFAULT_LIGHT)
 
   // ── Attack mode ──────────────────────────────────────────────────────────────
   const [mode,                 setMode]                 = useState<'build' | 'attack'>('build')
@@ -1795,7 +2092,6 @@ export default function App() {
   const handlePlace = (x: number, z: number) => {
     if (!selectedEntry) return
     const pos = snapForItem(x, z, selectedEntry.gridW, selectedEntry.gridH)
-    if (hasCollision(pos, selectedEntry, occupiedSet)) return
     const newItem: PlacedItem = {
       id:        `${Date.now()}-${Math.random()}`,
       catalogId: selectedEntry.id,
@@ -1813,7 +2109,11 @@ export default function App() {
         level: 1 as Level,
       } : {}),
     }
-    setItems(prev => [...prev, newItem])
+    // Use functional update so concurrent drag placements see fresh state
+    setItems(prev => {
+      if (hasCollision(pos, selectedEntry!, buildOccupiedSet(prev))) return prev
+      return [...prev, newItem]
+    })
   }
 
   const handleScaleItem = (v: number) => setItems(prev =>
@@ -1823,16 +2123,16 @@ export default function App() {
     prev.map(it => it.id === selectedItemId ? { ...it, rotation: v } : it))
 
   const handleUpgradeLevel = () => setItems(prev => prev.map(it => {
-    if (it.id !== selectedItemId || !it.defId) return it
+    if (it.id !== selectedItemId || !it.defId || !VALID_DEF_IDS.has(it.defId)) return it
     const def = defFor(it.defId)
-    if (!def.hasLevels || (it.level ?? 1) >= 3) return it
+    if (!def.hasLevels || (it.level ?? 1) >= (def.maxLevel ?? 3)) return it
     const newLevel = ((it.level ?? 1) + 1) as Level
-    return { ...it, level: newLevel, path: def.pathFor(it.age!, newLevel) }
+    return { ...it, level: newLevel, path: def.pathFor(it.age ?? 'SecondAge', newLevel) }
   }))
 
   const handleUpgradeAge = () => setItems(prev => prev.map(it => {
-    if (it.id !== selectedItemId || it.age === 'SecondAge') return it
-    const def = defFor(it.defId!)
+    if (it.id !== selectedItemId || it.age === 'SecondAge' || !it.defId || !VALID_DEF_IDS.has(it.defId)) return it
+    const def = defFor(it.defId)
     return { ...it, age: 'SecondAge' as Age, level: 1 as Level,
       path: def.pathFor('SecondAge', 1) }
   }))
@@ -1865,9 +2165,12 @@ export default function App() {
   }, [mode])
 
   const enterAttackMode = () => {
-    const buildings = items.filter(it => !!it.defId)
+    // Filter to items with a defId recognised by the current catalog (guards against stale saves)
+    const buildings = items.filter(it => !!it.defId && VALID_DEF_IDS.has(it.defId))
     const buildingHp: Record<string, number> = {}
-    buildings.forEach(it => { buildingHp[it.id] = healthOf(it.defId!, it.age!, it.level!) })
+    buildings.forEach(it => {
+      buildingHp[it.id] = healthOf(it.defId!, it.age ?? 'SecondAge', it.level ?? 1)
+    })
 
     const inv = Object.fromEntries(TROOP_IDS.map(id => [id, TROOP_START_COUNT])) as TroopInventory
 
@@ -1902,9 +2205,13 @@ export default function App() {
     const remaining = troopInventory[selectedTroopType] ?? 0
     if (remaining <= 0) return
 
+    const gs = gameStateRef.current
+
+    // Block spawning inside intact wall perimeter (allowed if walls are conquered)
+    if (isInsideWalls(x, z, gs.buildings, gs.buildingHp)) return
+
     const isBat  = selectedTroopType === 'bat'
     const count  = isBat ? Math.min(BAT_SWARM_SIZE, remaining) : 1
-    const gs     = gameStateRef.current
     const cx     = Math.round(x - 0.5) + 0.5
     const cz     = Math.round(z - 0.5) + 0.5
     const newTroops: SpawnedTroop[] = []
@@ -1978,6 +2285,7 @@ export default function App() {
           onPlace={handlePlace}
           spawnActive={mode === 'attack'}
           onSpawn={handleSpawnTroop}
+          isPainting={selectedEntry?.category === 'Walls'}
         />
         <GreenBorder />
         <OceanPlane />
@@ -1993,9 +2301,9 @@ export default function App() {
 
         {/* Building HP bars in attack mode */}
         {mode === 'attack' && items
-          .filter(it => it.defId && !destroyedBuildingIds.includes(it.id))
+          .filter(it => it.defId && VALID_DEF_IDS.has(it.defId) && !destroyedBuildingIds.includes(it.id))
           .map(it => (
-            <BuildingHpBar key={it.id} item={it} maxHp={healthOf(it.defId!, it.age!, it.level!)} gsRef={gameStateRef} />
+            <BuildingHpBar key={it.id} item={it} maxHp={healthOf(it.defId!, it.age ?? 'SecondAge', it.level ?? 1)} gsRef={gameStateRef} />
           ))
         }
 
@@ -2069,6 +2377,13 @@ export default function App() {
           {mode === 'build' && (
             <>
               <button
+                onClick={() => setShowPreview(true)}
+                style={{ ...btn, padding: '4px 8px', fontSize: 10 }}
+                title="Final Map Preview"
+              >
+                🗺
+              </button>
+              <button
                 onClick={() => setShowMarket(true)}
                 style={{ ...btn, padding: '4px 8px', fontSize: 10 }}
                 title="Market"
@@ -2109,7 +2424,7 @@ export default function App() {
             onExit={exitAttackMode}
           />
         ) : showSaves ? (
-          <SavesPanel items={items} lights={lightConfig} onLoad={handleLoadSave} />
+          <SavesPanel items={items} lights={lightConfig} onLoad={handleLoadSave} onBasemapChange={() => {}} />
         ) : selectedItem && !selectedEntry ? (
           <ItemPanel
             item={selectedItem}
@@ -2128,7 +2443,7 @@ export default function App() {
             onScaleChange={setPlacementScale}
             onSetRotation={setRotation}
             onUndo={() => setItems(p => p.slice(0, -1))}
-            onClear={() => { setItems([]); setSelectedItemId(null) }}
+            onClear={() => { const bm = readBasemap(); setItems(bm?.items ?? DEFAULT_ENV_ITEMS); setLightConfig(bm?.lights ?? DEFAULT_LIGHT); setSelectedItemId(null) }}
           />
         )}
       </div>
@@ -2138,6 +2453,17 @@ export default function App() {
 
       {/* Market drawer */}
       {showMarket && <MarketDrawer onClose={() => setShowMarket(false)} />}
+
+      {/* Final map preview — full-screen overlay over the builder */}
+      {showPreview && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200 }}>
+          <FinalMapCanvas
+            items={items}
+            cfg={lightConfig}
+            onClose={() => setShowPreview(false)}
+          />
+        </div>
+      )}
     </div>
   )
 }

@@ -25,6 +25,7 @@ export interface BuildingConfig {
   scale:     number     // Three.js render scale
   grid:      GridSize
   hasLevels: boolean    // false → only level-1 entry exists per age
+  maxLevel?: 1 | 2 | 3 // defaults to 3 when hasLevels is true
   pathFor:   (age: Age, level: Level) => string
   health:    HealthMap
 }
@@ -123,11 +124,11 @@ export const CATALOG: BuildingConfig[] = [
 
   {
     id: 'wonder', name: 'Wonder', category: 'Town', scale: 5,
-    grid: { w: 5, h: 5 }, hasLevels: true,
-    pathFor: (a, l) => `/models/Wonder_${a}_Level${l}.gltf`,
+    grid: { w: 5, h: 5 }, hasLevels: true, maxLevel: 2,
+    pathFor: (a, l) => `/models/Wonder_${a}_Level${l + 1}.gltf`,
     health: {
-      FirstAge:  { 1: 3000, 2: 4000, 3: 5200  },
-      SecondAge: { 1: 6500, 2: 8500, 3: 11000 },
+      FirstAge:  { 1: 4000, 2: 5200  },
+      SecondAge: { 1: 8500, 2: 11000 },
     },
   },
 
@@ -185,25 +186,6 @@ export const CATALOG: BuildingConfig[] = [
     },
   },
 
-  {
-    id: 'wall-tower', name: 'Wall Tower', category: 'Walls', scale: 3,
-    grid: { w: 1, h: 1 }, hasLevels: false,
-    pathFor: (a) => `/models/WallTowers_${a}.gltf`,
-    health: {
-      FirstAge:  { 1: 500  },
-      SecondAge: { 1: 1100 },
-    },
-  },
-
-  {
-    id: 'wall-door', name: 'Gate', category: 'Walls', scale: 3,
-    grid: { w: 2, h: 1 }, hasLevels: false,
-    pathFor: (a) => `/models/WallTowers_Door_${a}.gltf`,
-    health: {
-      FirstAge:  { 1: 400 },
-      SecondAge: { 1: 900 },
-    },
-  },
 
   // ── Special ──────────────────────────────────────────────────────────────────
 

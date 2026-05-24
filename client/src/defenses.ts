@@ -4,15 +4,16 @@ export interface DefenseDef {
   attackCooldown: number
   isRanged:       boolean
   projColor:      string
+  projVisual?:    'arrow' | 'sphere' | 'fireball'
 }
 
 // Keyed by building defId from config.ts
 export const DEFENSE_DEFS: Partial<Record<string, DefenseDef>> = {
-  'watch-tower': { attackRange: 9,  attackDamage: 22, attackCooldown: 1.4, isRanged: true,  projColor: '#ffee44' },
-  'archery':     { attackRange: 11, attackDamage: 18, attackCooldown: 1.2, isRanged: true,  projColor: '#ff8833' },
+  'watch-tower': { attackRange: 9,  attackDamage: 22, attackCooldown: 1.4, isRanged: true,  projColor: '#ffee44', projVisual: 'arrow' },
+  'archery':     { attackRange: 11, attackDamage: 18, attackCooldown: 1.2, isRanged: true,  projColor: '#ff8833', projVisual: 'arrow' },
   'barracks':    { attackRange: 4,  attackDamage: 35, attackCooldown: 2.0, isRanged: false, projColor: '#888888' },
-  'wall-tower':  { attackRange: 7,  attackDamage: 20, attackCooldown: 1.5, isRanged: true,  projColor: '#ffdd55' },
-  'tower-house': { attackRange: 6,  attackDamage: 28, attackCooldown: 1.8, isRanged: true,  projColor: '#aacc44' },
+  'wall-tower':  { attackRange: 7,  attackDamage: 20, attackCooldown: 1.5, isRanged: true,  projColor: '#ffdd55', projVisual: 'arrow' },
+  'tower-house': { attackRange: 6,  attackDamage: 28, attackCooldown: 1.8, isRanged: true,  projColor: '#aacc44', projVisual: 'arrow' },
 }
 
 export const TEMPLE_REINFORCE_RADIUS  = 20   // units — attackers trigger reinforcements at this range

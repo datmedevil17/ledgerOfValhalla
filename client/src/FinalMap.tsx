@@ -5,22 +5,19 @@ import * as THREE from 'three'
 import rawData from '../public/clash-map-1779534012265.json'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-interface PlacedItem {
+export interface FinalPlacedItem {
   id: string; path: string; name: string
   position: [number, number, number]
   rotation: number; scale: number
   gridW: number; gridH: number
 }
-interface LightCfg {
+export interface FinalLightCfg {
   ambient:    { intensity: number; color: string }
   sun:        { intensity: number; color: string; azimuth: number; elevation: number }
   fill:       { intensity: number; color: string }
   hemisphere: { skyColor: string; groundColor: string; intensity: number }
   exposure:   number
 }
-
-const items = rawData.items as PlacedItem[]
-const cfg   = rawData.lights as LightCfg
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const GRID_W    = 90
@@ -36,7 +33,7 @@ function sunPos(az: number, el: number): [number, number, number] {
   const a = (az * Math.PI) / 180, e = (el * Math.PI) / 180, r = 100
   return [r * Math.cos(e) * Math.sin(a), r * Math.sin(e), r * Math.cos(e) * Math.cos(a)]
 }
-function SceneLights() {
+function SceneLights({ cfg }: { cfg: FinalLightCfg }) {
   const pos = sunPos(cfg.sun.azimuth, cfg.sun.elevation)
   return (
     <>
@@ -149,7 +146,7 @@ function OceanPlane() {
 }
 
 // ── Model ─────────────────────────────────────────────────────────────────────
-function Model({ item }: { item: PlacedItem }) {
+function Model({ item }: { item: FinalPlacedItem }) {
   const { scene } = useGLTF(item.path)
   const clone = useMemo(() => {
     const c = scene.clone(true)
@@ -161,12 +158,12 @@ function Model({ item }: { item: PlacedItem }) {
   )
 }
 
-// Preload all unique model paths in the save
-const uniquePaths = [...new Set(items.map(i => i.path))]
-uniquePaths.forEach(p => useGLTF.preload(p))
-
-// ── Page ──────────────────────────────────────────────────────────────────────
-export default function FinalMap() {
+// ── Shared canvas — used by both the /final page and the builder preview ──────
+export function FinalMapCanvas({ items, cfg, onClose }: {
+  items:    FinalPlacedItem[]
+  cfg:      FinalLightCfg
+  onClose?: () => void
+}) {
   return (
     <div style={{ width: '100%', height: '100%', background: '#5ba8d4' }}>
       <Canvas
@@ -184,7 +181,7 @@ export default function FinalMap() {
           enablePan panSpeed={0.7} zoomSpeed={0.75} rotateSpeed={0.4}
         />
 
-        <SceneLights />
+        <SceneLights cfg={cfg} />
         <OuterTerrain />
         <GroundPlane />
         <OceanPlane />
@@ -210,14 +207,38 @@ export default function FinalMap() {
         <div style={{ fontSize: 10, color: '#7a5030' }}>
           {items.length} assets · read-only
         </div>
-        <a href="/" style={{
-          marginTop: 4, fontSize: 10, color: '#8a6040', textDecoration: 'none',
-          border: '1px solid #3a2008', borderRadius: 4, padding: '3px 8px',
-          textAlign: 'center', background: '#1e1206',
-        }}>
-          ← Builder
-        </a>
+        {onClose ? (
+          <button
+            onClick={onClose}
+            style={{
+              marginTop: 4, fontSize: 10, color: '#8a6040', cursor: 'pointer',
+              border: '1px solid #3a2008', borderRadius: 4, padding: '3px 8px',
+              textAlign: 'center', background: '#1e1206', fontFamily: 'inherit',
+            }}
+          >
+            ← Back to Builder
+          </button>
+        ) : (
+          <a href="/" style={{
+            marginTop: 4, fontSize: 10, color: '#8a6040', textDecoration: 'none',
+            border: '1px solid #3a2008', borderRadius: 4, padding: '3px 8px',
+            textAlign: 'center', background: '#1e1206',
+          }}>
+            ← Builder
+          </a>
+        )}
       </div>
     </div>
   )
+}
+
+// Preload paths from the static save (for the /final route)
+const staticItems = rawData.items as FinalPlacedItem[]
+const staticCfg   = rawData.lights as FinalLightCfg
+const uniquePaths = [...new Set(staticItems.map(i => i.path))]
+uniquePaths.forEach(p => useGLTF.preload(p))
+
+// ── /final page ───────────────────────────────────────────────────────────────
+export default function FinalMap() {
+  return <FinalMapCanvas items={staticItems} cfg={staticCfg} />
 }

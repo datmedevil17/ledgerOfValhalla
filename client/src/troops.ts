@@ -21,6 +21,7 @@ export interface TroopDef {
   attackCooldown: number
   renderScale:    number
   projColor?:     string   // undefined = melee (no projectile)
+  isFlying?:      boolean  // flies over walls and buildings
   anim:           TroopAnimMap
   splashRadius?:  number
   healRadius?:    number
@@ -67,7 +68,7 @@ export const TROOP_DEFS: Record<TroopId, TroopDef> = {
   wizard: {
     id: 'wizard', name: 'Wizard', emoji: '🔮',
     path: '/glTF/Wizard.gltf',
-    maxHp: 140, speed: 3.5, attackRange: 11.0, minRange: 7.0, attackDamage: 70, attackCooldown: 2.5,
+    maxHp: 140, speed: 3.5, attackRange: 11.0, minRange: 7.0, attackDamage: 70, attackCooldown: 1.5,
     renderScale: 0.7, projColor: '#cc44ff',
     anim: { idle: 'Idle', run: 'Run', attack: 'Spell1', hit: 'RecieveHit', death: 'Death' },
     splashRadius: 3,
@@ -76,7 +77,7 @@ export const TROOP_DEFS: Record<TroopId, TroopDef> = {
     id: 'dragon', name: 'Dragon', emoji: '🐉',
     path: '/Dragon_Evolved.gltf',
     maxHp: 420, speed: 4.5, attackRange: 9.0, minRange: 5.0, attackDamage: 80, attackCooldown: 2.0,
-    renderScale: 0.6, projColor: '#ff4400',
+    renderScale: 0.6, projColor: '#ff4400', isFlying: true,
     anim: { idle: 'Flying_Idle', run: 'Fast_Flying', attack: 'Punch', hit: 'HitReact', death: 'Death' },
     splashRadius: 2.5,
   },
@@ -84,14 +85,14 @@ export const TROOP_DEFS: Record<TroopId, TroopDef> = {
     id: 'bat', name: 'Bat', emoji: '🦇',
     path: '/Bat.glb',
     maxHp: 75, speed: 9.0, attackRange: 5.0, minRange: 2.5, attackDamage: 20, attackCooldown: 0.55,
-    renderScale: 0.38, projColor: '#9933ff',
+    renderScale: 0.38, projColor: '#9933ff', isFlying: true,
     anim: { idle: 'Bat_Flying', run: 'Bat_Flying', attack: 'Bat_Attack', hit: 'Bat_Hit', death: 'Bat_Death' },
   },
   ghost: {
     id: 'ghost', name: 'Ghost', emoji: '💀',
     path: '/Ghost_Skull.gltf',
     maxHp: 190, speed: 6.0, attackRange: 8.5, minRange: 4.5, attackDamage: 48, attackCooldown: 1.6,
-    renderScale: 0.6, projColor: '#110022',
+    renderScale: 0.6, projColor: '#110022', isFlying: true,
     anim: { idle: 'Flying_Idle', run: 'Fast_Flying', attack: 'Punch', hit: 'HitReact', death: 'Death' },
   },
 }
