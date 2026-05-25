@@ -233,7 +233,7 @@ export function FinalMapCanvas({ items, cfg, onClose }: {
 }
 
 // Preload paths from the static save (for the /final route)
-const staticItems = rawData.items as FinalPlacedItem[]
+const staticItems = rawData.items as unknown as FinalPlacedItem[]
 const staticCfg   = rawData.lights as FinalLightCfg
 const uniquePaths = [...new Set(staticItems.map(i => i.path))]
 uniquePaths.forEach(p => useGLTF.preload(p))

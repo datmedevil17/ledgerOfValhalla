@@ -5,8 +5,10 @@ import type { ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 import * as THREE from 'three'
+import { Physics, RigidBody, CapsuleCollider, CuboidCollider, interactionGroups } from '@react-three/rapier'
+import type { RapierRigidBody } from '@react-three/rapier'
 import { CATALOG, defFor, healthOf, type Age, type Level } from './config'
-import { TROOP_DEFS, TROOP_IDS, TROOP_START_COUNT, BAT_SWARM_SIZE, type TroopId, type TroopDef } from './troops'
+import { TROOP_DEFS, TROOP_IDS, TROOP_START_COUNT, BAT_SWARM_SIZE, type TroopId } from './troops'
 import { DEFENSE_DEFS, TEMPLE_REINFORCE_RADIUS, TEMPLE_REINFORCE_COUNT, TEMPLE_REINFORCE_TYPES } from './defenses'
 import { FinalMapCanvas } from './FinalMap'
 
@@ -415,6 +417,21 @@ function isInsideWalls(
   return rayBlocked(1, 0) && rayBlocked(-1, 0) && rayBlocked(0, 1) && rayBlocked(0, -1)
 }
 
+// Returns nearest point on a building's AABB from position (px, pz)
+function nearestBuildingPt(px: number, pz: number, b: PlacedItem): [number, number] {
+  const bxMin = Math.round(b.position[0] - 0.5)
+  const bzMin = Math.round(b.position[2] - 0.5)
+  return [
+    Math.max(bxMin, Math.min(bxMin + b.gridW, px)),
+    Math.max(bzMin, Math.min(bzMin + b.gridH, pz)),
+  ]
+}
+
+function distToBuilding(px: number, pz: number, b: PlacedItem): number {
+  const [nx, nz] = nearestBuildingPt(px, pz, b)
+  return Math.hypot(px - nx, pz - nz)
+}
+
 // ── Grid helpers ──────────────────────────────────────────────────────────────
 // No bounds clamping — placement is allowed across the full canvas
 function snapForItem(cx: number, cz: number, w: number, h: number): [number, number, number] {
@@ -557,8 +574,6 @@ function PointerPlane({ active, onCursor, onPlace, spawnActive, onSpawn, isPaint
           isDragging.current = true
           lastCell.current = ''
           paintCell(e.point.x, e.point.z)
-        } else if (spawnActive) {
-          onSpawn(e.point.x, e.point.z)
         }
       }}
       onPointerUp={() => { isDragging.current = false }}
@@ -657,12 +672,30 @@ function SceneLights({ cfg }: { cfg: LightConfig }) {
 
 const SEP_RADIUS        = 1.0
 const MAX_SPHERE_PROJ   = 100
+
+// ── Rapier physics constants ───────────────────────────────────────────────────
+// Collision groups (index 0-15)
+const GRP_GROUND   = 0
+const GRP_BUILDING = 1
+const GRP_WALKER   = 2
+const GRP_FLYER    = 3
+
+const TROOP_CAPSULE_RADIUS      = 0.4
+const TROOP_CAPSULE_HALF_HEIGHT = 0.45
+// Distance from body center to foot (halfHeight + radius = 0.85)
+const TROOP_GROUND_OFFSET       = TROOP_CAPSULE_HALF_HEIGHT + TROOP_CAPSULE_RADIUS
+const TROOP_SPAWN_Y             = TROOP_GROUND_OFFSET   // capsule center so feet land at y=0
+
+function troopFlyY(type: TroopId): number {
+  if (type === 'dragon') return 3.0
+  if (type === 'ghost')  return 2.5
+  return 2.0  // bat
+}
 const MAX_ARROW_PROJ    = 16
 const MAX_FIREBALL_PROJ = 8
 
 // Scratch vectors for projectile orientation (reused each frame, single-threaded JS is safe)
 const _projDir  = new THREE.Vector3()
-const _projUp   = new THREE.Vector3(0, 1, 0)   // reference for non-arrow projectiles
 const _arrowFwd = new THREE.Vector3(0, 0, 1)   // arrow long-axis is Z in the model
 
 // ── Troop HP bar ──────────────────────────────────────────────────────────────
@@ -922,15 +955,70 @@ function DefenseSystem({ gsRef, onSpawnDefender }: {
   return null
 }
 
+// ── Building colliders (fixed physics bodies for walkers to collide with) ─────
+function BuildingColliders({ buildings, destroyedIds }: {
+  buildings:    PlacedItem[]
+  destroyedIds: string[]
+}) {
+  const destroyedSet = useMemo(() => new Set(destroyedIds), [destroyedIds])
+  return (
+    <>
+      {buildings.filter(b => !destroyedSet.has(b.id)).map(b => {
+        const cx = b.position[0] + (b.gridW - 1) / 2
+        const cz = b.position[2] + (b.gridH - 1) / 2
+        return (
+          <RigidBody key={b.id} type="fixed" position={[cx, 0, cz]} colliders={false}>
+            <CuboidCollider
+              args={[b.gridW / 2, 2, b.gridH / 2]}
+              collisionGroups={interactionGroups([GRP_BUILDING], [GRP_WALKER])}
+            />
+          </RigidBody>
+        )
+      })}
+    </>
+  )
+}
+
+const ENV_OBSTACLE_CATEGORIES = new Set(['Trees', 'Rocks', 'Mountains'])
+
+// ── Environment colliders (trees, rocks, mountains block walkers) ─────────────
+function EnvColliders({ items }: { items: PlacedItem[] }) {
+  const obstacles = useMemo(
+    () => items.filter(it => ENV_OBSTACLE_CATEGORIES.has(it.category)),
+    [items]
+  )
+  return (
+    <>
+      {obstacles.map(it => {
+        const cx = it.position[0] + (it.gridW - 1) / 2
+        const cz = it.position[2] + (it.gridH - 1) / 2
+        return (
+          <RigidBody key={it.id} type="fixed" position={[cx, 0, cz]} colliders={false}>
+            <CuboidCollider
+              args={[it.gridW / 2, 2, it.gridH / 2]}
+              collisionGroups={interactionGroups([GRP_BUILDING], [GRP_WALKER])}
+            />
+          </RigidBody>
+        )
+      })}
+    </>
+  )
+}
+
 // ── Animated troop ────────────────────────────────────────────────────────────
 function AnimatedTroop({ troop, gsRef, onDied }: {
   troop:  SpawnedTroop
   gsRef:  React.MutableRefObject<GameStateRef>
   onDied: (uid: string) => void
 }) {
-  const def       = TROOP_DEFS[troop.type]
+  const def      = TROOP_DEFS[troop.type]
+  const isFlying = def.isFlying === true
+  const isRanged = !!def.minRange && !isFlying
+  const flyY     = troopFlyY(troop.type)
+
   const { scene, animations } = useGLTF(def.path)
-  const groupRef  = useRef<THREE.Group>(null)
+  const bodyRef   = useRef<RapierRigidBody>(null)
+  const facingRef = useRef<THREE.Group>(null)   // inner group for model + animations
   const attackTmr = useRef(0)
   const curAnim   = useRef('')
   const deadDone  = useRef(false)
@@ -941,14 +1029,13 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
     return c
   }, [scene])
 
-  const { actions } = useAnimations(animations, groupRef)
+  const { actions } = useAnimations(animations, facingRef)
 
   function play(name: string, once = false, syncDuration?: number) {
     if (curAnim.current === name || !actions[name]) return
     actions[curAnim.current]?.fadeOut(0.18)
     const a = actions[name]!.reset().fadeIn(0.18).play()
     if (once) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true }
-    // Sync animation speed so one cycle = syncDuration seconds (prevents double-looping)
     if (syncDuration !== undefined) {
       const dur = a.getClip().duration
       if (dur > 0) a.timeScale = dur / syncDuration
@@ -962,32 +1049,35 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
   }, [actions]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useFrame((_, delta) => {
-    const gs = gsRef.current
-    const g  = groupRef.current
-    if (!g || deadDone.current) return
+    const gs     = gsRef.current
+    const body   = bodyRef.current
+    const facing = facingRef.current
+    if (!body || !facing || deadDone.current) return
 
-    const isFlying = def.isFlying === true
-    const isRanged = !!def.minRange && !isFlying   // ranged ground: ranger, cleric, wizard
-    const flyY = troop.type === 'dragon' ? 3.0 : troop.type === 'ghost' ? 2.5 : 2.0
+    const p  = body.translation()
+    const px = p.x, py = p.y, pz = p.z
 
-    // Smooth altitude maintenance for flying troops
-    if (isFlying) g.position.y += (flyY - g.position.y) * Math.min(1, delta * 8)
+    let velX = 0, velY = 0, velZ = 0
+
+    // Flying altitude spring
+    if (isFlying) velY = (flyY - py) * 10
 
     const myHp = gs.troopHp[troop.uid] ?? def.maxHp
     if (myHp <= 0) {
       deadDone.current = true
+      body.setEnabled(false)
       play(def.anim.death, true)
       setTimeout(() => onDied(troop.uid), 2500)
       return
     }
 
-    // ── Separation physics — flying↔flying only, ground↔ground only ─────────
+    // ── Separation — flying↔flying only, ground↔ground only ─────────────────
     let sx = 0, sz = 0
     for (const [uid, oPos] of Object.entries(gs.troopPositions)) {
       if (uid === troop.uid) continue
       const otherDef = gs.troopTypes[uid] ? TROOP_DEFS[gs.troopTypes[uid]] : null
       if (!otherDef || !!otherDef.isFlying !== isFlying) continue
-      const ox = g.position.x - oPos[0], oz = g.position.z - oPos[2]
+      const ox = px - oPos[0], oz = pz - oPos[2]
       const od = Math.hypot(ox, oz)
       if (od > 0 && od < SEP_RADIUS) {
         const str = (SEP_RADIUS - od) / SEP_RADIUS
@@ -996,31 +1086,32 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
     }
     if (sx !== 0 || sz !== 0) {
       const sl = Math.max(Math.hypot(sx, sz), 0.001)
-      g.position.x += (sx / sl) * 2.0 * delta
-      g.position.z += (sz / sl) * 2.0 * delta
+      velX += (sx / sl) * 2.0
+      velZ += (sz / sl) * 2.0
     }
 
-    // ── Defender AI — target nearest attacker troop ────────────────────────
+    // ── Defender AI ──────────────────────────────────────────────────────────
     if (troop.side === 'defender') {
       const enemies = Object.entries(gs.troopPositions).filter(
         ([uid]) => gs.troopSides[uid] === 'attacker' && !gs.deadTroops.has(uid) && (gs.troopHp[uid] ?? 0) > 0
       )
-      if (enemies.length === 0) { play(def.anim.idle) }
-      else {
+      if (enemies.length === 0) {
+        play(def.anim.idle)
+      } else {
         let eid = enemies[0][0], epos = enemies[0][1] as [number,number,number], edist = Infinity
         for (const [uid, pos] of enemies) {
-          const d = dist2d([g.position.x, 0, g.position.z], pos as [number,number,number])
+          const d = dist2d([px, 0, pz], pos as [number,number,number])
           if (d < edist) { eid = uid; epos = pos as [number,number,number]; edist = d }
         }
-        const dx = epos[0] - g.position.x, dz = epos[2] - g.position.z
+        const dx = epos[0] - px, dz = epos[2] - pz
         if (edist > 2) {
-          const spd = (def.speed * delta) / Math.max(edist, 0.001)
-          g.position.x += dx * spd; g.position.z += dz * spd
-          g.rotation.y = Math.atan2(dx, dz)
+          velX += (dx / Math.max(edist, 0.001)) * def.speed
+          velZ += (dz / Math.max(edist, 0.001)) * def.speed
+          facing.rotation.y = Math.atan2(dx, dz)
           play(def.anim.run)
           attackTmr.current = def.attackCooldown * 0.4
         } else {
-          g.rotation.y = Math.atan2(dx, dz)
+          facing.rotation.y = Math.atan2(dx, dz)
           play(def.anim.attack, false, def.attackCooldown)
           attackTmr.current -= delta
           if (attackTmr.current <= 0) {
@@ -1029,20 +1120,24 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
           }
         }
       }
-      gs.troopPositions[troop.uid] = [g.position.x, g.position.y, g.position.z]
+      body.setLinvel({ x: velX, y: velY, z: velZ }, true)
+      gs.troopPositions[troop.uid] = [px, py, pz]
       return
     }
 
     // ── Attacker AI ──────────────────────────────────────────────────────────
     const living = gs.buildings.filter(b => b.defId && (gs.buildingHp[b.id] ?? 0) > 0)
-    if (living.length === 0) { play(def.anim.idle); return }
+    if (living.length === 0) {
+      play(def.anim.idle)
+      body.setLinvel({ x: 0, y: velY, z: 0 }, true)
+      gs.troopPositions[troop.uid] = [px, py, pz]
+      return
+    }
 
-    const myPos: [number,number,number] = [g.position.x, g.position.y, g.position.z]
-
+    const myPos: [number,number,number] = [px, py, pz]
     const innerBuildings = living.filter(b => b.category !== 'Walls')
     const aliveWalls     = living.filter(b => b.category === 'Walls')
 
-    // Target priority: flying/ranged → defenses first; melee → resources first
     const defenseBuildings  = innerBuildings.filter(b => !!DEFENSE_DEFS[b.defId ?? ''])
     const resourceBuildings = innerBuildings.filter(b => !DEFENSE_DEFS[b.defId ?? ''])
     const preferredPool =
@@ -1050,42 +1145,46 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
         ? (defenseBuildings.length > 0 ? defenseBuildings : resourceBuildings.length > 0 ? resourceBuildings : aliveWalls)
         : (resourceBuildings.length > 0 ? resourceBuildings : defenseBuildings.length > 0 ? defenseBuildings : aliveWalls)
 
+    // Select nearest building by EDGE distance (not center) — large buildings are correctly prioritised
     let nearestBuilding = preferredPool[0], nearestBDist = Infinity
     for (const b of preferredPool) {
-      const d = dist2d(myPos, buildingCenter(b))
+      const d = distToBuilding(px, pz, b)
       if (d < nearestBDist) { nearestBuilding = b; nearestBDist = d }
     }
 
-    // Wall blocking — melee ground troops only; flying and ranged skip walls
+    // Wall blocking — melee ground troops only
     let target = nearestBuilding
     if (!isFlying && !isRanged && aliveWalls.length > 0 && innerBuildings.length > 0) {
       const tbc = buildingCenter(nearestBuilding)
       let blockWall: PlacedItem | null = null, blockDist = Infinity
       for (const w of aliveWalls) {
         if (!isWallBlocking(w, myPos, tbc)) continue
-        const d = dist2d(myPos, buildingCenter(w))
+        const d = distToBuilding(px, pz, w)
         if (d < blockDist) { blockWall = w; blockDist = d }
       }
       if (blockWall) target = blockWall
     }
 
-    const bc = buildingCenter(target)
-    const dx = bc[0] - g.position.x, dz = bc[2] - g.position.z
-    const dst = Math.hypot(dx, dz)
+    const bc           = buildingCenter(target)           // used for projectile visuals
+    const [nearX, nearZ] = nearestBuildingPt(px, pz, target)  // nearest edge point
+    const dx  = nearX - px, dz = nearZ - pz
+    const dst = Math.hypot(dx, dz)  // distance to building EDGE, not center
 
     if (dst > def.attackRange) {
-      const spd = (def.speed * delta) / Math.max(dst, 0.001)
-      g.position.x += dx * spd; g.position.z += dz * spd
-      g.rotation.y = Math.atan2(dx, dz)
+      velX += (dx / Math.max(dst, 0.001)) * def.speed
+      velZ += (dz / Math.max(dst, 0.001)) * def.speed
+      facing.rotation.y = Math.atan2(dx, dz)
       play(def.anim.run)
       attackTmr.current = def.attackCooldown * 0.4
     } else {
-      // Ranged: back away if too close to target
+      // Ranged: back away if too close
       if (def.minRange && dst < def.minRange && dst > 0.1) {
-        const spd = (def.speed * delta) / Math.max(dst, 0.001)
-        g.position.x -= dx * spd; g.position.z -= dz * spd
+        velX -= (dx / Math.max(dst, 0.001)) * def.speed
+        velZ -= (dz / Math.max(dst, 0.001)) * def.speed
       }
-      g.rotation.y = Math.atan2(dx, dz)
+      // Face the building center for a more natural look when attacking
+      const cdx = bc[0] - px, cdz = bc[2] - pz
+      facing.rotation.y = Math.atan2(cdx, cdz)
       play(def.anim.attack, false, def.attackCooldown)
       attackTmr.current -= delta
       if (attackTmr.current <= 0) {
@@ -1095,7 +1194,7 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
         gs.buildingHp[target.id] = Math.max(0, (gs.buildingHp[target.id] ?? 0) - def.attackDamage)
         if (gs.buildingHp[target.id] <= 0) gs.destroyedBuildings.add(target.id)
 
-        // Wizard/Dragon AoE splash
+        // AoE splash
         if (def.splashRadius) {
           for (const b of living) {
             if (b.id === target.id) continue
@@ -1113,7 +1212,7 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
           for (const [uid, hp] of Object.entries(gs.troopHp)) {
             if (uid === troop.uid || gs.deadTroops.has(uid) || hp <= 0) continue
             const tPos = gs.troopPositions[uid]
-            if (tPos && dist2d([g.position.x, 0, g.position.z], tPos) <= def.healRadius && hp < bestHp) {
+            if (tPos && dist2d([px, 0, pz], tPos) <= def.healRadius && hp < bestHp) {
               bestUid = uid; bestHp = hp
             }
           }
@@ -1125,51 +1224,94 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
           }
         }
 
-        // Projectile for ranged attackers — y from actual position
+        // Projectile — y from actual physics position
         if (def.projColor) {
           const visual = troop.type === 'ranger' ? 'arrow'
                        : troop.type === 'dragon' ? 'fireball'
                        : 'sphere'
           gs.projectiles.push({
             id: `${Date.now()}-${Math.random()}`,
-            from: [g.position.x, g.position.y + 0.5, g.position.z],
+            from: [px, py + 0.5, pz],
             to:   [bc[0], 2, bc[2]],
             color: def.projColor,
             progress: 0,
-            duration: Math.max(0.25, dst * 0.04),
+            duration: Math.max(0.25, Math.max(dst, 1) * 0.04),
             visual,
           })
         }
       }
     }
 
-    // Building collision — ground troops only, push away from non-target buildings.
-    // b.position has a +0.5 snap offset; true grid-aligned AABB starts at round(pos - 0.5).
+    // Position correction — setLinvel overrides Rapier collision response every frame,
+    // so we manually eject walkers from any building they overlap.
     if (!isFlying) {
-      const PUSH_R = 0.85
+      const PUSH_R = TROOP_CAPSULE_RADIUS + 0.15   // slightly larger margin for fast troops
+      let corrX = px, corrZ = pz
       for (const b of gs.buildings) {
-        if (b.id === target.id || (gs.buildingHp[b.id] ?? 0) <= 0) continue
+        if ((gs.buildingHp[b.id] ?? 0) <= 0) continue
         const bxMin = Math.round(b.position[0] - 0.5)
         const bzMin = Math.round(b.position[2] - 0.5)
-        const closestX = Math.max(bxMin, Math.min(bxMin + b.gridW, g.position.x))
-        const closestZ = Math.max(bzMin, Math.min(bzMin + b.gridH, g.position.z))
-        const pdx = g.position.x - closestX, pdz = g.position.z - closestZ
-        const pd = Math.hypot(pdx, pdz)
-        if (pd < PUSH_R && pd > 0.001) {
-          g.position.x += (pdx / pd) * (PUSH_R - pd)
-          g.position.z += (pdz / pd) * (PUSH_R - pd)
+        const bxMax = bxMin + b.gridW
+        const bzMax = bzMin + b.gridH
+        const closestX = Math.max(bxMin, Math.min(bxMax, corrX))
+        const closestZ = Math.max(bzMin, Math.min(bzMax, corrZ))
+        const pdx = corrX - closestX, pdz = corrZ - closestZ
+        const pd  = Math.hypot(pdx, pdz)
+        if (pd < PUSH_R) {
+          if (pd > 0.001) {
+            // Outside but too close — push away from surface
+            corrX += (pdx / pd) * (PUSH_R - pd)
+            corrZ += (pdz / pd) * (PUSH_R - pd)
+          } else {
+            // Inside (or exactly on surface) — escape via shortest axis to building center
+            const bcx = (bxMin + bxMax) * 0.5, bcz = (bzMin + bzMax) * 0.5
+            const ex = corrX - bcx, ez = corrZ - bcz
+            const el = Math.hypot(ex, ez)
+            if (el > 0.001) {
+              corrX = bcx + (ex / el) * (b.gridW * 0.5 + PUSH_R)
+              corrZ = bcz + (ez / el) * (b.gridH * 0.5 + PUSH_R)
+            } else {
+              corrX = bxMax + PUSH_R  // degenerate: push in +X
+            }
+          }
         }
+      }
+      if (corrX !== px || corrZ !== pz) {
+        body.setTranslation({ x: corrX, y: py, z: corrZ }, true)
       }
     }
 
-    gs.troopPositions[troop.uid] = [g.position.x, g.position.y, g.position.z]
+    body.setLinvel({ x: velX, y: velY, z: velZ }, true)
+    gs.troopPositions[troop.uid] = [px, py, pz]
   })
 
   return (
-    <group ref={groupRef} position={troop.initPos}>
-      <primitive object={clone} scale={def.renderScale} />
-      <TroopHpBar uid={troop.uid} maxHp={def.maxHp} gsRef={gsRef} />
-    </group>
+    <RigidBody
+      ref={bodyRef}
+      type="dynamic"
+      position={troop.initPos}
+      linearDamping={8}
+      angularDamping={1000}
+      enabledRotations={[false, false, false]}
+      gravityScale={isFlying ? 0 : 1}
+      colliders={false}
+    >
+      {isFlying ? (
+        <CapsuleCollider
+          args={[TROOP_CAPSULE_HALF_HEIGHT, TROOP_CAPSULE_RADIUS]}
+          collisionGroups={interactionGroups([GRP_FLYER], [GRP_FLYER])}
+        />
+      ) : (
+        <CapsuleCollider
+          args={[TROOP_CAPSULE_HALF_HEIGHT, TROOP_CAPSULE_RADIUS]}
+          collisionGroups={interactionGroups([GRP_WALKER], [GRP_GROUND, GRP_BUILDING, GRP_WALKER])}
+        />
+      )}
+      <group ref={facingRef} position={[0, -TROOP_GROUND_OFFSET, 0]}>
+        <primitive object={clone} scale={def.renderScale} />
+        <TroopHpBar uid={troop.uid} maxHp={def.maxHp} gsRef={gsRef} />
+      </group>
+    </RigidBody>
   )
 }
 
@@ -1217,14 +1359,17 @@ function GhostItem({ path, position, rotation, scale, w, h, valid }: {
     return c
   }, [scene, valid])
 
-  const fx = position[0] + (w - 1) / 2
-  const fz = position[2] + (h - 1) / 2
+  const rotated = Math.abs(Math.sin(rotation)) > 0.5
+  const ew = rotated ? h : w
+  const eh = rotated ? w : h
+  const fx = position[0] + (ew - 1) / 2
+  const fz = position[2] + (eh - 1) / 2
 
   return (
     <group>
       <primitive object={clone} position={position} rotation={[0, rotation, 0]} scale={scale} />
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[fx, 0.02, fz]}>
-        <planeGeometry args={[w, h]} />
+        <planeGeometry args={[ew, eh]} />
         <meshBasicMaterial color={valid ? '#00ff44' : '#ff2200'} transparent opacity={valid ? 0.2 : 0.32} depthWrite={false} />
       </mesh>
     </group>
@@ -1241,8 +1386,14 @@ function PlacedItems({ items, selectedId, canSelect, onSelect }: {
     <>
       {items.map(item => {
         const isSelected = item.id === selectedId
-        const fx = item.position[0] + (item.gridW - 1) / 2
-        const fz = item.position[2] + (item.gridH - 1) / 2
+        const cat = CATALOG_MAP_FULL[item.catalogId]
+        const rawW = cat?.gridW ?? item.gridW
+        const rawH = cat?.gridH ?? item.gridH
+        const rotated = Math.abs(Math.sin(item.rotation)) > 0.5
+        const ew = rotated ? rawH : rawW
+        const eh = rotated ? rawW : rawH
+        const fx = item.position[0] + (ew - 1) / 2
+        const fz = item.position[2] + (eh - 1) / 2
         return (
           <Suspense key={item.id} fallback={null}>
             <group>
@@ -1255,7 +1406,7 @@ function PlacedItems({ items, selectedId, canSelect, onSelect }: {
               />
               {isSelected && (
                 <mesh rotation={[-Math.PI / 2, 0, 0]} position={[fx, 0.05, fz]}>
-                  <planeGeometry args={[item.gridW + 0.3, item.gridH + 0.3]} />
+                  <planeGeometry args={[ew + 0.3, eh + 0.3]} />
                   <meshBasicMaterial color="#f0c040" transparent opacity={0.35} depthWrite={false} side={THREE.DoubleSide} />
                 </mesh>
               )}
@@ -1296,8 +1447,8 @@ const btn: CSSProperties = {
 const CARD_BASE = '/spells/Renders/'
 
 const MARKET_CARDS = [
-  '0_CardBack','1_Fireball','2_TrenchcoatMushrooms','3_Monk','4_Market',
-  '5_Steal','8_LightningWizard','14_Coin','15_Cult','16_Belltowers',
+  '0_CardBack','1_Fireball','4_Market',
+  '5_Steal','8_LightningWizard','14_Coin',
   '17_Rebirth','18_WaterDragon','20_Element_Fire','21_Element_Lightning',
   '22_Element_Air','23_Element_Water','24_Element_Dark','25_Element_Earth',
   '26_BloodRing','29_Block','30_Wizard',
@@ -2060,27 +2211,36 @@ export default function App() {
   const selectedEntry = selectedCatalogId ? CATALOG_MAP_FULL[selectedCatalogId] ?? null : null
   const occupiedSet   = useMemo(() => buildOccupiedSet(items), [items])
 
+  const ghostRotated = Math.abs(Math.sin(rotation)) > 0.5
+  const ghostW = ghostRotated ? (selectedEntry?.gridH ?? 1) : (selectedEntry?.gridW ?? 1)
+  const ghostH = ghostRotated ? (selectedEntry?.gridW ?? 1) : (selectedEntry?.gridH ?? 1)
+
   const ghostPos = useMemo<[number, number, number] | null>(() => {
     if (!selectedEntry || !cursor) return null
-    return snapForItem(cursor[0], cursor[1], selectedEntry.gridW, selectedEntry.gridH)
-  }, [selectedEntry, cursor])
+    return snapForItem(cursor[0], cursor[1], ghostW, ghostH)
+  }, [selectedEntry, cursor, ghostW, ghostH])
 
   const ghostValid = useMemo(() => {
     if (!ghostPos || !selectedEntry) return true
-    return !hasCollision(ghostPos, selectedEntry, occupiedSet)
-  }, [ghostPos, selectedEntry, occupiedSet])
+    return !hasCollision(ghostPos, { ...selectedEntry, gridW: ghostW, gridH: ghostH }, occupiedSet)
+  }, [ghostPos, selectedEntry, ghostW, ghostH, occupiedSet])
 
   // R key rotates during placement; Escape cancels
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { setSelectedCatalogId(null); setSelectedItemId(null) }
-      if ((e.key === 'r' || e.key === 'R') && selectedCatalogId) {
-        setRotation(r => (r + Math.PI / 2) % (Math.PI * 2))
+      if (e.key === 'r' || e.key === 'R') {
+        if (selectedCatalogId) {
+          setRotation(r => (r + Math.PI / 2) % (Math.PI * 2))
+        } else if (selectedItemId) {
+          setItems(prev => prev.filter(it => it.id !== selectedItemId))
+          setSelectedItemId(null)
+        }
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [selectedCatalogId])
+  }, [selectedCatalogId, selectedItemId])
 
   const handleSelectCatalog = (id: string | null) => {
     setSelectedCatalogId(id)
@@ -2091,7 +2251,7 @@ export default function App() {
 
   const handlePlace = (x: number, z: number) => {
     if (!selectedEntry) return
-    const pos = snapForItem(x, z, selectedEntry.gridW, selectedEntry.gridH)
+    const pos = snapForItem(x, z, ghostW, ghostH)
     const newItem: PlacedItem = {
       id:        `${Date.now()}-${Math.random()}`,
       catalogId: selectedEntry.id,
@@ -2101,8 +2261,8 @@ export default function App() {
       position:  pos,
       rotation,
       scale:     placementScale,
-      gridW:     selectedEntry.gridW,
-      gridH:     selectedEntry.gridH,
+      gridW:     ghostW,
+      gridH:     ghostH,
       ...(selectedEntry.defId ? {
         defId: selectedEntry.defId,
         age:   'SecondAge' as Age,
@@ -2111,7 +2271,7 @@ export default function App() {
     }
     // Use functional update so concurrent drag placements see fresh state
     setItems(prev => {
-      if (hasCollision(pos, selectedEntry!, buildOccupiedSet(prev))) return prev
+      if (hasCollision(pos, { ...selectedEntry!, gridW: ghostW, gridH: ghostH }, buildOccupiedSet(prev))) return prev
       return [...prev, newItem]
     })
   }
@@ -2128,13 +2288,6 @@ export default function App() {
     if (!def.hasLevels || (it.level ?? 1) >= (def.maxLevel ?? 3)) return it
     const newLevel = ((it.level ?? 1) + 1) as Level
     return { ...it, level: newLevel, path: def.pathFor(it.age ?? 'SecondAge', newLevel) }
-  }))
-
-  const handleUpgradeAge = () => setItems(prev => prev.map(it => {
-    if (it.id !== selectedItemId || it.age === 'SecondAge' || !it.defId || !VALID_DEF_IDS.has(it.defId)) return it
-    const def = defFor(it.defId)
-    return { ...it, age: 'SecondAge' as Age, level: 1 as Level,
-      path: def.pathFor('SecondAge', 1) }
   }))
 
   const handleDelete = () => {
@@ -2216,6 +2369,10 @@ export default function App() {
     const cz     = Math.round(z - 0.5) + 0.5
     const newTroops: SpawnedTroop[] = []
 
+    const spawnY = TROOP_DEFS[selectedTroopType].isFlying
+      ? troopFlyY(selectedTroopType)
+      : TROOP_SPAWN_Y
+
     for (let i = 0; i < count; i++) {
       const uid = `${Date.now()}-${Math.random()}`
       // Spread bats in a tight ring around the click point
@@ -2223,7 +2380,7 @@ export default function App() {
       const spread = isBat ? (i === 0 ? 0 : 1.2) : 0
       const pos: [number, number, number] = [
         cx + Math.cos(angle) * spread,
-        0,
+        spawnY,
         cz + Math.sin(angle) * spread,
       ]
       gs.troopHp[uid]        = TROOP_DEFS[selectedTroopType].maxHp
@@ -2243,13 +2400,15 @@ export default function App() {
   }
 
   const handleSpawnDefender = (pos: [number,number,number], type: TroopId) => {
-    const uid = `def-${Date.now()}-${Math.random()}`
-    const gs  = gameStateRef.current
+    const uid    = `def-${Date.now()}-${Math.random()}`
+    const gs     = gameStateRef.current
+    const spawnY = TROOP_DEFS[type].isFlying ? troopFlyY(type) : TROOP_SPAWN_Y
+    const initPos: [number,number,number] = [pos[0], spawnY, pos[2]]
     gs.troopHp[uid]        = TROOP_DEFS[type].maxHp
     gs.troopTypes[uid]     = type
     gs.troopSides[uid]     = 'defender'
-    gs.troopPositions[uid] = pos
-    setSpawnedTroops(prev => [...prev, { uid, type, initPos: pos, side: 'defender' }])
+    gs.troopPositions[uid] = initPos
+    setSpawnedTroops(prev => [...prev, { uid, type, initPos, side: 'defender' }])
   }
 
   const selectedItem = items.find(it => it.id === selectedItemId) ?? null
@@ -2326,14 +2485,37 @@ export default function App() {
           )
         })}
 
-        {/* Spawned troops */}
-        {mode === 'attack' && spawnedTroops.map(t => (
-          <Suspense key={t.uid} fallback={null}>
-            <AnimatedTroop troop={t} gsRef={gameStateRef} onDied={handleTroopDied} />
-          </Suspense>
-        ))}
+        {/* Physics world — troops + building colliders (attack mode only) */}
+        {mode === 'attack' && (
+          <Physics gravity={[0, -20, 0]}>
+            {/* Ground plane collider — walkers land on this */}
+            <RigidBody type="fixed" colliders={false}>
+              <CuboidCollider
+                args={[OUTER_SIZE / 2, 0.1, OUTER_SIZE / 2]}
+                position={[0, -0.1, 0]}
+                collisionGroups={interactionGroups([GRP_GROUND], [GRP_WALKER])}
+              />
+            </RigidBody>
 
-        {/* Defense AI + projectiles (attack mode only) */}
+            {/* Per-building colliders (removed when destroyed) */}
+            <BuildingColliders
+              buildings={gameStateRef.current.buildings}
+              destroyedIds={destroyedBuildingIds}
+            />
+
+            {/* Trees, rocks, and mountains block walkers */}
+            <EnvColliders items={items} />
+
+            {/* Spawned troops */}
+            {spawnedTroops.map(t => (
+              <Suspense key={t.uid} fallback={null}>
+                <AnimatedTroop troop={t} gsRef={gameStateRef} onDied={handleTroopDied} />
+              </Suspense>
+            ))}
+          </Physics>
+        )}
+
+        {/* Defense AI + projectiles — outside Physics (no rigid bodies needed) */}
         {mode === 'attack' && (
           <>
             <DefenseSystem gsRef={gameStateRef} onSpawnDefender={handleSpawnDefender} />
@@ -2351,8 +2533,8 @@ export default function App() {
               position={ghostPos}
               rotation={rotation}
               scale={placementScale}
-              w={selectedEntry.gridW}
-              h={selectedEntry.gridH}
+              w={ghostW}
+              h={ghostH}
               valid={ghostValid}
             />
           </Suspense>
