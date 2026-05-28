@@ -1,0 +1,3759 @@
+{
+  "address": "F43KEBNRX7AkbAjvW4LQq9A698yrp6Uh6kDsKjfqAMXz",
+  "metadata": {
+    "name": "valhalla",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "authorize_training",
+      "discriminator": [
+        206,
+        173,
+        27,
+        221,
+        230,
+        238,
+        76,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "auth",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  97,
+                  105,
+                  110,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              },
+              {
+                "kind": "arg",
+                "path": "nonce"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "troop_type",
+          "type": "u8"
+        },
+        {
+          "name": "quantity",
+          "type": "u16"
+        },
+        {
+          "name": "nonce",
+          "type": "u64"
+        },
+        {
+          "name": "expires_in",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "buy_building",
+      "discriminator": [
+        89,
+        144,
+        206,
+        179,
+        163,
+        2,
+        80,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "catalog_id",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "buy_spell",
+      "discriminator": [
+        72,
+        192,
+        61,
+        10,
+        11,
+        159,
+        177,
+        171
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "spells",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  112,
+                  101,
+                  108,
+                  108,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "spell_type",
+          "type": "u8"
+        },
+        {
+          "name": "quantity",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "cancel_upgrade",
+      "discriminator": [
+        216,
+        52,
+        40,
+        78,
+        188,
+        214,
+        201,
+        228
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "builder",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_loot",
+      "discriminator": [
+        69,
+        105,
+        8,
+        13,
+        65,
+        21,
+        85,
+        238
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_session",
+      "discriminator": [
+        68,
+        114,
+        178,
+        140,
+        222,
+        38,
+        248,
+        211
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  116,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_training_auth",
+      "discriminator": [
+        250,
+        16,
+        14,
+        124,
+        12,
+        134,
+        21,
+        246
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "auth",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "collect_mine",
+      "discriminator": [
+        4,
+        249,
+        33,
+        169,
+        181,
+        6,
+        130,
+        121
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mine",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "collect_port",
+      "discriminator": [
+        61,
+        121,
+        140,
+        139,
+        49,
+        95,
+        199,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "port",
+          "docs": [
+            "Port is stored as a MineState with a designated index (e.g. index 10)"
+          ],
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "commit_barracks",
+      "discriminator": [
+        216,
+        149,
+        105,
+        150,
+        101,
+        3,
+        43,
+        109
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "barracks",
+          "writable": true
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "complete_upgrade",
+      "discriminator": [
+        3,
+        35,
+        98,
+        10,
+        239,
+        180,
+        49,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "builder",
+          "writable": true
+        },
+        {
+          "name": "mine",
+          "optional": true
+        },
+        {
+          "name": "farm",
+          "optional": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deduct_deployed",
+      "discriminator": [
+        219,
+        78,
+        83,
+        130,
+        148,
+        216,
+        149,
+        152
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delegate_barracks",
+      "discriminator": [
+        201,
+        67,
+        67,
+        128,
+        228,
+        17,
+        210,
+        160
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buffer_barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "barracks"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                208,
+                202,
+                249,
+                228,
+                96,
+                186,
+                138,
+                252,
+                194,
+                60,
+                152,
+                237,
+                182,
+                202,
+                107,
+                227,
+                84,
+                147,
+                240,
+                176,
+                135,
+                200,
+                52,
+                240,
+                137,
+                157,
+                43,
+                70,
+                215,
+                178,
+                35,
+                125
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "barracks"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "barracks"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "barracks",
+          "writable": true
+        },
+        {
+          "name": "owner_program",
+          "address": "F43KEBNRX7AkbAjvW4LQq9A698yrp6Uh6kDsKjfqAMXz"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delegate_map",
+      "discriminator": [
+        151,
+        157,
+        106,
+        211,
+        59,
+        88,
+        21,
+        57
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "buffer_map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "map"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                208,
+                202,
+                249,
+                228,
+                96,
+                186,
+                138,
+                252,
+                194,
+                60,
+                152,
+                237,
+                182,
+                202,
+                107,
+                227,
+                84,
+                147,
+                240,
+                176,
+                135,
+                200,
+                52,
+                240,
+                137,
+                157,
+                43,
+                70,
+                215,
+                178,
+                35,
+                125
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "map"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "map"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "map",
+          "writable": true
+        },
+        {
+          "name": "owner_program",
+          "address": "F43KEBNRX7AkbAjvW4LQq9A698yrp6Uh6kDsKjfqAMXz"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delegate_session",
+      "discriminator": [
+        82,
+        83,
+        119,
+        119,
+        196,
+        219,
+        5,
+        197
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buffer_session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                208,
+                202,
+                249,
+                228,
+                96,
+                186,
+                138,
+                252,
+                194,
+                60,
+                152,
+                237,
+                182,
+                202,
+                107,
+                227,
+                84,
+                147,
+                240,
+                176,
+                135,
+                200,
+                52,
+                240,
+                137,
+                157,
+                43,
+                70,
+                215,
+                178,
+                35,
+                125
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "owner_program",
+          "address": "F43KEBNRX7AkbAjvW4LQq9A698yrp6Uh6kDsKjfqAMXz"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "end_battle",
+      "discriminator": [
+        80,
+        145,
+        208,
+        48,
+        183,
+        92,
+        168,
+        112
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  116,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "stars",
+          "type": "u8"
+        },
+        {
+          "name": "gold_looted",
+          "type": "u64"
+        },
+        {
+          "name": "food_looted",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "harvest_food",
+      "discriminator": [
+        215,
+        204,
+        35,
+        139,
+        79,
+        206,
+        49,
+        171
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "farm",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init_farm",
+      "discriminator": [
+        11,
+        189,
+        249,
+        5,
+        133,
+        54,
+        66,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "farm",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "init_mine",
+      "discriminator": [
+        164,
+        52,
+        17,
+        174,
+        24,
+        73,
+        72,
+        115
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mine",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "initialize_player",
+      "discriminator": [
+        79,
+        249,
+        88,
+        177,
+        220,
+        62,
+        56,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "upgrades",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  112,
+                  103,
+                  114,
+                  97,
+                  100,
+                  101,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "spells",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  112,
+                  101,
+                  108,
+                  108,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "builder0",
+          "writable": true
+        },
+        {
+          "name": "builder1",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_session",
+      "discriminator": [
+        69,
+        130,
+        92,
+        236,
+        107,
+        231,
+        159,
+        129
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "attacker_profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "attacker_barracks",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "attacker_spells",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  112,
+                  101,
+                  108,
+                  108,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "defender_profile",
+          "docs": [
+            "Defender accounts (read-only)"
+          ]
+        },
+        {
+          "name": "defender_storage"
+        },
+        {
+          "name": "defender_mine0",
+          "optional": true
+        },
+        {
+          "name": "defender_mine1",
+          "optional": true
+        },
+        {
+          "name": "defender_mine2",
+          "optional": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  116,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "mark_for_battle",
+      "discriminator": [
+        221,
+        102,
+        57,
+        161,
+        200,
+        45,
+        182,
+        78
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "battle_counts",
+          "type": {
+            "array": [
+              "u16",
+              9
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "process_undelegation",
+      "discriminator": [
+        196,
+        28,
+        41,
+        206,
+        48,
+        37,
+        51,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "base_account",
+          "writable": true
+        },
+        {
+          "name": "buffer"
+        },
+        {
+          "name": "payer",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_seeds",
+          "type": {
+            "vec": "bytes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "save_map",
+      "discriminator": [
+        23,
+        246,
+        139,
+        73,
+        212,
+        65,
+        55,
+        37
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "slot_type",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        },
+        {
+          "name": "slot_level",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        },
+        {
+          "name": "slot_row",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        },
+        {
+          "name": "slot_col",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "save_map_er",
+      "discriminator": [
+        51,
+        219,
+        55,
+        45,
+        213,
+        99,
+        48,
+        91
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "slot_type",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        },
+        {
+          "name": "slot_level",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        },
+        {
+          "name": "slot_row",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        },
+        {
+          "name": "slot_col",
+          "type": {
+            "array": [
+              "u8",
+              50
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "settle_battle",
+      "discriminator": [
+        4,
+        146,
+        32,
+        157,
+        82,
+        216,
+        214,
+        28
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "attacker_profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "attacker_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  116,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "defender_storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.defender",
+                "account": "BattleSession"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "slot_spell",
+      "discriminator": [
+        153,
+        149,
+        17,
+        164,
+        210,
+        175,
+        46,
+        12
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "spells",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  112,
+                  101,
+                  108,
+                  108,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "slot",
+          "type": "u8"
+        },
+        {
+          "name": "spell_type",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "spawn_troops",
+      "discriminator": [
+        119,
+        157,
+        109,
+        64,
+        128,
+        187,
+        10,
+        0
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  116,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "troop_type",
+          "type": "u8"
+        },
+        {
+          "name": "count",
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "name": "start_upgrade",
+      "discriminator": [
+        134,
+        190,
+        143,
+        225,
+        188,
+        141,
+        38,
+        116
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "map",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "builder",
+          "docs": [
+            "Builder index provided in instruction via seeds"
+          ],
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "slot_index",
+          "type": "u8"
+        },
+        {
+          "name": "catalog_id",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "sync_profile",
+      "discriminator": [
+        87,
+        195,
+        142,
+        232,
+        202,
+        68,
+        47,
+        165
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "map",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "train_troops",
+      "discriminator": [
+        233,
+        145,
+        128,
+        20,
+        178,
+        145,
+        93,
+        109
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "auth",
+          "docs": [
+            "Mainnet account; read-only on ER"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "undelegate_barracks",
+      "discriminator": [
+        84,
+        102,
+        72,
+        108,
+        235,
+        224,
+        97,
+        230
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "barracks",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  114,
+                  114,
+                  97,
+                  99,
+                  107,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "undelegate_map",
+      "discriminator": [
+        19,
+        245,
+        67,
+        166,
+        250,
+        172,
+        37,
+        195
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "map",
+          "writable": true
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "upgrade_troop",
+      "discriminator": [
+        80,
+        47,
+        58,
+        210,
+        65,
+        186,
+        109,
+        240
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  116,
+                  111,
+                  114,
+                  97,
+                  103,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "upgrades",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  112,
+                  103,
+                  114,
+                  97,
+                  100,
+                  101,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "troop_type",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "use_spell",
+      "discriminator": [
+        221,
+        203,
+        96,
+        89,
+        14,
+        255,
+        135,
+        120
+      ],
+      "accounts": [
+        {
+          "name": "attacker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  97,
+                  116,
+                  116,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "attacker"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "slot",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "BattleSession",
+      "discriminator": [
+        254,
+        114,
+        29,
+        174,
+        211,
+        191,
+        25,
+        241
+      ]
+    },
+    {
+      "name": "BuilderState",
+      "discriminator": [
+        129,
+        97,
+        165,
+        231,
+        78,
+        250,
+        54,
+        233
+      ]
+    },
+    {
+      "name": "FarmState",
+      "discriminator": [
+        198,
+        102,
+        216,
+        74,
+        63,
+        66,
+        163,
+        190
+      ]
+    },
+    {
+      "name": "LootVault",
+      "discriminator": [
+        225,
+        57,
+        198,
+        178,
+        124,
+        161,
+        205,
+        195
+      ]
+    },
+    {
+      "name": "MineState",
+      "discriminator": [
+        21,
+        124,
+        38,
+        83,
+        205,
+        134,
+        181,
+        81
+      ]
+    },
+    {
+      "name": "PlayerMap",
+      "discriminator": [
+        234,
+        31,
+        224,
+        69,
+        245,
+        4,
+        147,
+        250
+      ]
+    },
+    {
+      "name": "PlayerProfile",
+      "discriminator": [
+        82,
+        226,
+        99,
+        87,
+        164,
+        130,
+        181,
+        80
+      ]
+    },
+    {
+      "name": "SpellHand",
+      "discriminator": [
+        97,
+        174,
+        236,
+        28,
+        204,
+        84,
+        40,
+        179
+      ]
+    },
+    {
+      "name": "StorageState",
+      "discriminator": [
+        238,
+        246,
+        205,
+        181,
+        230,
+        225,
+        131,
+        59
+      ]
+    },
+    {
+      "name": "TrainingAuth",
+      "discriminator": [
+        176,
+        215,
+        102,
+        21,
+        145,
+        55,
+        131,
+        195
+      ]
+    },
+    {
+      "name": "TroopBarracks",
+      "discriminator": [
+        232,
+        52,
+        96,
+        186,
+        208,
+        188,
+        0,
+        4
+      ]
+    },
+    {
+      "name": "TroopUpgrades",
+      "discriminator": [
+        73,
+        185,
+        215,
+        232,
+        233,
+        91,
+        7,
+        201
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "MaxLevelReached",
+      "msg": "Max level reached"
+    },
+    {
+      "code": 6001,
+      "name": "InsufficientXp",
+      "msg": "Insufficient XP"
+    },
+    {
+      "code": 6002,
+      "name": "TcLevelTooLow",
+      "msg": "TC level too low for this building"
+    },
+    {
+      "code": 6003,
+      "name": "MaxBuildingCount",
+      "msg": "Max building count reached"
+    },
+    {
+      "code": 6004,
+      "name": "SlotOccupied",
+      "msg": "Building slot already occupied"
+    },
+    {
+      "code": 6005,
+      "name": "BuildingNotFound",
+      "msg": "Building not found at given slot"
+    },
+    {
+      "code": 6006,
+      "name": "ShopPurchaseRequired",
+      "msg": "Building must be purchased from shop first"
+    },
+    {
+      "code": 6007,
+      "name": "BuilderBusy",
+      "msg": "Builder not idle"
+    },
+    {
+      "code": 6008,
+      "name": "NoIdleBuilder",
+      "msg": "No idle builder available"
+    },
+    {
+      "code": 6009,
+      "name": "NoUpgradeInProgress",
+      "msg": "Upgrade not in progress"
+    },
+    {
+      "code": 6010,
+      "name": "UpgradeNotReady",
+      "msg": "Upgrade timer not finished"
+    },
+    {
+      "code": 6011,
+      "name": "MaxUpgradeLevel",
+      "msg": "Max upgrade level reached"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidCatalogId",
+      "msg": "Invalid catalog ID"
+    },
+    {
+      "code": 6013,
+      "name": "InsufficientGold",
+      "msg": "Insufficient gold"
+    },
+    {
+      "code": 6014,
+      "name": "InsufficientFood",
+      "msg": "Insufficient food"
+    },
+    {
+      "code": 6015,
+      "name": "StorageFull",
+      "msg": "Storage full"
+    },
+    {
+      "code": 6016,
+      "name": "NothingToCollect",
+      "msg": "Nothing to collect"
+    },
+    {
+      "code": 6017,
+      "name": "PopCapReached",
+      "msg": "Population cap reached"
+    },
+    {
+      "code": 6018,
+      "name": "InsufficientTroopPop",
+      "msg": "Insufficient troop population"
+    },
+    {
+      "code": 6019,
+      "name": "BarracksLevelTooLow",
+      "msg": "Troop type requires higher barracks level"
+    },
+    {
+      "code": 6020,
+      "name": "InvalidTroopType",
+      "msg": "Invalid troop type"
+    },
+    {
+      "code": 6021,
+      "name": "TroopAlreadyUpgraded",
+      "msg": "Troop already upgraded"
+    },
+    {
+      "code": 6022,
+      "name": "InsufficientTroops",
+      "msg": "Insufficient troops for battle"
+    },
+    {
+      "code": 6023,
+      "name": "AuthAlreadyConsumed",
+      "msg": "Training auth already consumed"
+    },
+    {
+      "code": 6024,
+      "name": "AuthNonceMismatch",
+      "msg": "Training auth nonce mismatch"
+    },
+    {
+      "code": 6025,
+      "name": "AuthExpired",
+      "msg": "Training auth expired"
+    },
+    {
+      "code": 6026,
+      "name": "InvalidSpellType",
+      "msg": "Invalid spell type"
+    },
+    {
+      "code": 6027,
+      "name": "MarketLevelTooLow",
+      "msg": "Spell requires higher market level"
+    },
+    {
+      "code": 6028,
+      "name": "SpellInventoryFull",
+      "msg": "Spell inventory full"
+    },
+    {
+      "code": 6029,
+      "name": "InsufficientSpells",
+      "msg": "Insufficient spells"
+    },
+    {
+      "code": 6030,
+      "name": "InvalidSpellSlot",
+      "msg": "Invalid spell slot"
+    },
+    {
+      "code": 6031,
+      "name": "SessionAlreadyActive",
+      "msg": "Battle session already active"
+    },
+    {
+      "code": 6032,
+      "name": "SessionNotActive",
+      "msg": "Battle session not active"
+    },
+    {
+      "code": 6033,
+      "name": "BattleAlreadyEnded",
+      "msg": "Battle already ended"
+    },
+    {
+      "code": 6034,
+      "name": "InvalidStarCount",
+      "msg": "Invalid star count"
+    },
+    {
+      "code": 6035,
+      "name": "LootExceedsCap",
+      "msg": "Loot exceeds allowed cap"
+    },
+    {
+      "code": 6036,
+      "name": "DefenderNotFound",
+      "msg": "Defender not found"
+    },
+    {
+      "code": 6037,
+      "name": "CannotAttackSelf",
+      "msg": "Cannot attack self"
+    },
+    {
+      "code": 6038,
+      "name": "AttackerMapNotSettled",
+      "msg": "Attacker map not settled"
+    },
+    {
+      "code": 6039,
+      "name": "NotDelegated",
+      "msg": "Account must be delegated for this operation"
+    },
+    {
+      "code": 6040,
+      "name": "AlreadyDelegated",
+      "msg": "Account already delegated"
+    },
+    {
+      "code": 6041,
+      "name": "UnauthorizedEr",
+      "msg": "Unauthorized caller on ER"
+    },
+    {
+      "code": 6042,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6043,
+      "name": "Underflow",
+      "msg": "Arithmetic underflow"
+    }
+  ],
+  "types": [
+    {
+      "name": "BattleSession",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "attacker",
+            "type": "pubkey"
+          },
+          {
+            "name": "defender",
+            "type": "pubkey"
+          },
+          {
+            "name": "start_ts",
+            "type": "i64"
+          },
+          {
+            "name": "end_ts",
+            "type": "i64"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "stars",
+            "type": "u8"
+          },
+          {
+            "name": "mine_buffers",
+            "type": {
+              "array": [
+                "u64",
+                3
+              ]
+            }
+          },
+          {
+            "name": "storage_snapshot",
+            "type": "u64"
+          },
+          {
+            "name": "gold_looted",
+            "type": "u64"
+          },
+          {
+            "name": "food_looted",
+            "type": "u64"
+          },
+          {
+            "name": "troop_counts",
+            "type": {
+              "array": [
+                "u16",
+                9
+              ]
+            }
+          },
+          {
+            "name": "spell_counts",
+            "type": {
+              "array": [
+                "u8",
+                5
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                93
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "BuilderState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "busy",
+            "type": "bool"
+          },
+          {
+            "name": "catalog_id",
+            "type": "u8"
+          },
+          {
+            "name": "slot_index",
+            "type": "u8"
+          },
+          {
+            "name": "new_level",
+            "type": "u8"
+          },
+          {
+            "name": "finish_ts",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                61
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "FarmState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "level",
+            "type": "u8"
+          },
+          {
+            "name": "last_harvest_ts",
+            "type": "i64"
+          },
+          {
+            "name": "buffer",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                13
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LootVault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "gold_pending",
+            "type": "u64"
+          },
+          {
+            "name": "food_pending",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                15
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MineState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "index",
+            "type": "u8"
+          },
+          {
+            "name": "level",
+            "type": "u8"
+          },
+          {
+            "name": "last_collect_ts",
+            "type": "i64"
+          },
+          {
+            "name": "buffer",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                13
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PlayerMap",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "slot_type",
+            "type": {
+              "array": [
+                "u8",
+                50
+              ]
+            }
+          },
+          {
+            "name": "slot_level",
+            "type": {
+              "array": [
+                "u8",
+                50
+              ]
+            }
+          },
+          {
+            "name": "slot_row",
+            "type": {
+              "array": [
+                "u8",
+                50
+              ]
+            }
+          },
+          {
+            "name": "slot_col",
+            "type": {
+              "array": [
+                "u8",
+                50
+              ]
+            }
+          },
+          {
+            "name": "in_build_mode",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                228
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PlayerProfile",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "level",
+            "type": "u8"
+          },
+          {
+            "name": "xp",
+            "type": "u32"
+          },
+          {
+            "name": "builder_count",
+            "type": "u8"
+          },
+          {
+            "name": "tc_level",
+            "type": "u8"
+          },
+          {
+            "name": "barracks_level",
+            "type": "u8"
+          },
+          {
+            "name": "market_level",
+            "type": "u8"
+          },
+          {
+            "name": "pop_cap",
+            "type": "u16"
+          },
+          {
+            "name": "pop_used",
+            "type": "u16"
+          },
+          {
+            "name": "map_delegated",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                201
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "SpellHand",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "counts",
+            "type": {
+              "array": [
+                "u8",
+                30
+              ]
+            }
+          },
+          {
+            "name": "slotted",
+            "type": {
+              "array": [
+                "u8",
+                5
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                4
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "StorageState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "level",
+            "type": "u8"
+          },
+          {
+            "name": "gold_balance",
+            "type": "u64"
+          },
+          {
+            "name": "food_balance",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                13
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TrainingAuth",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "gold_cost",
+            "type": "u64"
+          },
+          {
+            "name": "food_cost",
+            "type": "u64"
+          },
+          {
+            "name": "troop_type",
+            "type": "u8"
+          },
+          {
+            "name": "quantity",
+            "type": "u16"
+          },
+          {
+            "name": "expires_ts",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                28
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TroopBarracks",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "level",
+            "type": "u8"
+          },
+          {
+            "name": "counts",
+            "type": {
+              "array": [
+                "u16",
+                9
+              ]
+            }
+          },
+          {
+            "name": "battle_counts",
+            "type": {
+              "array": [
+                "u16",
+                9
+              ]
+            }
+          },
+          {
+            "name": "consumed_auths",
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TroopUpgrades",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "upgraded",
+            "type": {
+              "array": [
+                "bool",
+                9
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "_padding",
+            "type": {
+              "array": [
+                "u8",
+                22
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

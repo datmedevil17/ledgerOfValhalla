@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/spells)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5179/)",
+      "Bash(curl -s http://localhost:5179/spells)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('/Users/datmedevil/projects/clash/client/public/clash-map-1779534012265.json'\\)\\); print\\(list\\(d.keys\\(\\)\\)\\); print\\(json.dumps\\(d.get\\('lights', {}\\), indent=2\\)\\)\")",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

@@ -10,12 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@privy-io/react-auth": "^3.27.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/rapier": "^2.2.0",
+    "@solana-program/memo": "^0.11.0",
+    "@solana-program/token": "^0.13.0",
+    "@solana/kit": "^6.9.0",
+    "@solana/web3.js": "^1.98.4",
     "@tailwindcss/vite": "^4.3.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-hot-toast": "^2.6.0",
     "tailwindcss": "^4.3.0",
     "three": "^0.184.0"
   },

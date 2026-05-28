@@ -1,8 +1,13 @@
-import { Suspense, useRef, useMemo } from 'react'
+import { Suspense, useRef, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import rawData from '../public/clash-map-1779534012265.json'
+import preset1 from '../public/map-preset-1.json'
+import preset2 from '../public/map-preset-2.json'
+import preset3 from '../public/map-preset-3.json'
+import preset4 from '../public/map-preset-4.json'
+import preset5 from '../public/map-preset-5.json'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface FinalPlacedItem {
@@ -159,10 +164,11 @@ function Model({ item }: { item: FinalPlacedItem }) {
 }
 
 // ── Shared canvas — used by both the /final page and the builder preview ──────
-export function FinalMapCanvas({ items, cfg, onClose }: {
+export function FinalMapCanvas({ items, cfg, onClose, hideHUD }: {
   items:    FinalPlacedItem[]
   cfg:      FinalLightCfg
   onClose?: () => void
+  hideHUD?: boolean
 }) {
   return (
     <div style={{ width: '100%', height: '100%', background: '#5ba8d4' }}>
@@ -194,7 +200,7 @@ export function FinalMapCanvas({ items, cfg, onClose }: {
       </Canvas>
 
       {/* HUD */}
-      <div style={{
+      {!hideHUD && <div style={{
         position: 'fixed', top: 16, right: 16,
         background: 'rgba(8,4,0,0.88)', border: '1px solid #5a3810',
         borderRadius: 8, padding: '10px 16px',
@@ -227,18 +233,76 @@ export function FinalMapCanvas({ items, cfg, onClose }: {
             ← Builder
           </a>
         )}
-      </div>
+      </div>}
     </div>
   )
 }
 
-// Preload paths from the static save (for the /final route)
-const staticItems = rawData.items as unknown as FinalPlacedItem[]
-const staticCfg   = rawData.lights as FinalLightCfg
-const uniquePaths = [...new Set(staticItems.map(i => i.path))]
-uniquePaths.forEach(p => useGLTF.preload(p))
+// ── Preset map definitions ────────────────────────────────────────────────────
+const PRESETS: { label: string; data: typeof rawData }[] = [
+  { label: '1 — The Newcomer (TC Lvl 1)',          data: preset1 as unknown as typeof rawData },
+  { label: '2 — Growing Village (TC Lvl 1→2)',     data: preset2 as unknown as typeof rawData },
+  { label: '3 — Fortified Town (TC Lvl 2)',        data: preset3 as unknown as typeof rawData },
+  { label: '4 — War Fortress (TC Lvl 3)',          data: preset4 as unknown as typeof rawData },
+  { label: '5 — The Wonder Kingdom (Endgame)',     data: preset5 as unknown as typeof rawData },
+  { label: 'Custom — Builder Save',               data: rawData },
+]
+
+// Preload all model paths up-front
+const _allPaths = new Set<string>()
+PRESETS.forEach(p => (p.data.items as unknown as FinalPlacedItem[]).forEach(i => _allPaths.add(i.path)))
+_allPaths.forEach(p => useGLTF.preload(p))
 
 // ── /final page ───────────────────────────────────────────────────────────────
 export default function FinalMap() {
-  return <FinalMapCanvas items={staticItems} cfg={staticCfg} />
+  const [selected, setSelected] = useState(0)
+  const preset = PRESETS[selected]
+  const items  = preset.data.items as unknown as FinalPlacedItem[]
+  const cfg    = preset.data.lights as FinalLightCfg
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      {/* Map selector dropdown */}
+      <div style={{
+        position: 'fixed', top: 16, left: '50%', transform: 'translateX(-50%)',
+        zIndex: 10, display: 'flex', alignItems: 'center', gap: 10,
+        background: 'rgba(8,4,0,0.92)', border: '1px solid #6a4010',
+        borderRadius: 10, padding: '8px 16px',
+        fontFamily: "'Segoe UI', sans-serif",
+        boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+      }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: '#f0c040', letterSpacing: 1, whiteSpace: 'nowrap' }}>
+          MAP PRESET
+        </span>
+        <select
+          value={selected}
+          onChange={e => setSelected(Number(e.target.value))}
+          style={{
+            background: '#1a0e04', color: '#e8b860', border: '1px solid #5a3810',
+            borderRadius: 6, padding: '5px 10px', fontSize: 12, cursor: 'pointer',
+            fontFamily: 'inherit', minWidth: 260, outline: 'none',
+          }}
+        >
+          {PRESETS.map((p, i) => (
+            <option key={i} value={i}>{p.label}</option>
+          ))}
+        </select>
+        <span style={{ fontSize: 10, color: '#6a4828', whiteSpace: 'nowrap' }}>
+          {items.length} assets
+        </span>
+      </div>
+
+      <FinalMapCanvas items={items} cfg={cfg} hideHUD />
+
+      {/* Minimal back link */}
+      <a href="/" style={{
+        position: 'fixed', top: 16, right: 16, zIndex: 10,
+        fontSize: 10, color: '#8a6040', textDecoration: 'none',
+        border: '1px solid #3a2008', borderRadius: 6, padding: '5px 10px',
+        background: 'rgba(8,4,0,0.88)', fontFamily: "'Segoe UI', sans-serif",
+      }}>
+        ← Builder
+      </a>
+    </div>
+  )
 }
