@@ -11,6 +11,7 @@ import { CATALOG, defFor, healthOf, type Age, type Level } from './config'
 import { TROOP_DEFS, TROOP_IDS, TROOP_START_COUNT, BAT_SWARM_SIZE, type TroopId } from './troops'
 import { DEFENSE_DEFS, TEMPLE_REINFORCE_RADIUS, TEMPLE_REINFORCE_COUNT, TEMPLE_REINFORCE_TYPES } from './defenses'
 import { FinalMapCanvas } from './FinalMap'
+import { useTxToast, TxToastContainer, TX_TOAST_STYLES } from './TxToast'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const GRID_W       = 90
@@ -1672,6 +1673,299 @@ function CatalogPanel({ selectedId, placementScale, rotation, onSelect, onScaleC
   )
 }
 
+// ── Temple panel ──────────────────────────────────────────────────────────────
+function TemplePanel({ item, onClose, onTx }: { item: PlacedItem; onClose: () => void; onTx: () => void }) {
+  const [sending, setSending] = React.useState(false)
+  const [sent,    setSent]    = React.useState(false)
+
+  const treasuryBalance   = 12_450
+  const reinforcements    = TEMPLE_REINFORCE_COUNT
+  const reinforceTypes    = TEMPLE_REINFORCE_TYPES
+
+  const troopCounts = reinforceTypes.reduce<Record<string, number>>((acc, t) => {
+    acc[t] = (acc[t] ?? 0) + 1; return acc
+  }, {})
+
+  const handleSend = () => {
+    if (sending || sent) return
+    setSending(true)
+    setTimeout(() => { setSending(false); setSent(true); onTx() }, 900)
+  }
+
+  return (
+    <>
+      <div style={{ padding: '12px 14px 10px', background: '#0e0800', borderBottom: '1px solid #5a3810', flexShrink: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#f0c040' }}>⛩ {item.name}</div>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#907050', cursor: 'pointer', fontSize: 16 }}>✕</button>
+        </div>
+        <div style={{ fontSize: 10, color: '#7a5030', marginTop: 2 }}>Special Building</div>
+      </div>
+
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+        {/* Treasury */}
+        <div style={{ background: '#0a1a08', border: '1px solid #2d5a1e', borderRadius: 8, padding: '10px 12px' }}>
+          <div style={{ fontSize: 10, color: '#6a9040', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8 }}>
+            🏦 Hidden Treasury
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: sent ? '#888' : '#22c55e', boxShadow: sent ? 'none' : '0 0 6px #22c55e' }} />
+            <span style={{ fontSize: 11, color: sent ? '#777' : '#4ade80', fontWeight: 600 }}>{sent ? 'SENT' : 'ACTIVE'}</span>
+          </div>
+          <div style={{ fontSize: 12, color: '#c0e080' }}>
+            Balance: <strong>{treasuryBalance.toLocaleString()}</strong>
+            <span style={{ color: '#6a9040', marginLeft: 4 }}>◈</span>
+          </div>
+        </div>
+
+        {/* Send button */}
+        <button onClick={handleSend} disabled={sending || sent} style={{
+          ...btn, width: '100%', textAlign: 'center', padding: '9px 12px',
+          background: sent ? '#0a1a00' : sending ? '#1a3000' : '#0d2800',
+          borderColor: sent ? '#3a5020' : '#22c55e', color: sent ? '#3a5020' : '#4ade80',
+          fontWeight: 700, fontSize: 12, cursor: (sending || sent) ? 'default' : 'pointer',
+          opacity: (sending || sent) ? 0.7 : 1,
+          transition: 'all 0.2s',
+        }}>
+          {sending ? '⏳ Sending...' : sent ? '✓ Treasury Sent' : '→ Send Treasury'}
+        </button>
+
+        {/* Reinforcements */}
+        <div style={{ background: '#1a0a00', border: '1px solid #5a2e10', borderRadius: 8, padding: '10px 12px' }}>
+          <div style={{ fontSize: 10, color: '#a06030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8 }}>
+            ⚔ Reinforcements
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <span style={{ fontSize: 11, color: '#c09050' }}>Available</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#f0c040' }}>{reinforcements} / {reinforcements}</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {Object.entries(troopCounts).map(([type, count]) => {
+              const def = TROOP_DEFS[type as TroopId]
+              return (
+                <div key={type} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
+                  <span style={{ color: '#c09050' }}>{def?.emoji ?? '⚔'} {def?.name ?? type}</span>
+                  <span style={{ color: '#e0b060' }}>×{count}</span>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ── Barracks panel ────────────────────────────────────────────────────────────
+const TRAINABLE_TROOPS: TroopId[] = ['warrior', 'monk', 'rogue', 'ranger', 'cleric', 'wizard']
+const TRAIN_TIME: Record<TroopId, number> = {
+  warrior: 60, monk: 45, rogue: 90, ranger: 120, cleric: 150, wizard: 180, dragon: 300, bat: 30, ghost: 240,
+}
+const TRAIN_COST: Record<TroopId, number> = {
+  warrior: 120, monk: 90, rogue: 160, ranger: 200, cleric: 250, wizard: 300, dragon: 800, bat: 60, ghost: 350,
+}
+
+function BarracksPanel({ item, onClose, onTx }: { item: PlacedItem; onClose: () => void; onTx: () => void }) {
+  const [selectedTroop, setSelectedTroop] = React.useState<TroopId>('warrior')
+  const [queue, setQueue] = React.useState<TroopId[]>([])
+  const [training, setTraining] = React.useState(false)
+  const MAX_QUEUE = 5
+
+  const def = TROOP_DEFS[selectedTroop]
+
+  const handleTrain = () => {
+    if (training || queue.length >= MAX_QUEUE) return
+    setTraining(true)
+    setTimeout(() => {
+      setQueue(prev => [...prev, selectedTroop])
+      setTraining(false)
+      onTx()
+    }, 800)
+  }
+
+  return (
+    <>
+      <div style={{ padding: '12px 14px 10px', background: '#0e0800', borderBottom: '1px solid #5a3810', flexShrink: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#f0c040' }}>🏰 {item.name}</div>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#907050', cursor: 'pointer', fontSize: 16 }}>✕</button>
+        </div>
+        <div style={{ fontSize: 10, color: '#7a5030', marginTop: 2 }}>Military Building</div>
+      </div>
+
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+
+        {/* Queue */}
+        <div>
+          <div style={{ fontSize: 10, color: '#8a6030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 6 }}>
+            Training Queue — {queue.length}/{MAX_QUEUE}
+          </div>
+          <div style={{ display: 'flex', gap: 4, minHeight: 32, background: '#0a0600', borderRadius: 6, padding: '4px 6px', flexWrap: 'wrap' }}>
+            {queue.length === 0
+              ? <span style={{ fontSize: 10, color: '#4a3010', alignSelf: 'center', width: '100%', textAlign: 'center' }}>Empty</span>
+              : queue.map((t, i) => (
+                <div key={i} style={{ fontSize: 16, lineHeight: 1 }} title={TROOP_DEFS[t].name}>
+                  {TROOP_DEFS[t].emoji}
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        {/* Troop selector */}
+        <div>
+          <div style={{ fontSize: 10, color: '#8a6030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 6 }}>Select Troop</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 4 }}>
+            {TRAINABLE_TROOPS.map(id => {
+              const d = TROOP_DEFS[id]
+              const active = selectedTroop === id
+              return (
+                <button key={id} onClick={() => setSelectedTroop(id)} style={{
+                  ...btn, padding: '6px 4px', textAlign: 'center', flexDirection: 'column',
+                  background: active ? '#3a2000' : '#0e0800',
+                  border: `1px solid ${active ? '#f0c040' : '#3a2a10'}`,
+                  color: active ? '#f0c040' : '#8a6040',
+                  display: 'flex', alignItems: 'center', gap: 2,
+                }}>
+                  <span style={{ fontSize: 16 }}>{d.emoji}</span>
+                  <span style={{ fontSize: 9 }}>{d.name}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Selected troop stats */}
+        <div style={{ background: '#0a0600', border: '1px solid #3a2010', borderRadius: 8, padding: '10px 12px' }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#f0c040', marginBottom: 6 }}>
+            {def.emoji} {def.name}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+            {[
+              ['♥ HP',    def.maxHp],
+              ['⚔ DMG',   def.attackDamage],
+              ['💨 SPD',   def.speed.toFixed(1)],
+              ['🎯 RNG',   def.attackRange.toFixed(1)],
+            ].map(([label, val]) => (
+              <div key={String(label)} style={{ fontSize: 10, color: '#a08050' }}>
+                <span>{label}: </span><strong style={{ color: '#e0c080' }}>{val}</strong>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 8, fontSize: 10, color: '#8a6030', display: 'flex', justifyContent: 'space-between' }}>
+            <span>⏱ {TRAIN_TIME[selectedTroop]}s</span>
+            <span>💰 {TRAIN_COST[selectedTroop]} gold</span>
+          </div>
+        </div>
+
+        {/* Train button */}
+        <button onClick={handleTrain} disabled={training || queue.length >= MAX_QUEUE} style={{
+          ...btn, width: '100%', textAlign: 'center', padding: '9px 12px',
+          background: '#1a0800', borderColor: '#d97706', color: '#fbbf24',
+          fontWeight: 700, fontSize: 12,
+          opacity: (training || queue.length >= MAX_QUEUE) ? 0.5 : 1,
+          cursor: (training || queue.length >= MAX_QUEUE) ? 'default' : 'pointer',
+        }}>
+          {training ? '⏳ Queuing...' : queue.length >= MAX_QUEUE ? 'Queue Full' : `⚔ Train ${def.name}`}
+        </button>
+      </div>
+    </>
+  )
+}
+
+// ── Storage panel ─────────────────────────────────────────────────────────────
+const FARM_STATUS_OPTIONS = ['Growing 🌱', 'Ready ✓', 'Harvesting 🌾', 'Watering 💧']
+
+function StoragePanel({ item, allItems, onClose }: { item: PlacedItem; allItems: PlacedItem[]; onClose: () => void }) {
+  const farms = allItems.filter(it => it.defId === 'farm' || it.catalogId === 'farm')
+
+  const wheatMax   = 6000
+  const wheatCur   = React.useMemo(() => Math.floor(2800 + Math.random() * 2800), [])
+  const wheatPct   = Math.round((wheatCur / wheatMax) * 100)
+
+  const farmStatuses = React.useMemo(() =>
+    farms.map((_, i) => ({
+      label: `Farm ${i + 1}`,
+      status: FARM_STATUS_OPTIONS[i % FARM_STATUS_OPTIONS.length],
+      pct: Math.floor(20 + Math.random() * 80),
+    }))
+  , [farms.length])
+
+  return (
+    <>
+      <div style={{ padding: '12px 14px 10px', background: '#0e0800', borderBottom: '1px solid #5a3810', flexShrink: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#f0c040' }}>🏪 {item.name}</div>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#907050', cursor: 'pointer', fontSize: 16 }}>✕</button>
+        </div>
+        <div style={{ fontSize: 10, color: '#7a5030', marginTop: 2 }}>Resource Building</div>
+      </div>
+
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+        {/* Wheat storage */}
+        <div style={{ background: '#0a0e00', border: '1px solid #4a5a10', borderRadius: 8, padding: '10px 12px' }}>
+          <div style={{ fontSize: 10, color: '#8a9030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8 }}>
+            🌾 Wheat Storage
+          </div>
+          <div style={{ height: 8, background: '#1a1a00', borderRadius: 4, overflow: 'hidden', marginBottom: 6 }}>
+            <div style={{
+              height: '100%', borderRadius: 4,
+              width: `${wheatPct}%`,
+              background: wheatPct > 80
+                ? 'linear-gradient(90deg,#d97706,#fbbf24)'
+                : 'linear-gradient(90deg,#65a30d,#a3e635)',
+              transition: 'width 0.5s ease',
+            }} />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11 }}>
+            <span style={{ color: '#a3e635', fontWeight: 600 }}>{wheatCur.toLocaleString()} kg</span>
+            <span style={{ color: '#6a7020' }}>{wheatPct}% of {wheatMax.toLocaleString()}</span>
+          </div>
+        </div>
+
+        {/* Farm statuses */}
+        <div>
+          <div style={{ fontSize: 10, color: '#8a6030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8 }}>
+            Farm Status ({farms.length} farm{farms.length !== 1 ? 's' : ''})
+          </div>
+          {farms.length === 0 ? (
+            <div style={{ fontSize: 11, color: '#4a3010', textAlign: 'center', padding: '12px 0' }}>
+              No farms placed yet
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {farmStatuses.map(f => (
+                <div key={f.label} style={{
+                  background: '#0a0600', borderRadius: 6, padding: '7px 10px',
+                  border: '1px solid #2a1a08',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                    <span style={{ fontSize: 11, color: '#c09050' }}>{f.label}</span>
+                    <span style={{ fontSize: 10, color: '#a0b040' }}>{f.status}</span>
+                  </div>
+                  <div style={{ height: 4, background: '#1a1000', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{
+                      height: '100%', borderRadius: 2,
+                      width: `${f.pct}%`,
+                      background: f.status.includes('Ready')
+                        ? '#22c55e'
+                        : 'linear-gradient(90deg,#65a30d,#a3e635)',
+                    }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDelete, onClose }: {
   item:             PlacedItem
   onScaleChange:    (v: number) => void
@@ -2208,6 +2502,8 @@ export default function App() {
     attackedBuildings: new Set(), defenseTimers: {}, templeReinforced: new Set(), projectiles: [],
   })
 
+  const { toasts: txToasts, fire: fireTxToast } = useTxToast()
+
   const selectedEntry = selectedCatalogId ? CATALOG_MAP_FULL[selectedCatalogId] ?? null : null
   const occupiedSet   = useMemo(() => buildOccupiedSet(items), [items])
 
@@ -2272,6 +2568,7 @@ export default function App() {
     // Use functional update so concurrent drag placements see fresh state
     setItems(prev => {
       if (hasCollision(pos, { ...selectedEntry!, gridW: ghostW, gridH: ghostH }, buildOccupiedSet(prev))) return prev
+      fireTxToast()
       return [...prev, newItem]
     })
   }
@@ -2282,13 +2579,18 @@ export default function App() {
   const handleRotateItem = (v: number) => setItems(prev =>
     prev.map(it => it.id === selectedItemId ? { ...it, rotation: v } : it))
 
-  const handleUpgradeLevel = () => setItems(prev => prev.map(it => {
-    if (it.id !== selectedItemId || !it.defId || !VALID_DEF_IDS.has(it.defId)) return it
-    const def = defFor(it.defId)
-    if (!def.hasLevels || (it.level ?? 1) >= (def.maxLevel ?? 3)) return it
-    const newLevel = ((it.level ?? 1) + 1) as Level
-    return { ...it, level: newLevel, path: def.pathFor(it.age ?? 'SecondAge', newLevel) }
-  }))
+  const handleUpgradeLevel = () => {
+    const cur = items.find(it => it.id === selectedItemId)
+    if (!cur?.defId || !VALID_DEF_IDS.has(cur.defId)) return
+    const def = defFor(cur.defId)
+    if (!def.hasLevels || (cur.level ?? 1) >= (def.maxLevel ?? 3)) return
+    setItems(prev => prev.map(it => {
+      if (it.id !== selectedItemId) return it
+      const newLevel = ((it.level ?? 1) + 1) as Level
+      return { ...it, level: newLevel, path: def.pathFor(it.age ?? 'SecondAge', newLevel) }
+    }))
+    fireTxToast()
+  }
 
   const handleDelete = () => {
     setItems(prev => prev.filter(it => it.id !== selectedItemId))
@@ -2312,10 +2614,11 @@ export default function App() {
         const ids = [...gs.destroyedBuildings]
         gs.destroyedBuildings.clear()
         setDestroyedBuildingIds(prev => [...new Set([...prev, ...ids])])
+        fireTxToast()
       }
     }, 250)
     return () => clearInterval(id)
-  }, [mode])
+  }, [mode, fireTxToast])
 
   const enterAttackMode = () => {
     // Filter to items with a defId recognised by the current catalog (guards against stale saves)
@@ -2392,6 +2695,7 @@ export default function App() {
 
     setSpawnedTroops(prev => [...prev, ...newTroops])
     setTroopInventory(prev => ({ ...prev, [selectedTroopType]: prev[selectedTroopType] - count }))
+    fireTxToast()
   }
 
   const handleTroopDied = (uid: string) => {
@@ -2415,6 +2719,8 @@ export default function App() {
 
   return (
     <div style={{ width: '100%', height: '100%', background: '#5ba8d4' }}>
+      <style>{TX_TOAST_STYLES}</style>
+      <TxToastContainer toasts={txToasts} />
       <Canvas
         camera={{ position: CAM, fov: 46, near: 0.5, far: 800 }}
         shadows
@@ -2608,6 +2914,13 @@ export default function App() {
         ) : showSaves ? (
           <SavesPanel items={items} lights={lightConfig} onLoad={handleLoadSave} onBasemapChange={() => {}} />
         ) : selectedItem && !selectedEntry ? (
+          selectedItem.defId === 'temple' ? (
+            <TemplePanel item={selectedItem} onClose={() => setSelectedItemId(null)} onTx={fireTxToast} />
+          ) : selectedItem.defId === 'barracks' ? (
+            <BarracksPanel item={selectedItem} onClose={() => setSelectedItemId(null)} onTx={fireTxToast} />
+          ) : selectedItem.defId === 'storage' ? (
+            <StoragePanel item={selectedItem} allItems={items} onClose={() => setSelectedItemId(null)} />
+          ) : (
           <ItemPanel
             item={selectedItem}
             onScaleChange={handleScaleItem}
@@ -2616,6 +2929,7 @@ export default function App() {
             onDelete={handleDelete}
             onClose={() => setSelectedItemId(null)}
           />
+          )
         ) : (
           <CatalogPanel
             selectedId={selectedCatalogId}

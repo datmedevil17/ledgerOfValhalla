@@ -11,15 +11,20 @@
 8. [Defense Buildings](#8-defense-buildings)
 9. [Spells — Shop Cards](#9-spells--shop-cards)
 10. [The Shop](#10-the-shop)
-11. [Attack System](#11-attack-system)
+11. [Attack System (Raid Mode)](#11-attack-system)
 12. [Win & Loss Conditions](#12-win--loss-conditions)
 13. [Progression Loop Summary](#13-progression-loop-summary)
+14. [Battle Mode — Stake & Fight](#14-battle-mode--stake--fight)
 
 ---
 
 ## 1. Game Overview
 
 Clash is a 3D base-building and real-time strategy game. The player builds and upgrades a village on a grid map, produces resources, trains troops, and defends against or launches attacks on enemy bases. The game revolves around a gold-based economy that drives building construction, upgrades, and troop training. Spells are consumable cards purchased from the Shop that give tactical advantages during battle.
+
+The game has two distinct combat modes:
+- **Raid Mode** — Asynchronous single-player attack on an AI-defended enemy base. Standard loot-and-pillage loop.
+- **Battle Mode** — Live synchronous 1v1 PvP. Both players stake real currency (SOL), set formations, and fight in a shared arena. Winner takes the pot.
 
 ---
 
@@ -55,9 +60,10 @@ Resources like `Resource_PineTree`, `Resource_Rock_1/2/3`, `Resource_Gold_1/2/3`
 ### 3.1 Town Center
 **Model:** `TownCenter_SecondAge_Level1/2/3`  
 **Footprint:** 4 × 4  
-**Levels:** 3
+**Levels:** 3  
+**Builders Required:** Lvl 1→2: **2 Builders** | Lvl 2→3: **3 Builders**
 
-The heart of the village. Upgrading the Town Center unlocks higher-level buildings across the entire village. Nothing upgrades beyond the current Town Center level cap.
+The heart of the village. Upgrading the Town Center unlocks higher-level buildings across the entire village. Nothing upgrades beyond the current Town Center level cap. Because it requires multiple builders, you must invest in Houses before you can upgrade it.
 
 | Level | HP | Unlocks |
 |-------|-----|---------|
@@ -68,15 +74,18 @@ The heart of the village. Upgrading the Town Center unlocks higher-level buildin
 **Upgrade Cost:** 5,000 Gold (Lvl 1→2), 15,000 Gold (Lvl 2→3)  
 **Upgrade Time:** 2h (Lvl 1→2), 8h (Lvl 2→3)
 
+> The TC Lvl 1→2 upgrade locks out 2 of your builders for its duration. Plan around this — upgrade Houses and Mines first so you have income while TC is being upgraded.
+
 ---
 
 ### 3.2 Houses
 **Model:** `Houses_SecondAge_1/2/3_Level1/2/3` (3 house types, 3 levels each)  
 **Footprint:** 2 × 2  
 **Levels:** 3  
-**Max count per player:** 6 (2 of each type)
+**Max count per player:** 6 (2 of each type)  
+**Builders Required to build/upgrade:** 1
 
-Houses provide **Population Capacity** — the number of troops that can be simultaneously trained and held in the army camp.
+Houses provide two things: **Population Capacity** (army size) and **Builder Slots** (construction workers). Builders are not purchased — they are earned directly from your houses. The more houses you build and the higher their level, the more parallel construction you can run.
 
 | Level | HP | Population Cap (per house) | Upgrade Cost | Upgrade Time |
 |-------|-----|---------------------------|-------------|--------------|
@@ -85,6 +94,20 @@ Houses provide **Population Capacity** — the number of troops that can be simu
 | 3 | 1100 | 20 | 2,500 Gold | 2h |
 
 Total max population at 6 × Lvl 3 houses: **120 troops**
+
+#### Builder Slots from Houses
+
+| Houses Owned | Average House Level | Builders Unlocked |
+|-------------|--------------------|--------------------|
+| 1 house | Any | 1 (default) |
+| 2 houses | Any | 2 |
+| 4 houses | Lvl 2+ average | 3 |
+| 6 houses | Lvl 2+ average | 4 |
+| 6 houses | All Lvl 3 | 5 |
+
+> This is the core progression gate. You cannot upgrade the Town Center to Lvl 2 without 2 Builders, which requires 2 Houses. You cannot build the Wonder without 4 Builders, which requires 6 houses at Lvl 2+. Build houses first — they unlock everything else.
+
+**Average house level** is the mean of all placed houses rounded down. Example: 4 houses at (3, 3, 2, 1) = avg 2.25 → counts as Lvl 2.
 
 ---
 
@@ -223,7 +246,8 @@ The Archery Range is a secondary military building for training ranged-specialis
 **Model:** `Temple_SecondAge_Level1/2/3`  
 **Footprint:** 3 × 3  
 **Levels:** 3  
-**Unlocked at:** Town Center Lvl 2
+**Unlocked at:** Town Center Lvl 2  
+**Builders Required:** Build: **2 Builders** | Lvl 2→3 upgrade: **3 Builders**
 
 The Temple is a unique defense building. When enemies enter a 20-unit radius, it **spawns 4 reinforcement defender units** (Warriors and Monks) that fight for the village. Reinforcements respawn after a cooldown.
 
@@ -239,7 +263,8 @@ The Temple is a unique defense building. When enemies enter a 20-unit radius, it
 **Model:** `Port_SecondAge_Level1/2/3` + `Dock_FirstAge`  
 **Footprint:** 4 × 3 (coastal placement required)  
 **Levels:** 3  
-**Unlocked at:** Town Center Lvl 2
+**Unlocked at:** Town Center Lvl 2  
+**Builders Required:** Build: **2 Builders** | Lvl 3 upgrade: **2 Builders**
 
 The Port enables **sea trade** — a secondary gold income stream. It generates trade income passively, separate from Gold Mines.
 
@@ -255,9 +280,12 @@ The Port enables **sea trade** — a secondary gold income stream. It generates 
 **Model:** `Wonder_SecondAge_Level1/2`  
 **Footprint:** 4 × 4  
 **Levels:** 2  
-**Unlocked at:** Town Center Lvl 3
+**Unlocked at:** Town Center Lvl 3  
+**Builders Required:** Build Lvl 1: **4 Builders** | Upgrade to Lvl 2: **4 Builders**
 
-The Wonder is the prestige/endgame building. Building and upgrading it is expensive and time-consuming. When fully upgraded to Level 2 and defended for a set time, it triggers a **Victory condition**.
+The Wonder is the prestige/endgame building. Requiring all 4 builders simultaneously, you cannot start it until all 6 Houses are at Lvl 2+. Building and upgrading it is expensive and time-consuming. When fully upgraded to Level 2 and defended for a set time, it triggers a **Victory condition**.
+
+> While the Wonder is being built (4 builders occupied), no other construction or upgrades can happen. This is a deliberate all-in commitment — plan your village to be fully upgraded before breaking ground.
 
 | Level | HP | Effect | Build Cost | Build Time |
 |-------|-----|--------|-----------|-----------|
@@ -351,48 +379,92 @@ Food has no carry-over cost — it is consumed when training begins. The only Fo
 ### 5.1 Core Rules
 
 - **Every upgrade costs Gold and takes real time** (no instant upgrades by default)
-- **Only 1 building can be upgrading at a time** per Builder (player starts with 1 Builder)
-- **A 2nd Builder slot** can be unlocked from the Shop for a one-time purchase of 25,000 Gold
+- **Only 1 building can be upgrading at a time** per available Builder slot
+- **Builders are earned through Houses** — the more houses you own and the higher their level, the more builders you unlock (see §3.2)
+- **Some buildings require multiple builders simultaneously** — they consume that many builder slots for the entire duration
 - **Town Center level gates all other buildings** — nothing can exceed Town Center's level
 
 ### 5.2 Upgrade Sequence (Recommended)
 
 ```
-Phase 1 (Town Center Lvl 1):
+Phase 1 (Town Center Lvl 1 — 1 Builder available):
+  → Build all 6 Houses (2 of each type) at Lvl 1          [unlocks 4 Builders]
   → Upgrade Mines to Lvl 2 (income)
   → Build both Storages → upgrade to Lvl 2 (capacity)
   → Upgrade Barracks to Lvl 2 (better troops)
-  → Upgrade Houses to Lvl 2 (more army cap)
+  → Upgrade Houses to Lvl 2 (army cap + edge toward 5th Builder)
   → Upgrade Farms to Lvl 2 (food support)
+  → Now you have 4 Builders → start TC Lvl 1→2 upgrade (2 builders, 2 remain free)
 
-Phase 2 (upgrade Town Center to Lvl 2):
+Phase 2 (Town Center Lvl 2 — up to 4 Builders):
   → Build Market → unlock Shop
-  → Build Temple Lvl 1 → defense
+  → Build Temple (2 builders) → defense
   → Build Archery Range
-  → Build Port → sea income
+  → Build Port (2 builders) → sea income
   → Upgrade Mines to Lvl 3
   → Upgrade Storages to Lvl 3
+  → Upgrade all 6 Houses to Lvl 3                          [unlocks 5th Builder]
+  → Now queue TC Lvl 2→3 upgrade (3 builders, 2 remain free)
 
-Phase 3 (upgrade Town Center to Lvl 3):
+Phase 3 (Town Center Lvl 3 — 5 Builders):
   → Upgrade Barracks to Lvl 3 → all troops available
   → Build 2nd Barracks → faster training
-  → Build Wonder → prestige/win path
   → Max all defenses
+  → Build Wonder (4 builders, 1 remains free for small jobs)
+  → Upgrade Wonder to Lvl 2 → prestige/win path
 ```
 
 ### 5.3 Builder System
 
-| Builders | Cost | Source |
-|----------|------|--------|
-| 1st Builder | Free | Default |
-| 2nd Builder | 25,000 Gold | Shop |
+Builders are earned by building and upgrading Houses — they cannot be purchased. Each builder is a construction worker that handles one upgrade or construction job at a time. Some buildings require multiple builders working together simultaneously.
 
-With 2 Builders, two buildings can upgrade simultaneously, dramatically accelerating late-game progress.
+#### Builder Unlock Table
+
+| Builders Available | Requirement |
+|-------------------|-------------|
+| 1 | Default — always available |
+| 2 | Own 2 Houses (any level) |
+| 3 | Own 4 Houses, average Lvl 2+ |
+| 4 | Own 6 Houses, average Lvl 2+ |
+| 5 | Own all 6 Houses at Lvl 3 |
+
+#### Builder Slots Required per Building
+
+| Building | Slots to Build / Upgrade |
+|----------|--------------------------|
+| House (any level) | 1 |
+| Farm (any level) | 1 |
+| Gold Mine (any level) | 1 |
+| Storage (any level) | 1 |
+| Market (any level) | 1 |
+| Windmill | 1 |
+| Watch Tower / Wall Tower | 1 |
+| Barracks Lvl 1→2 | 1 |
+| Barracks Lvl 2→3 | 2 |
+| Archery Range (any level) | 1 |
+| Town Center Lvl 1→2 | **2** |
+| Town Center Lvl 2→3 | **3** |
+| Temple (build) | **2** |
+| Temple Lvl 2→3 | **3** |
+| Port (build) | **2** |
+| Port Lvl 2→3 | **2** |
+| Wonder Lvl 1 (build) | **4** |
+| Wonder Lvl 1→2 | **4** |
+
+> Multi-builder jobs lock all consumed builder slots for their full duration. If a 2-builder job is running and you only have 2 builders total, nothing else can be started until it completes.
+
+#### Builder Strategy
+
+Because Houses gate your builders, the optimal early loop is:
+1. Build all 6 Houses first (even at Lvl 1 — get 4 builders)
+2. Upgrade houses to Lvl 2 to reach 5 builders
+3. Now you can queue the TC upgrade (2 builders) while still having 3 free for other jobs
 
 ### 5.4 Upgrade Cancel
 
 - Upgrades can be cancelled at any time
 - 50% Gold refund on cancel (no time refund)
+- All builder slots from a cancelled job are immediately freed
 
 ---
 
@@ -627,11 +699,12 @@ These buildings are not placed by default — they must be bought from the Shop 
 | Windmill | 1,500 Gold | TC Lvl 1 | × 2 Farm food output |
 | 2nd Barracks | 3,000 Gold | TC Lvl 3 | Parallel troop training |
 | 2nd Storage | 2,000 Gold | TC Lvl 1 | Increased Gold cap |
-| 2nd Builder | 25,000 Gold | TC Lvl 2 | Parallel upgrades |
 | Port | 4,000 Gold | TC Lvl 2, Coastal cell | Sea trade income |
 | Temple | 3,500 Gold | TC Lvl 2 | Spawns defender units |
 | Wonder | 20,000 Gold | TC Lvl 3 | Prestige + win path |
 | Extra Wall Pack (×20) | 500 Gold | TC Lvl 1 | Additional wall segments |
+
+> **Note:** Builders are no longer sold in the Shop. They are earned through Houses (see §5.3).
 
 ### 10.3 Shop Economy Discount
 
@@ -910,6 +983,232 @@ Max all buildings + troops → Full 3-star raids → Leaderboard
 7. **Log off** → Mines accumulate passively
 
 This loop is designed to work in 5–10 minute active sessions with passive income bridging offline time.
+
+---
+
+---
+
+## 14. Battle Mode — Stake & Fight
+
+Battle Mode is the live PvP system where two players wager real currency, deploy armies in formation, and fight in a shared arena until one side is eliminated.
+
+---
+
+### 14.1 Overview
+
+| Property | Detail |
+|----------|--------|
+| Players | 2 (direct challenge or open matchmaking) |
+| Stake | Both players stake equal amounts of SOL |
+| Winner payout | 95% of total pot (5% protocol fee) |
+| Battlefield | Neutral arena — not either player's village |
+| Mode | Synchronous, both players active simultaneously |
+| Army source | Pre-trained troops from the player's Barracks queue |
+| Duration | Up to 5 minutes; if timer expires, side with most surviving troops wins |
+
+---
+
+### 14.2 Pre-Battle Lobby
+
+After both players accept the challenge:
+
+1. **Stake confirmation** — Both players sign an on-chain transaction locking their agreed stake into a smart contract escrow. Neither player can back out once funds are locked.
+2. **Army selection** — Each player selects which troops from their trained army to bring. The army must be pre-trained (no training happens in the lobby). Troops chosen here are **consumed** win or lose.
+3. **Spell hand** — Each player selects up to 5 spell cards from their hand. Same cards as Raid Mode.
+4. **Formation phase** — 60-second window to arrange troops on the formation grid (see §14.3).
+
+---
+
+### 14.3 Formation System
+
+Before the battle starts, each player arranges their army on their half of the battlefield using a **formation grid**. The grid is 10 × 6 cells per player side.
+
+#### Formation Rows
+
+| Row | Name | Distance from front line | Notes |
+|-----|------|--------------------------|-------|
+| 1 (front) | Vanguard | 0 units | Takes first contact — best for Warriors, Monks |
+| 2 | Midline | 3 units | Support troops — Rogues, Rangers |
+| 3 | Backline | 6 units | Ranged + healers — Wizards, Clerics, Rangers |
+| 4 (rear) | Reserve | 9 units | Troops held back for manual reinforcement spawning |
+
+#### Formation Columns
+
+The battlefield is 10 cells wide. Players can split their formation into:
+- **Left Flank** (cols 1–3)
+- **Center** (cols 4–7)
+- **Right Flank** (cols 8–10)
+
+Flying troops (Dragon, Ghost, Bat) are placed on a separate **Air Lane** layer above the grid and fly over ground formations.
+
+#### Named Formation Presets
+
+Players can save and load named presets:
+
+| Preset Name | Description |
+|-------------|-------------|
+| **Phalanx** | Warriors and Monks packed tightly in Vanguard, Clerics in Midline |
+| **Arrow** | Narrow center spike — Rangers and Rogues flanked by Warriors |
+| **Split Flank** | Two mirrored pushes on left and right, empty center |
+| **Sky Hammer** | All flying units in Air Lane, minimal ground as distraction |
+| **Balanced** | Even spread across all rows and columns |
+
+> Custom formations can be built freely within the grid during the 60-second window. Named presets are just starting points.
+
+---
+
+### 14.4 Battle Start
+
+When the formation timer expires, both armies advance simultaneously toward the center dividing line.
+
+**Engagement rules:**
+- Ground troops march forward from their row position and engage the first enemy they reach
+- Flying troops move at full speed toward the enemy backline first
+- Clerics heal nearest friendly troops within range
+- Troops target enemies using the same AI logic as Raid Mode (see §6.2)
+- No walls or base structures on the battlefield — pure open-field combat
+
+---
+
+### 14.5 Reinforcement Spawning
+
+Players do not just watch — they actively spawn reinforcements throughout the battle from their **Reserve Pool**.
+
+#### Reserve Pool
+
+The Reserve Pool is the portion of the player's trained army **not placed on the initial formation grid**. Players deliberately hold troops back in the Reserve section during formation to use as mid-battle reinforcements.
+
+| Rule | Detail |
+|------|--------|
+| Reserve cap | Up to 40% of your total army can be held in reserve |
+| Spawn location | Player's own spawn edge (behind their backline) |
+| Spawn cost | 0 Gold — troops were already trained. Deploying is free. |
+| Spawn rate limit | Max 8 troops per 10-second window (anti-spam) |
+| Army population limit | Total troops on field + reserve cannot exceed your House population cap |
+
+**Spawn mechanic:**
+1. Click a troop type from the reserve tray (bottom HUD)
+2. Click a position on your own side of the battlefield to spawn
+3. Troop enters the field and immediately advances
+
+Flying units can be spawned anywhere on the player's air lane.
+
+#### Strategic Use of Reserves
+
+- Hold Dragon and Wizard in reserve — deploy once enemy frontline is thinned
+- Spawn Clerics mid-battle when your Vanguard is taking heavy damage
+- Counter-spawn Bats to distract enemy Dragons threatening your backline
+
+---
+
+### 14.6 Spell Usage in Battle Mode
+
+Spell casting works identically to Raid Mode (§11.5) with one difference: **spells can target anywhere on the battlefield**, including the enemy formation and your own side (for support spells like Rebirth or BloodRing).
+
+Friendly fire is active — Fireball and Element spells hit your own troops if cast carelessly.
+
+---
+
+### 14.7 Victory Conditions
+
+| Condition | Winner |
+|-----------|--------|
+| All enemy troops eliminated | Player with surviving troops |
+| Timer expires (5 minutes) | Player with more troops alive (HP-weighted count) |
+| Both sides wipe simultaneously | Draw — both stakes refunded |
+
+On a Draw, the smart contract returns both stakes in full (no fee charged).
+
+---
+
+### 14.8 Stake & Payout (On-Chain)
+
+Battle Mode is backed by a Solana smart contract that holds stakes and distributes the payout.
+
+#### Stake Flow
+
+```
+Player A signs → locks X SOL into escrow
+Player B signs → locks X SOL into escrow
+       ↓
+   Battle runs (off-chain simulation, result hash submitted)
+       ↓
+   Smart contract verifies result signature from game server
+       ↓
+  Winner receives 0.95 × (2X SOL)
+  Protocol treasury receives 0.05 × (2X SOL)
+```
+
+#### Stake Tiers (Suggested Lobbies)
+
+| Tier | Stake | Payout to winner |
+|------|-------|-----------------|
+| Practice | 0.01 SOL | 0.019 SOL |
+| Standard | 0.1 SOL | 0.19 SOL |
+| High Stakes | 1 SOL | 1.9 SOL |
+| Whale | Custom (min 1 SOL, max 100 SOL) | 1.9× stake |
+
+> Practice tier uses the same code path and smart contract — it is not a simulation. Results are final.
+
+#### Anti-Cheat
+
+- Battle result is computed server-side and signed with the game server's private key
+- Smart contract only releases funds on receipt of a valid signed result
+- Players cannot manipulate outcome through client modification
+- Disputes (disconnect, server error): if either player disconnects for >30 seconds with no reconnect, the remaining player is awarded the win and payout
+
+---
+
+### 14.9 Battle Mode Matchmaking
+
+Players can enter Battle Mode in two ways:
+
+| Method | Detail |
+|--------|--------|
+| **Open Challenge** | Post a challenge at any stake tier — any player of similar TC level can accept |
+| **Direct Challenge** | Invite a specific player by wallet address or in-game name |
+
+Matchmaking filter: TC level ±1 (same as Raid Mode). Players outside this range cannot join your open challenge.
+
+---
+
+### 14.10 Post-Battle Report (Battle Mode)
+
+After the battle ends:
+
+| Field | Description |
+|-------|-------------|
+| Winner / Loser | Large result card |
+| Troops lost (both sides) | Side-by-side comparison |
+| Spells cast | List of cards played |
+| SOL transferred | Amount won or lost |
+| Transaction link | Solana Explorer link to payout tx |
+| Replay button | Watch full battle replay |
+
+Troops consumed in Battle Mode are **permanently gone** — the same as Raid Mode. Spells used are consumed. Players must re-train and re-stock before their next Battle.
+
+---
+
+### 14.11 Battle Mode in the Progression Loop
+
+```
+[Battle Mode Loop]
+Train Troops → Pick Formation + Spells → Find/Accept Challenge
+        ↓
+  Stake SOL (on-chain escrow)
+        ↓
+  Formation Phase (60s) → Battle (up to 5min)
+  Spawn reinforcements mid-battle, cast spells
+        ↓
+  Win → 1.9× SOL payout → Fund village upgrades
+  Lose → SOL gone → Train new army → Rematch
+```
+
+Battle Mode creates a second high-variance economy track alongside Raid Mode:
+- Raid Mode = steady incremental gold income with low downside risk
+- Battle Mode = high-risk high-reward SOL swings, requires a strong trained army
+
+Both tracks share the same troops, Houses (army cap), Barracks (training), and spell system — Battle Mode is not a separate game mode but a natural extension of the base-building loop.
 
 ---
 
