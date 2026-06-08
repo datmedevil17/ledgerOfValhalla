@@ -24,6 +24,7 @@ export interface BuildingConfig {
   category:  Category
   scale:     number     // Three.js render scale
   grid:      GridSize
+  gridFor?:  (age: Age, level: Level) => GridSize
   hasLevels: boolean    // false → only level-1 entry exists per age
   maxLevel?: 1 | 2 | 3 // defaults to 3 when hasLevels is true
   pathFor:   (age: Age, level: Level) => string
@@ -61,6 +62,7 @@ export const CATALOG: BuildingConfig[] = [
   {
     id: 'house-2', name: 'House II', category: 'Town', scale: 4,
     grid: { w: 2, h: 2 }, hasLevels: true,
+    gridFor: (a, l) => l === 1 ? { w: 2, h: 2 } : l === 2 ? { w: 3, h: 3 } : { w: 4, h: 4 },
     pathFor: (a, l) => `/models/Houses_${a}_2_Level${l}.gltf`,
     health: {
       FirstAge:  { 1: 420,  2: 550,  3: 700  },
@@ -71,6 +73,7 @@ export const CATALOG: BuildingConfig[] = [
   {
     id: 'house-3', name: 'House III', category: 'Town', scale: 4,
     grid: { w: 2, h: 2 }, hasLevels: true,
+    gridFor: (a, l) => l >= 2 ? { w: 4, h: 4 } : { w: 2, h: 2 },
     pathFor: (a, l) => `/models/Houses_${a}_3_Level${l}.gltf`,
     health: {
       FirstAge:  { 1: 450,  2: 580,  3: 750  },
@@ -80,7 +83,8 @@ export const CATALOG: BuildingConfig[] = [
 
   {
     id: 'farm', name: 'Farm', category: 'Town', scale: 4,
-    grid: { w: 3, h: 3 }, hasLevels: true,
+    grid: { w: 2, h: 2 }, hasLevels: true,
+    gridFor: (a, l) => l === 1 ? { w: 2, h: 2 } : l === 2 ? { w: 3, h: 3 } : { w: 4, h: 4 },
     pathFor: (a, l) => `/models/Farm_${a}_Level${l}.gltf`,
     health: {
       FirstAge:  { 1: 600,  2: 780,  3: 1000 },
@@ -90,7 +94,7 @@ export const CATALOG: BuildingConfig[] = [
 
   {
     id: 'storage', name: 'Storage', category: 'Town', scale: 4,
-    grid: { w: 3, h: 3 }, hasLevels: true,
+    grid: { w: 4, h: 4 }, hasLevels: true,
     // Filename typo in the asset pack for FirstAge Level 3
     pathFor: (a, l) =>
       a === 'FirstAge' && l === 3
@@ -147,6 +151,7 @@ export const CATALOG: BuildingConfig[] = [
   {
     id: 'archery', name: 'Archery', category: 'Military', scale: 4,
     grid: { w: 3, h: 3 }, hasLevels: true,
+    gridFor: (a, l) => l >= 2 ? { w: 4, h: 4 } : { w: 3, h: 3 },
     pathFor: (a, l) => `/models/Archery_${a}_Level${l}.gltf`,
     health: {
       FirstAge:  { 1: 700,  2: 900,  3: 1150 },
@@ -166,7 +171,7 @@ export const CATALOG: BuildingConfig[] = [
 
   {
     id: 'tower-house', name: 'Tower House', category: 'Military', scale: 4,
-    grid: { w: 2, h: 2 }, hasLevels: false,
+    grid: { w: 3, h: 3 }, hasLevels: false,
     pathFor: (a) => `/models/TowerHouse_${a}.gltf`,
     health: {
       FirstAge:  { 1: 1000 },
@@ -201,7 +206,7 @@ export const CATALOG: BuildingConfig[] = [
 
   {
     id: 'port', name: 'Port', category: 'Special', scale: 5,
-    grid: { w: 4, h: 3 }, hasLevels: true,
+    grid: { w: 4, h: 4 }, hasLevels: true,
     pathFor: (a, l) => `/models/Port_${a}_Level${l}.gltf`,
     health: {
       FirstAge:  { 1: 1100, 2: 1450, 3: 1850 },
@@ -235,9 +240,14 @@ export function pathOf(defId: string, age: Age, level: Level): string {
   return defFor(defId).pathFor(age, level)
 }
 
-export function healthOf(defId: string, age: Age, level: Level): number {
+export function gridSizeOf(defId: string, age: Age, level: Level): GridSize {
+  const def = defFor(defId)
+  return def.gridFor ? def.gridFor(age, level) : def.grid
+}
+
+export function healthOf(defId: string, age: Age, level: Level, gridMultiplier: number = 1): number {
   const map = defFor(defId).health
-  return map[age]?.[level] ?? map.FirstAge?.[1] ?? 0
+  return (map[age]?.[level] ?? map.FirstAge?.[1] ?? 0) * gridMultiplier
 }
 
 export function maxLevel(defId: string, age: Age): Level {

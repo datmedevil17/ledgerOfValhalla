@@ -2,12 +2,12 @@ import { Suspense, useRef, useMemo, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
-import rawData from '../public/clash-map-1779534012265.json'
-import preset1 from '../public/map-preset-1.json'
-import preset2 from '../public/map-preset-2.json'
-import preset3 from '../public/map-preset-3.json'
-import preset4 from '../public/map-preset-4.json'
-import preset5 from '../public/map-preset-5.json'
+import rawData from './maps/clash-map-1779534012265.json'
+import preset1 from './maps/map-preset-1.json'
+import preset2 from './maps/map-preset-2.json'
+import preset3 from './maps/map-preset-3.json'
+import preset4 from './maps/map-preset-4.json'
+import preset5 from './maps/map-preset-5.json'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface FinalPlacedItem {

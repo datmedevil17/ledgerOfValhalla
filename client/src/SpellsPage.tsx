@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect, type MouseEvent } from 'react'
 import { useTxToast, TxToastContainer, TX_TOAST_STYLES } from './TxToast'
-import rawData from '../public/clash-map-1779534012265.json'
+import rawData from './maps/clash-map-1779534012265.json'
 import { FinalMapCanvas, type FinalPlacedItem, type FinalLightCfg } from './FinalMap'
 import { LightningStrike } from './LightningStrike'
-import { FireCircle } from './FireCircle'
+
 import { FireballDrop } from './FireballDrop'
 import LiquidEther from './LiquidEther'
 import LightPillar from './LightPillar'

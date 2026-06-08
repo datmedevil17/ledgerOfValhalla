@@ -2,12 +2,12 @@ import React, { Suspense, useMemo, useRef, useState, useEffect } from 'react'
 import type { CSSProperties } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
-import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei'
+import { MapControls, useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 import * as THREE from 'three'
 import { Physics, RigidBody, CapsuleCollider, CuboidCollider, interactionGroups } from '@react-three/rapier'
 import type { RapierRigidBody } from '@react-three/rapier'
-import { CATALOG, defFor, healthOf, type Age, type Level } from './config'
+import { CATALOG, defFor, healthOf, type Age, type Level, gridSizeOf } from './config'
 import { TROOP_DEFS, TROOP_IDS, TROOP_START_COUNT, BAT_SWARM_SIZE, type TroopId } from './troops'
 import { DEFENSE_DEFS, TEMPLE_REINFORCE_RADIUS, TEMPLE_REINFORCE_COUNT, TEMPLE_REINFORCE_TYPES } from './defenses'
 import { FinalMapCanvas } from './FinalMap'
@@ -255,9 +255,9 @@ const ENV_ASSETS: CatalogEntry[] = [
   { id: 'rock-d',           name: 'Rock',             category: 'Rocks',     defaultScale: 5,  path: '/models/Rock.gltf',                        gridW: 1, gridH: 1 },
   { id: 'rock-group',       name: 'Rock Group',       category: 'Rocks',     defaultScale: 5,  path: '/models/Rock_Group.gltf',                  gridW: 2, gridH: 2 },
   // Resources
-  { id: 'mine',             name: 'Mine',             category: 'Resources', defaultScale: 4,  path: '/models/Mine.gltf',                        gridW: 2, gridH: 2 },
+  { id: 'mine',             name: 'Mine',             category: 'Resources', defaultScale: 4,  path: '/models/Mine.gltf',                        gridW: 4, gridH: 4 },
   // Structures
-  { id: 'port-s1',          name: 'Port',             category: 'Structures',defaultScale: 5,  path: '/models/Port_SecondAge_Level1.gltf',       gridW: 4, gridH: 3 },
+  { id: 'port-s1',          name: 'Port',             category: 'Structures',defaultScale: 5,  path: '/models/Port_SecondAge_Level1.gltf',       gridW: 4, gridH: 4 },
 ]
 
 const BUILDING_ENTRIES: CatalogEntry[] = CATALOG.map(b => ({
@@ -419,9 +419,10 @@ function isInsideWalls(
 }
 
 // Returns nearest point on a building's AABB from position (px, pz)
+// b.position is the exact center of the logical footprint.
 function nearestBuildingPt(px: number, pz: number, b: PlacedItem): [number, number] {
-  const bxMin = Math.round(b.position[0] - 0.5)
-  const bzMin = Math.round(b.position[2] - 0.5)
+  const bxMin = Math.round(b.position[0] - b.gridW / 2)
+  const bzMin = Math.round(b.position[2] - b.gridH / 2)
   return [
     Math.max(bxMin, Math.min(bxMin + b.gridW, px)),
     Math.max(bzMin, Math.min(bzMin + b.gridH, pz)),
@@ -434,19 +435,22 @@ function distToBuilding(px: number, pz: number, b: PlacedItem): number {
 }
 
 // ── Grid helpers ──────────────────────────────────────────────────────────────
-// No bounds clamping — placement is allowed across the full canvas
+// Snaps the placement cursor to the exact center of the bounding cell block.
 function snapForItem(cx: number, cz: number, w: number, h: number): [number, number, number] {
-  return [Math.floor(cx - w / 2) + 0.5, 0, Math.floor(cz - h / 2) + 0.5]
+  const bx = Math.round(cx - w / 2)
+  const bz = Math.round(cz - h / 2)
+  return [bx + w / 2, 0, bz + h / 2]
 }
 
 function cellKey(cx: number, cz: number) { return `${cx},${cz}` }
 
 function occupiedCells(pos: [number, number, number], w: number, h: number): string[] {
-  const bx = Math.round(pos[0] - 0.5), bz = Math.round(pos[2] - 0.5)
+  const bxMin = Math.round(pos[0] - w / 2)
+  const bzMin = Math.round(pos[2] - h / 2)
   const keys: string[] = []
   for (let dx = 0; dx < w; dx++)
     for (let dz = 0; dz < h; dz++)
-      keys.push(cellKey(bx + dx, bz + dz))
+      keys.push(cellKey(bxMin + dx, bzMin + dz))
   return keys
 }
 
@@ -458,8 +462,27 @@ function buildOccupiedSet(items: PlacedItem[]): Set<string> {
   return set
 }
 
-function hasCollision(pos: [number, number, number], entry: CatalogEntry, occupied: Set<string>): boolean {
-  return occupiedCells(pos, entry.gridW, entry.gridH).some(k => occupied.has(k))
+function hasCollision(pos: [number, number, number], gridW: number, gridH: number, items: PlacedItem[], isWall: boolean): boolean {
+  const bxMin = Math.round(pos[0] - gridW / 2)
+  const bzMin = Math.round(pos[2] - gridH / 2)
+  if (bxMin < -GRID_W / 2 || bxMin + gridW > GRID_W / 2) return true
+  if (bzMin < -GRID_H / 2 || bzMin + gridH > GRID_H / 2) return true
+  
+  const cells = occupiedCells(pos, gridW, gridH)
+  for (const item of items) {
+    const itemCells = occupiedCells(item.position, item.gridW, item.gridH)
+    const overlapCount = cells.filter(c => itemCells.includes(c)).length
+    if (overlapCount > 0) {
+      if (isWall && item.category === 'Walls') {
+        if (overlapCount === cells.length || overlapCount === itemCells.length) {
+          return true
+        }
+      } else {
+        return true
+      }
+    }
+  }
+  return false
 }
 
 // ── Textures ──────────────────────────────────────────────────────────────────
@@ -965,12 +988,10 @@ function BuildingColliders({ buildings, destroyedIds }: {
   return (
     <>
       {buildings.filter(b => !destroyedSet.has(b.id)).map(b => {
-        const cx = b.position[0] + (b.gridW - 1) / 2
-        const cz = b.position[2] + (b.gridH - 1) / 2
         return (
-          <RigidBody key={b.id} type="fixed" position={[cx, 0, cz]} colliders={false}>
+          <RigidBody key={b.id} type="fixed" position={[b.position[0], 0, b.position[2]]} colliders={false}>
             <CuboidCollider
-              args={[b.gridW / 2, 2, b.gridH / 2]}
+              args={[b.gridW / 2 + 0.05, 2, b.gridH / 2 + 0.05]}
               collisionGroups={interactionGroups([GRP_BUILDING], [GRP_WALKER])}
             />
           </RigidBody>
@@ -991,12 +1012,10 @@ function EnvColliders({ items }: { items: PlacedItem[] }) {
   return (
     <>
       {obstacles.map(it => {
-        const cx = it.position[0] + (it.gridW - 1) / 2
-        const cz = it.position[2] + (it.gridH - 1) / 2
         return (
-          <RigidBody key={it.id} type="fixed" position={[cx, 0, cz]} colliders={false}>
+          <RigidBody key={it.id} type="fixed" position={[it.position[0], 0, it.position[2]]} colliders={false}>
             <CuboidCollider
-              args={[it.gridW / 2, 2, it.gridH / 2]}
+              args={[it.gridW / 2 + 0.05, 2, it.gridH / 2 + 0.05]}
               collisionGroups={interactionGroups([GRP_BUILDING], [GRP_WALKER])}
             />
           </RigidBody>
@@ -1317,12 +1336,15 @@ function AnimatedTroop({ troop, gsRef, onDied }: {
 }
 
 // ── 3D model helpers ──────────────────────────────────────────────────────────
-function Model({ path, position, rotation = [0, 0, 0], scale = 1, onClick }: {
+function Model({ path, position, rotation = [0, 0, 0], scale = 1, onClick, w, h, isWall }: {
   path:      string
   position:  [number, number, number]
   rotation?: [number, number, number]
   scale?:    number
   onClick?:  (e: ThreeEvent<MouseEvent>) => void
+  w?:        number
+  h?:        number
+  isWall?:   boolean
 }) {
   const { scene } = useGLTF(path)
   const clone = useMemo(() => {
@@ -1335,12 +1357,37 @@ function Model({ path, position, rotation = [0, 0, 0], scale = 1, onClick }: {
     })
     return c
   }, [scene])
-  return <primitive object={clone} position={position} rotation={rotation} scale={scale} onClick={onClick} />
+
+  const actualScale = useMemo(() => {
+    if (w !== undefined && h !== undefined) {
+      const box = new THREE.Box3().setFromObject(scene)
+      const size = box.getSize(new THREE.Vector3())
+      if (size.x > 0 && size.z > 0) {
+        const sx = w / size.x
+        const sz = h / size.z
+        const sy = isWall ? Math.min(1 / size.x, 1 / size.z) * 5 : Math.min(sx, sz)
+        return [sx, sy, sz] as [number, number, number]
+      }
+    }
+    return scale
+  }, [scene, w, h, scale, isWall])
+
+  const offset = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene)
+    const center = box.getCenter(new THREE.Vector3())
+    return [-center.x, -box.min.y, -center.z] as [number, number, number]
+  }, [scene])
+
+  return (
+    <group position={position} rotation={rotation} scale={actualScale} onClick={onClick}>
+      <primitive object={clone} position={offset} />
+    </group>
+  )
 }
 
-function GhostItem({ path, position, rotation, scale, w, h, valid }: {
+function GhostItem({ path, position, rotation, scale, w, h, valid, isWall }: {
   path: string; position: [number, number, number]
-  rotation: number; scale: number; w: number; h: number; valid: boolean
+  rotation: number; scale: number; w: number; h: number; valid: boolean; isWall?: boolean
 }) {
   const { scene } = useGLTF(path)
   const clone = useMemo(() => {
@@ -1363,13 +1410,31 @@ function GhostItem({ path, position, rotation, scale, w, h, valid }: {
   const rotated = Math.abs(Math.sin(rotation)) > 0.5
   const ew = rotated ? h : w
   const eh = rotated ? w : h
-  const fx = position[0] + (ew - 1) / 2
-  const fz = position[2] + (eh - 1) / 2
+
+  const actualScale = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene)
+    const size = box.getSize(new THREE.Vector3())
+    if (size.x > 0 && size.z > 0) {
+      const sx = w / size.x
+      const sz = h / size.z
+      const sy = isWall ? Math.min(1 / size.x, 1 / size.z) * 5 : Math.min(sx, sz)
+      return [sx, sy, sz] as [number, number, number]
+    }
+    return scale
+  }, [scene, w, h, scale, isWall])
+
+  const offset = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene)
+    const center = box.getCenter(new THREE.Vector3())
+    return [-center.x, -box.min.y, -center.z] as [number, number, number]
+  }, [scene])
 
   return (
     <group>
-      <primitive object={clone} position={position} rotation={[0, rotation, 0]} scale={scale} />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[fx, 0.02, fz]}>
+      <group position={position} rotation={[0, rotation, 0]} scale={actualScale}>
+        <primitive object={clone} position={offset} />
+      </group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[position[0], 0.02, position[2]]}>
         <planeGeometry args={[ew, eh]} />
         <meshBasicMaterial color={valid ? '#00ff44' : '#ff2200'} transparent opacity={valid ? 0.2 : 0.32} depthWrite={false} />
       </mesh>
@@ -1377,9 +1442,10 @@ function GhostItem({ path, position, rotation, scale, w, h, valid }: {
   )
 }
 
-function PlacedItems({ items, selectedId, canSelect, onSelect }: {
+function PlacedItems({ items, selectedId, preview, canSelect, onSelect }: {
   items:      PlacedItem[]
   selectedId: string | null
+  preview:    { type: 'rotate' | 'upgrade', rotation?: number, level?: Level } | null
   canSelect:  boolean
   onSelect:   (id: string) => void
 }) {
@@ -1387,28 +1453,49 @@ function PlacedItems({ items, selectedId, canSelect, onSelect }: {
     <>
       {items.map(item => {
         const isSelected = item.id === selectedId
+        const isPreviewing = isSelected && preview !== null
+        
         const cat = CATALOG_MAP_FULL[item.catalogId]
-        const rawW = cat?.gridW ?? item.gridW
-        const rawH = cat?.gridH ?? item.gridH
-        const rotated = Math.abs(Math.sin(item.rotation)) > 0.5
-        const ew = rotated ? rawH : rawW
-        const eh = rotated ? rawW : rawH
-        const fx = item.position[0] + (ew - 1) / 2
-        const fz = item.position[2] + (eh - 1) / 2
+        let activeW = item.gridW ?? cat?.gridW ?? 1
+        let activeH = item.gridH ?? cat?.gridH ?? 1
+
+        if (isPreviewing && preview.type === 'upgrade' && item.defId) {
+          const newGrid = gridSizeOf(item.defId, item.age ?? 'SecondAge', preview.level!)
+          activeW = newGrid.w
+          activeH = newGrid.h
+        }
+
+        const activeRotation = (isPreviewing && preview.type === 'rotate') ? preview.rotation! : item.rotation
+        const rotated = Math.abs(Math.sin(activeRotation)) > 0.5
+        const ew = rotated ? activeH : activeW
+        const eh = rotated ? activeW : activeH
+
+        const activePath = (isPreviewing && preview.type === 'upgrade' && item.defId) 
+          ? defFor(item.defId).pathFor(item.age ?? 'SecondAge', preview.level!) 
+          : item.path
+
+        let isValidPreview = true
+        if (isPreviewing && (preview.type === 'rotate' || preview.type === 'upgrade')) {
+          isValidPreview = !hasCollision(item.position, ew, eh, items.filter(it => it.id !== item.id), item.category === 'Walls')
+        }
+
         return (
           <Suspense key={item.id} fallback={null}>
             <group>
               <Model
-                path={item.path}
+                path={activePath}
                 position={item.position}
-                rotation={[0, item.rotation, 0]}
+                rotation={[0, activeRotation, 0]}
                 scale={item.scale}
+                w={activeW}
+                h={activeH}
+                isWall={item.category === 'Walls'}
                 onClick={canSelect ? e => { e.stopPropagation(); onSelect(item.id) } : undefined}
               />
               {isSelected && (
-                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[fx, 0.05, fz]}>
+                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[item.position[0], 0.05, item.position[2]]}>
                   <planeGeometry args={[ew + 0.3, eh + 0.3]} />
-                  <meshBasicMaterial color="#f0c040" transparent opacity={0.35} depthWrite={false} side={THREE.DoubleSide} />
+                  <meshBasicMaterial color={isPreviewing ? (isValidPreview ? '#44ff44' : '#ff2200') : '#f0c040'} transparent opacity={0.35} depthWrite={false} side={THREE.DoubleSide} />
                 </mesh>
               )}
             </group>
@@ -1561,13 +1648,15 @@ function ScaleControl({ value, onChange, min = 0.5, max = 20 }: {
 
 const expandedCats = new Set<string>(ALL_CATEGORIES)
 
-function CatalogPanel({ selectedId, placementScale, rotation, onSelect, onScaleChange, onSetRotation, onUndo, onClear }: {
+function CatalogPanel({ selectedId, placementScale, rotation, wallLength, onSelect, onScaleChange, onSetRotation, onWallLengthChange, onUndo, onClear }: {
   selectedId:     string | null
   placementScale: number
   rotation:       number
+  wallLength:     number
   onSelect:       (id: string | null) => void
   onScaleChange:  (v: number) => void
   onSetRotation:  (v: number) => void
+  onWallLengthChange: (v: number) => void
   onUndo:         () => void
   onClear:        () => void
 }) {
@@ -1612,6 +1701,24 @@ function CatalogPanel({ selectedId, placementScale, rotation, onSelect, onScaleC
               )
             })}
           </div>
+
+          {CATALOG_MAP_FULL[selectedId]?.category === 'Walls' && (
+            <>
+              <div style={{ fontSize: 10, color: '#8a6030', letterSpacing: 1.5, textTransform: 'uppercase', margin: '10px 0 6px' }}>Wall Size</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 4 }}>
+                {[1, 2, 3].map(len => (
+                  <button key={len} onClick={() => onWallLengthChange(len)} style={{
+                    ...btn, textAlign: 'center', padding: '5px 4px', fontSize: 11,
+                    background: wallLength === len ? '#3a2000' : '#0e0800',
+                    border: `1px solid ${wallLength === len ? '#f0c040' : '#3a2a10'}`,
+                    color: wallLength === len ? '#f0c040' : '#8a6040',
+                  }}>
+                    1x{len}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
 
           <button style={{ ...btn, width: '100%', marginTop: 8, color: '#e87050', borderColor: '#6a2010' }}
             onClick={() => onSelect(null)}>
@@ -1964,13 +2071,13 @@ function StoragePanel({ item, allItems, onClose }: { item: PlacedItem; allItems:
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
-function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDelete, onClose }: {
+function ItemPanel({ item, preview, onSetPreview, onScaleChange, onRotationChange, onUpgradeLevel, onDelete, onClose }: {
   item:             PlacedItem
+  preview:          { type: 'rotate' | 'upgrade', rotation?: number, level?: Level } | null
+  onSetPreview:     (p: { type: 'rotate' | 'upgrade', rotation?: number, level?: Level } | null) => void
   onScaleChange:    (v: number) => void
   onRotationChange: (v: number) => void
-  onUpgradeLevel:   () => void
+  onUpgradeLevel:   (lv: Level) => void
   onDelete:         () => void
   onClose:          () => void
 }) {
@@ -1978,9 +2085,9 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
   const def = isBuilding ? defFor(item.defId!) : null
   const maxLevel  = isBuilding ? (def!.maxLevel ?? 3) : 3
   const canLevel  = isBuilding && def!.hasLevels && (item.level ?? 1) < maxLevel
-  const currentHP = isBuilding ? healthOf(item.defId!, item.age ?? 'SecondAge', item.level ?? 1) : null
-  const maxHP     = isBuilding ? healthOf(item.defId!, 'SecondAge', maxLevel as Level) || currentHP! : null
-  const nextLvHP  = canLevel   ? healthOf(item.defId!, item.age ?? 'SecondAge', (item.level! + 1) as Level) : null
+  const mult = item.category === 'Walls' ? Math.max(item.gridW, item.gridH) : 1
+  const currentHP = isBuilding ? healthOf(item.defId!, item.age ?? 'SecondAge', item.level ?? 1, mult) : null
+  const maxHP     = isBuilding ? healthOf(item.defId!, 'SecondAge', maxLevel as Level, mult) || currentHP! : null
 
   const rotDeg = Math.round(item.rotation * 180 / Math.PI)
 
@@ -2026,9 +2133,14 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 4 }}>
             {[0, 90, 180, 270].map(deg => {
               const rad = deg * Math.PI / 180
-              const active = Math.abs(item.rotation - rad) < 0.01
+              const isCurrent = Math.abs(item.rotation - rad) < 0.01
+              const isPreview = preview?.type === 'rotate' && Math.abs((preview.rotation ?? 0) - rad) < 0.01
+              const active = isCurrent || isPreview
               return (
-                <button key={deg} onClick={() => onRotationChange(rad)} style={{
+                <button key={deg} onClick={() => {
+                  if (isCurrent) onSetPreview(null)
+                  else onSetPreview({ type: 'rotate', rotation: rad })
+                }} style={{
                   ...btn, textAlign: 'center', padding: '5px 4px', fontSize: 11,
                   background: active ? '#3a2000' : '#0e0800',
                   border: `1px solid ${active ? '#f0c040' : '#3a2a10'}`,
@@ -2039,6 +2151,12 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
               )
             })}
           </div>
+          {preview?.type === 'rotate' && (
+            <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+              <button onClick={() => onRotationChange(preview.rotation!)} style={{ ...btn, flex: 1, background: '#2a1800', color: '#f0c040', borderColor: '#f0c040' }}>Confirm</button>
+              <button onClick={() => onSetPreview(null)} style={{ ...btn, flex: 1 }}>Cancel</button>
+            </div>
+          )}
         </div>
 
         {/* Building upgrades */}
@@ -2047,27 +2165,37 @@ function ItemPanel({ item, onScaleChange, onRotationChange, onUpgradeLevel, onDe
             <div style={{ fontSize: 10, color: '#8a6030', letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 6 }}>Level</div>
             <div style={{ display: 'flex', gap: 5, marginBottom: 6 }}>
               {([1, 2, 3] as Level[]).filter(lv => lv <= maxLevel).map(lv => {
-                const isActive = item.level === lv, isPast = (item.level ?? 1) > lv
+                const isCurrent = item.level === lv
+                const isPast = (item.level ?? 1) > lv
+                const isPreview = preview?.type === 'upgrade' && preview.level === lv
+                const active = isCurrent || isPreview
                 return (
                   <div key={lv} style={{
                     flex: 1, textAlign: 'center', padding: '4px 3px', borderRadius: 4, fontSize: 11,
-                    background: isActive ? '#3a2000' : isPast ? '#1a1200' : '#0e0800',
-                    border: `1px solid ${isActive ? '#f0c040' : isPast ? '#6a4820' : '#2a1a08'}`,
-                    color: isActive ? '#f0c040' : isPast ? '#7a5020' : '#3a2810',
+                    background: active ? '#3a2000' : isPast ? '#1a1200' : '#0e0800',
+                    border: `1px solid ${active ? '#f0c040' : isPast ? '#6a4820' : '#2a1a08'}`,
+                    color: active ? '#f0c040' : isPast ? '#7a5020' : '#3a2810',
                   }}>
                     <div style={{ fontWeight: 700 }}>{lv}</div>
-                    <div style={{ fontSize: 9, marginTop: 1 }}>{healthOf(item.defId!, item.age ?? 'SecondAge', lv).toLocaleString()}</div>
+                    <div style={{ fontSize: 9, marginTop: 1 }}>{healthOf(item.defId!, item.age ?? 'SecondAge', lv, mult).toLocaleString()}</div>
                   </div>
                 )
               })}
             </div>
-            <button onClick={onUpgradeLevel} disabled={!canLevel} style={{
-              ...btn, width: '100%', textAlign: 'center',
-              opacity: canLevel ? 1 : 0.4, cursor: canLevel ? 'pointer' : 'default',
-              background: canLevel ? '#2a1800' : '#0e0800',
-            }}>
-              {canLevel ? `↑ Level ${item.level! + 1} (${nextLvHP!.toLocaleString()} HP)` : 'Max Level'}
-            </button>
+            {canLevel && preview?.type !== 'upgrade' && (
+              <button onClick={() => onSetPreview({ type: 'upgrade', level: (item.level! + 1) as Level })} style={{
+                ...btn, width: '100%', textAlign: 'center',
+                background: '#2a1800',
+              }}>
+                ↑ Preview Level {item.level! + 1}
+              </button>
+            )}
+            {preview?.type === 'upgrade' && (
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button onClick={() => onUpgradeLevel(preview.level!)} style={{ ...btn, flex: 1, background: '#2a1800', color: '#f0c040', borderColor: '#f0c040' }}>Confirm Upgrade</button>
+                <button onClick={() => onSetPreview(null)} style={{ ...btn, flex: 1 }}>Cancel</button>
+              </div>
+            )}
           </div>
         )}
 
@@ -2476,11 +2604,68 @@ function SavesPanel({ items, lights, onLoad, onBasemapChange }: {
 // ── Root ──────────────────────────────────────────────────────────────────────
 const CAM: [number, number, number] = [42, 58, 42]
 
+function CameraController({ enabled }: { enabled: boolean }) {
+  const controlsRef = useRef<any>(null)
+  const { camera } = useThree()
+
+  useEffect(() => {
+    const handlePan = (e: any) => {
+      if (!controlsRef.current) return
+      const { dx, dz } = e.detail
+      const t = controlsRef.current.target
+      t.x += dx
+      t.z += dz
+      camera.position.x += dx
+      camera.position.z += dz
+    }
+    const handleZoom = (e: any) => {
+      if (!controlsRef.current) return
+      const delta = e.detail
+      const dist = camera.position.distanceTo(controlsRef.current.target)
+      const newDist = THREE.MathUtils.clamp(dist + delta, 20, 120)
+      const dir = camera.position.clone().sub(controlsRef.current.target).normalize()
+      camera.position.copy(controlsRef.current.target).add(dir.multiplyScalar(newDist))
+    }
+    window.addEventListener('cam-pan', handlePan)
+    window.addEventListener('cam-zoom', handleZoom)
+    return () => {
+      window.removeEventListener('cam-pan', handlePan)
+      window.removeEventListener('cam-zoom', handleZoom)
+    }
+  }, [camera])
+
+  useFrame(() => {
+    if (controlsRef.current) {
+      const t = controlsRef.current.target
+      t.x = THREE.MathUtils.clamp(t.x, -45, 45)
+      t.z = THREE.MathUtils.clamp(t.z, -36, 36)
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -100, 100)
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -100, 100)
+    }
+  })
+
+  return (
+    <MapControls
+      ref={controlsRef}
+      makeDefault
+      enabled={enabled}
+      target={[0, 0, 0]}
+      minPolarAngle={Math.PI / 5} maxPolarAngle={Math.PI / 2.5}
+      minDistance={20} maxDistance={120}
+      enablePan panSpeed={0.7} zoomSpeed={0.75} rotateSpeed={0.4}
+      screenSpacePanning={false}
+      zoomToCursor={true}
+      mouseButtons={{ LEFT: THREE.MOUSE.ROTATE, RIGHT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY }}
+    />
+  )
+}
+
 export default function App() {
   const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null)
   const [selectedItemId,    setSelectedItemId]    = useState<string | null>(null)
   const [rotation,          setRotation]           = useState(0)
   const [placementScale,    setPlacementScale]     = useState(5)
+  const [wallLength,        setWallLength]         = useState(1)
   const [cursor,            setCursor]             = useState<[number, number] | null>(null)
   const [items,             setItems]              = useState<PlacedItem[]>(() => readBasemap()?.items ?? DEFAULT_ENV_ITEMS)
   const [showSaves,         setShowSaves]          = useState(false)
@@ -2507,9 +2692,11 @@ export default function App() {
   const selectedEntry = selectedCatalogId ? CATALOG_MAP_FULL[selectedCatalogId] ?? null : null
   const occupiedSet   = useMemo(() => buildOccupiedSet(items), [items])
 
+  const baseW = selectedEntry?.category === 'Walls' ? wallLength : (selectedEntry?.gridW ?? 1)
+  const baseH = selectedEntry?.category === 'Walls' ? 1 : (selectedEntry?.gridH ?? 1)
   const ghostRotated = Math.abs(Math.sin(rotation)) > 0.5
-  const ghostW = ghostRotated ? (selectedEntry?.gridH ?? 1) : (selectedEntry?.gridW ?? 1)
-  const ghostH = ghostRotated ? (selectedEntry?.gridW ?? 1) : (selectedEntry?.gridH ?? 1)
+  const ghostW = ghostRotated ? baseH : baseW
+  const ghostH = ghostRotated ? baseW : baseH
 
   const ghostPos = useMemo<[number, number, number] | null>(() => {
     if (!selectedEntry || !cursor) return null
@@ -2518,8 +2705,8 @@ export default function App() {
 
   const ghostValid = useMemo(() => {
     if (!ghostPos || !selectedEntry) return true
-    return !hasCollision(ghostPos, { ...selectedEntry, gridW: ghostW, gridH: ghostH }, occupiedSet)
-  }, [ghostPos, selectedEntry, ghostW, ghostH, occupiedSet])
+    return !hasCollision(ghostPos, ghostW, ghostH, items, selectedEntry.category === 'Walls')
+  }, [ghostPos, selectedEntry, ghostW, ghostH, items])
 
   // R key rotates during placement; Escape cancels
   useEffect(() => {
@@ -2529,8 +2716,10 @@ export default function App() {
         if (selectedCatalogId) {
           setRotation(r => (r + Math.PI / 2) % (Math.PI * 2))
         } else if (selectedItemId) {
-          setItems(prev => prev.filter(it => it.id !== selectedItemId))
-          setSelectedItemId(null)
+          setPreview(p => {
+             const curRot = p?.type === 'rotate' ? p.rotation! : (items.find(i => i.id === selectedItemId)?.rotation ?? 0)
+             return { type: 'rotate', rotation: (curRot + Math.PI / 2) % (Math.PI * 2) }
+          })
         }
       }
     }
@@ -2557,8 +2746,8 @@ export default function App() {
       position:  pos,
       rotation,
       scale:     placementScale,
-      gridW:     ghostW,
-      gridH:     ghostH,
+      gridW:     baseW,
+      gridH:     baseH,
       ...(selectedEntry.defId ? {
         defId: selectedEntry.defId,
         age:   'SecondAge' as Age,
@@ -2567,7 +2756,7 @@ export default function App() {
     }
     // Use functional update so concurrent drag placements see fresh state
     setItems(prev => {
-      if (hasCollision(pos, { ...selectedEntry!, gridW: ghostW, gridH: ghostH }, buildOccupiedSet(prev))) return prev
+      if (hasCollision(pos, ghostW, ghostH, prev, selectedEntry.category === 'Walls')) return prev
       fireTxToast()
       return [...prev, newItem]
     })
@@ -2576,25 +2765,83 @@ export default function App() {
   const handleScaleItem = (v: number) => setItems(prev =>
     prev.map(it => it.id === selectedItemId ? { ...it, scale: v } : it))
 
-  const handleRotateItem = (v: number) => setItems(prev =>
-    prev.map(it => it.id === selectedItemId ? { ...it, rotation: v } : it))
+  // ── Modifying placed items ───────────────────────────────────────────────────
+  const [preview, setPreview] = useState<{ type: 'rotate' | 'upgrade', rotation?: number, level?: Level } | null>(null)
+  
+  const checkRotationCollision = (id: string, rot: number) => {
+    const cur = items.find(it => it.id === id)
+    if (!cur) return true
+    const cat = CATALOG_MAP_FULL[cur.catalogId]
+    const originalW = cat?.gridW ?? cur.gridW
+    const originalH = cat?.gridH ?? cur.gridH
+    const rotated = Math.abs(Math.sin(rot)) > 0.5
+    const newGridW = rotated ? originalH : originalW
+    const newGridH = rotated ? originalW : originalH
+    return hasCollision(cur.position, newGridW, newGridH, items.filter(it => it.id !== id), cat.category === 'Walls')
+  }
 
-  const handleUpgradeLevel = () => {
-    const cur = items.find(it => it.id === selectedItemId)
-    if (!cur?.defId || !VALID_DEF_IDS.has(cur.defId)) return
-    const def = defFor(cur.defId)
-    if (!def.hasLevels || (cur.level ?? 1) >= (def.maxLevel ?? 3)) return
+  const handleRotateItem = (v: number) => {
+    if (checkRotationCollision(selectedItemId!, v)) {
+      alert("Cannot rotate due to overlap")
+      setPreview(null)
+      return
+    }
     setItems(prev => prev.map(it => {
       if (it.id !== selectedItemId) return it
-      const newLevel = ((it.level ?? 1) + 1) as Level
-      return { ...it, level: newLevel, path: def.pathFor(it.age ?? 'SecondAge', newLevel) }
+      const cat = CATALOG_MAP_FULL[it.catalogId]
+      const rotated = Math.abs(Math.sin(v)) > 0.5
+      return { 
+        ...it, 
+        rotation: v, 
+        gridW: rotated ? (cat?.gridH ?? it.gridH) : (cat?.gridW ?? it.gridW),
+        gridH: rotated ? (cat?.gridW ?? it.gridW) : (cat?.gridH ?? it.gridH)
+      }
+    }))
+    setPreview(null)
+  }
+
+  const checkUpgradeCollision = (id: string, newLevel: Level) => {
+    const it = items.find(i => i.id === id)
+    if (!it || !it.defId) return false
+    const currentGrid = gridSizeOf(it.defId, it.age ?? 'SecondAge', it.level ?? 1)
+    const newGrid = gridSizeOf(it.defId, it.age ?? 'SecondAge', newLevel)
+    
+    if (currentGrid.w === newGrid.w && currentGrid.h === newGrid.h) return false
+    
+    const rotated = Math.abs(Math.sin(it.rotation)) > 0.5
+    const ew = rotated ? newGrid.h : newGrid.w
+    const eh = rotated ? newGrid.w : newGrid.h
+    return hasCollision(it.position, ew, eh, items.filter(x => x.id !== id), it.category === 'Walls')
+  }
+
+  const handleUpgradeLevel = (newLevel: Level) => {
+    if (checkUpgradeCollision(selectedItemId!, newLevel)) {
+      alert("Cannot upgrade due to overlap")
+      setPreview(null)
+      return
+    }
+    const cur = items.find(it => it.id === selectedItemId)
+    if (!cur?.defId) return
+    const def = defFor(cur.defId)
+    setItems(prev => prev.map(it => {
+      if (it.id !== selectedItemId) return it
+      const newGrid = gridSizeOf(def.id, it.age ?? 'SecondAge', newLevel)
+      return { 
+        ...it, 
+        level: newLevel, 
+        path: def.pathFor(it.age ?? 'SecondAge', newLevel),
+        gridW: newGrid.w,
+        gridH: newGrid.h
+      }
     }))
     fireTxToast()
+    setPreview(null)
   }
 
   const handleDelete = () => {
     setItems(prev => prev.filter(it => it.id !== selectedItemId))
     setSelectedItemId(null)
+    setPreview(null)
   }
 
   const handleLoadSave = (loaded: PlacedItem[], loadedLights?: LightConfig) => {
@@ -2625,7 +2872,8 @@ export default function App() {
     const buildings = items.filter(it => !!it.defId && VALID_DEF_IDS.has(it.defId))
     const buildingHp: Record<string, number> = {}
     buildings.forEach(it => {
-      buildingHp[it.id] = healthOf(it.defId!, it.age ?? 'SecondAge', it.level ?? 1)
+      const mult = it.category === 'Walls' ? Math.max(it.gridW, it.gridH) : 1
+      buildingHp[it.id] = healthOf(it.defId!, it.age ?? 'SecondAge', it.level ?? 1, mult)
     })
 
     const inv = Object.fromEntries(TROOP_IDS.map(id => [id, TROOP_START_COUNT])) as TroopInventory
@@ -2731,14 +2979,7 @@ export default function App() {
         <fog attach="fog" args={['#b8dff0', 160, 500]} />
 
         <CameraSetup />
-        <OrbitControls
-          enabled={mode === 'attack' || !selectedEntry}
-          target={[0, 0, 0]}
-          minPolarAngle={Math.PI / 5} maxPolarAngle={Math.PI / 2.5}
-          minDistance={20} maxDistance={120}
-          enablePan panSpeed={0.7} zoomSpeed={0.75} rotateSpeed={0.4}
-          screenSpacePanning={false}
-        />
+        <CameraController enabled={mode === 'attack' || !selectedEntry} />
 
         <SceneLights cfg={lightConfig} />
 
@@ -2760,6 +3001,7 @@ export default function App() {
         <PlacedItems
           items={mode === 'attack' ? items.filter(it => !destroyedBuildingIds.includes(it.id)) : items}
           selectedId={mode === 'build' ? selectedItemId : null}
+          preview={mode === 'build' ? preview : null}
           canSelect={mode === 'build' && !selectedEntry}
           onSelect={id => { if (!selectedEntry) setSelectedItemId(id) }}
         />
@@ -2767,24 +3009,23 @@ export default function App() {
         {/* Building HP bars in attack mode */}
         {mode === 'attack' && items
           .filter(it => it.defId && VALID_DEF_IDS.has(it.defId) && !destroyedBuildingIds.includes(it.id))
-          .map(it => (
-            <BuildingHpBar key={it.id} item={it} maxHp={healthOf(it.defId!, it.age ?? 'SecondAge', it.level ?? 1)} gsRef={gameStateRef} />
-          ))
+          .map(it => {
+            const mult = it.category === 'Walls' ? Math.max(it.gridW, it.gridH) : 1
+            return <BuildingHpBar key={it.id} item={it} maxHp={healthOf(it.defId!, it.age ?? 'SecondAge', it.level ?? 1, mult)} gsRef={gameStateRef} />
+          })
         }
 
         {/* Rubble: destroyed non-wall buildings replaced by cut-tree-group debris */}
         {mode === 'attack' && destroyedBuildingIds.map(id => {
           const it = items.find(i => i.id === id)
           if (!it || it.category === 'Walls') return null
-          const cx = it.position[0] + (it.gridW - 1) / 2
-          const cz = it.position[2] + (it.gridH - 1) / 2
           // 1×1 → scale 1, 5×5 → scale 5
           const rubbleScale = Math.max(it.gridW, it.gridH)
           return (
             <Suspense key={`rubble-${id}`} fallback={null}>
               <Model
                 path="/models/Resource_PineTree_Group_Cut.gltf"
-                position={[cx, 0, cz]}
+                position={[it.position[0], 0, it.position[2]]}
                 scale={rubbleScale}
               />
             </Suspense>
@@ -2839,13 +3080,35 @@ export default function App() {
               position={ghostPos}
               rotation={rotation}
               scale={placementScale}
-              w={ghostW}
-              h={ghostH}
+              w={baseW}
+              h={baseH}
               valid={ghostValid}
+              isWall={selectedEntry.category === 'Walls'}
             />
           </Suspense>
         )}
       </Canvas>
+
+      {/* Camera Controls */}
+      <div style={{
+        position: 'absolute', bottom: 20, right: PANEL_W + 20, zIndex: 10,
+        display: 'flex', flexDirection: 'column', gap: 8,
+        background: 'rgba(10, 6, 0, 0.8)', padding: '10px', borderRadius: '8px', border: '1px solid #5a3810'
+      }}>
+        <div style={{ fontSize: 10, color: '#c09050', textAlign: 'center', letterSpacing: 1, textTransform: 'uppercase' }}>Camera</div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 4 }}>
+          <button style={{ ...btn, padding: '4px 10px' }} onClick={() => window.dispatchEvent(new CustomEvent('cam-pan', { detail: { dx: 0, dz: -5 } }))}>↑</button>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 4 }}>
+          <button style={{ ...btn, padding: '4px 10px' }} onClick={() => window.dispatchEvent(new CustomEvent('cam-pan', { detail: { dx: -5, dz: 0 } }))}>←</button>
+          <button style={{ ...btn, padding: '4px 10px' }} onClick={() => window.dispatchEvent(new CustomEvent('cam-pan', { detail: { dx: 0, dz: 5 } }))}>↓</button>
+          <button style={{ ...btn, padding: '4px 10px' }} onClick={() => window.dispatchEvent(new CustomEvent('cam-pan', { detail: { dx: 5, dz: 0 } }))}>→</button>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: 4 }}>
+          <button style={{ ...btn, padding: '4px 10px' }} onClick={() => window.dispatchEvent(new CustomEvent('cam-zoom', { detail: -10 }))}>+</button>
+          <button style={{ ...btn, padding: '4px 10px' }} onClick={() => window.dispatchEvent(new CustomEvent('cam-zoom', { detail: 10 }))}>-</button>
+        </div>
+      </div>
 
       {/* Sidebar */}
       <div style={{
@@ -2923,11 +3186,13 @@ export default function App() {
           ) : (
           <ItemPanel
             item={selectedItem}
+            preview={preview}
+            onSetPreview={setPreview}
             onScaleChange={handleScaleItem}
             onRotationChange={handleRotateItem}
             onUpgradeLevel={handleUpgradeLevel}
             onDelete={handleDelete}
-            onClose={() => setSelectedItemId(null)}
+            onClose={() => { setSelectedItemId(null); setPreview(null); }}
           />
           )
         ) : (
@@ -2935,9 +3200,11 @@ export default function App() {
             selectedId={selectedCatalogId}
             placementScale={placementScale}
             rotation={rotation}
+            wallLength={wallLength}
             onSelect={handleSelectCatalog}
             onScaleChange={setPlacementScale}
             onSetRotation={setRotation}
+            onWallLengthChange={setWallLength}
             onUndo={() => setItems(p => p.slice(0, -1))}
             onClear={() => { const bm = readBasemap(); setItems(bm?.items ?? DEFAULT_ENV_ITEMS); setLightConfig(bm?.lights ?? DEFAULT_LIGHT); setSelectedItemId(null) }}
           />
